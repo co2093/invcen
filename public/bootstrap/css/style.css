@@ -1,0 +1,76 @@
+
+
+textarea,input,select{
+	max-width: 500px;
+}
+
+.information{	
+	
+	}
+
+.table{ 
+    margin-top: 7px; 
+	margin-right:3px;
+	margin-right:3px;
+}
+
+.navbar-right{
+	margin-right:0px;
+}
+
+img{
+	
+	
+}
+
+.error{
+	color:red;
+}
+
+body{
+	background-color: #ecf0f5;
+}
+#div_pass{
+	display: none;
+}
+
+#logo{
+	width: 70px;
+
+}
+
+/* mensaje para el grupo de diseño no modificar lo anterior*/
+
+
+.admin{
+	float: right;
+}
+
+.encabezado{	
+	border-bottom: 2px solid #3c8dbc;
+	border-left: 2px solid #3c8dbc;	
+	margin-bottom: 3px;
+	padding-bottom: 0px;
+	padding-left: 10px;
+}
+
+.encabezado>h3{	
+color: #3c8dbc;
+}
+#prueba{
+	border:2px solid red;
+}
+
+.centrado{
+	text-align: center;
+}
+
+.borde{
+	border-top: 1px solid black;
+}
+
+.margen{
+	margin-bottom: 7px;
+}
+
+

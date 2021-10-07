@@ -1,0 +1,135 @@
+body{
+	width: 100%;
+}
+
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.fila{
+     margin-right: -15px;
+    margin-left: -15px;
+    font-size:7pt;
+}
+
+*{
+	box-sizing: border-box;
+}
+body{
+    
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+}
+
+
+.col-md-1{
+	float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-left: 8.33333333%;
+
+}
+.col-md-2 {
+    width: 16.66666667%;
+    float: left;
+    position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.col-md-7 {
+    width: 58.33333333%;
+    float: left;
+    position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.text-center {
+    text-align: center;
+}
+.col-md-12 {
+    width: 100%;
+    float: left;
+    position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.table-bordered {
+    border: 1px solid black;
+
+}
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+
+}
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.table > thead:first-child > tr:first-child > th
+{
+    border-top: 0;
+}
+.table-bordered > thead > tr > th 
+{
+    border-bottom-width: 2px;
+    border: 1px solid black;
+
+
+}
+.table-condensed > thead > tr > th {
+    padding: 5px;
+}
+.table > thead > tr > th{
+vertical-align: bottom;
+line-height: 1.42857143;	
+}
+th {
+    text-align: left;
+    border-top: 1px solid black;
+}
+.table-bordered > tbody > tr > td {
+    border: 1px solid black;
+    text-align: left;
+}
+.table-condensed > tbody > tr > td {
+    padding: 5px;
+    line-height: 1.42857143;
+	vertical-align: top;
+}
+#linea_especifico > td{
+    background-color: #E6E6E6;
+}
+/*estilo del area de firmas*/
+.col-lg-4 {
+    width: 33.33333333%;    
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: right;
+}
+
+tr{
+    border-top: 1px solid black;
+}
+
+.firma{
+    margin-top: 30px;
+}
+
+.pie{
+    border-bottom: 0px;
+    border-left: 0px;
+}
+
+
+

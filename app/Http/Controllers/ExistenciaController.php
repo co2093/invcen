@@ -1,0 +1,50 @@
+<?php
+namespace sig\Http\Controllers;
+use sig\Models\Articulo;
+use Illuminate\Http\Request;
+use sig\Http\Requests;
+use sig\Models\Ingreso;
+use sig\Models\Descargo;
+use sig\Models\Especifico;
+
+use Date;
+use PDF;
+use DB;
+use Exception;
+class ExistenciaController extends Controller
+{
+	 public function __construct()
+    {
+        try {
+            $this->middleware('auth');
+        } catch (Exception $ex) {
+            return 'Codigo: ' . $ex->getCode() . ' Mensaje: ' . $ex->getMessage();
+        }
+    }
+    
+    public function index(){
+	     try{
+		$articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();
+		return view('existencia.index',['articulos'=>$articulos]);
+         }catch (Exception $ex){
+             return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+         }
+	}
+
+	public function ofertaDemanda(){
+
+        try{
+        $ofertaDemanda = DB::select('select * from oferta_demanda');
+        return view('existencia.ofertaDemanda',['ofertaDemanda'=>$ofertaDemanda]);
+        }catch (Exception $ex){
+            return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+        }
+
+    }
+
+
+    public function show($id){
+
+    }
+    
+}
