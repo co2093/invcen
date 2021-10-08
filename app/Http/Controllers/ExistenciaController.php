@@ -46,5 +46,51 @@ class ExistenciaController extends Controller
     public function show($id){
 
     }
+
+    //Muestra formulario para editar existencias
+    public function edit($codigoArticulo)
+    {
+        try {
+            $articulo = Articulo::findOrFail($codigoArticulo);
+          
+            return view('existencia.edit', ['articulo' => $articulo]);
+        }catch (Exception $ex){
+            return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+        }
+
+    }
+
+
+    //Actualiza las existencias
+    public function update(Request $request, $codigoArticulo)
+    {
+
+        try {
+            $articulo = Articulo::FindOrFail($codigoArticulo);
+            if ($articulo) {
+
+
+                $articulo->update([
+                    'existencia' => $request->input('existenciaNueva')
+                ]);
+
+                /*$articulo->save();
+                /*$articulo->update([
+                    'nombre_articulo' => $request->input('nombre'),
+                    'id_unidad_medida' => $request->input('unidad'),
+                    'id_especifico' => $request->input('especifico')
+                ]);*/
+                flash('Existencia actualizada exitosamente', 'success');
+                return redirect()->route('existencia.index');
+
+            } else {
+                flash('Error a la actualizar existencia', 'danger');
+                return redirect()->route('existencia.edit');
+            }
+        }catch (Exception $ex){
+            return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+        }
+
+    }
     
 }

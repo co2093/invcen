@@ -136,6 +136,7 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
 
     //Rutas para las existencias
     Route::resource('existencia','ExistenciaController');
+    
 
     //habilitar que los usuarios de departamento envien requisiciones
     Route::get('habilitarEnvios',['as'=>'habilitar-envios','uses'=>'RequisicionController@HabilitarEnvio']);

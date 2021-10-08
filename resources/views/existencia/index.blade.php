@@ -40,7 +40,7 @@
 
 		 	    <td>
 
-	        <a class="btn btn-default btn-sm" href="#" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>
+	        <a class="btn btn-default btn-sm" href="{{route('existencia.edit',$a->codigo_articulo)}}" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>
 
 
           
