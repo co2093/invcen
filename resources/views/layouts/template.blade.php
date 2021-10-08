@@ -164,7 +164,7 @@
 <script src="{{asset('plugins/input-mask/jquery.inputmask.js')}}"></script>
 
 <!-- Script de la tabla -->
-<script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{asset('plugins/datatables/datatablesB4.js')}}"></script>
 
 {!! Html::script('plugins/alertifyjs/alertify.min.js') !!}
 
