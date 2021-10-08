@@ -12,10 +12,13 @@
 		    <th>Espec&iacute;fico</th>
             <th>C&oacute;d. Prod.</th>
             <th>Producto</th>
+            <th>Categor&iacute;a</th>
 	        <th>Unidad de medida</th>
 	        <th>Existencia</th>
 	        <th>Precio unitario</th>
+	      
 		    <th>Monto</th>
+		      <th>Opciones</th>
 	           
 	 </tr>
 	</thead>
@@ -25,6 +28,7 @@
 		 <td>{{$a->id_especifico}}</td>
         <td>{{$a->getCodigoArticuloReporte()}}</td>
         <td>{{$a->nombre_articulo}}</td>
+        <td>A</td>
 	    <td>{{$a->unidad->nombre_unidadmedida}}</td>
 	   @if ($a->existencia == 0)
 	    <td style="color: red;">{{$a->existencia}}</td>
@@ -33,6 +37,14 @@
 	   @endif	    
 	    <td>${{number_format($a->precio_unitario,2,'.','')}}</td>
 		 <td>${{number_format($a->monto(),2,'.','')}}</td>
+
+		 	    <td>
+
+	        <a class="btn btn-default btn-sm" href="#" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>
+
+
+          
+	    </td>
     
 	 </tr>
 	  @endforeach
