@@ -63,7 +63,9 @@
     <tr>
         <td class="ancho-l pad">
             <div class="text-center">
+              <!--
                 <img src="{{asset('dist/img/minerva.jpg')}}" alt="Logo ues" style="width: 8em; height:10em;">
+            -->
             </div>
         </td>
         <td class="ancho-c">
@@ -78,11 +80,11 @@
         </td>
         <td class="ancho-r">
             <div class="text-center">
-               <!--
+            <!--
 
                 <img src="{{asset('dist/img/logocensalud.png')}}" alt="logo CENSALUD" style="width: 300px;">
-
             -->
+            
             
             </div>
         </td>
