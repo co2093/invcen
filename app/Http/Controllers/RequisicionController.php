@@ -429,4 +429,43 @@ class RequisicionController extends Controller
         }
     }
 
+    public function habilitarPeriodo()
+    {
+        $periodo = DB::table('periodo')->first();
+
+        //dd($periodo);
+
+        if ($periodo->estado == 1) {
+            // code...
+            $estado = "Habilitado";
+        }else{
+            $estado = "Deshabilitado";
+        }
+
+
+        return view('Requisicion.habilitar', compact('estado'));
+    }
+
+    public function editarEstado(Request $request)
+    {   
+
+        //dd($request->input('periodoEstado'));
+
+        if ($request->input('periodoEstado') == "1") {
+            // code...
+            $nuevoEstado = 1;
+        }else{
+            $nuevoEstado = 0;
+        }
+
+        //dd($nuevoEstado);
+
+        DB::table('periodo')->where('periodo_id',1)->update(['estado' => $nuevoEstado]);
+
+        flash('Periodo de solicitudes actualizado exitosamente', 'success');
+        return redirect()->route('habilitarPeriodo');
+
+        
+    }
+
 }

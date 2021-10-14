@@ -27,14 +27,14 @@
 <li class="treeview">
     <a href="{{url('departamento')}}">
         <i class="glyphicon glyphicon-object-align-vertical"></i> <span>Unidad/Usuario</span>
-        <i class="fa fa-angle-left pull-right"></i>
+      
     </a>
 </li>
 
 <li class="treeview">
     <a href="{{url('proveedor')}}">
         <i class="glyphicon glyphicon-shopping-cart"></i> <span>Proveedores</span>
-        <i class="fa fa-angle-left pull-right"></i>
+       
     </a>
 </li>
 
@@ -44,14 +44,21 @@
         <i class="fa fa-angle-left pull-right"></i>
     </a>
     <ul class="treeview-menu">
+
+        @if($periodo->estado == 1)
+
         <li><a href="{{url('requisicion/listar')}}"><i class="glyphicon glyphicon-chevron-right"></i>Solicitudes</a></li>
-        <li><a href="{{route('habilitar-envios')}}"><i class="glyphicon glyphicon-chevron-right"></i>HabilitarEnvios</a></li>
+        <li><a href="{{route('habilitar-envios')}}"><i class="glyphicon glyphicon-chevron-right"></i>Habilitar Envios</a></li>
+
+        @endif
+        <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i>Resumen de Solicitudes</a></li>
+
     </ul>
 </li>
 <li class="treeview">
     <a href="{{route('reportes')}}">
         <i class="glyphicon glyphicon-file"></i> <span>Reportes</span>
-        <i class="fa fa-angle-left pull-right"></i>
+        
     </a>
 </li>
 

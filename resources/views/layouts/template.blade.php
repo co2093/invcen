@@ -102,9 +102,15 @@
                 <li class="treeview">
                     <a href="{{url('home')}}">
                         <i class="fa fa-home"></i> <span>INICIO</span>
-                        <i class="fa fa-angle-left pull-right"></i>
+                       
                     </a>
                 </li>
+
+               @php
+                    $periodo = DB::table('periodo')->first();
+               @endphp
+
+
                 @if (Auth::user()->perfil['name'] == 'ADMINISTRADOR BODEGA')
                     @include('layouts.menus.admin_bodega')
                 @else
