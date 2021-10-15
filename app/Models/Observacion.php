@@ -1,6 +1,6 @@
 <?php
 
-namespace sig\\Models;
+namespace sig\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
