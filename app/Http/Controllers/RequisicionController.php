@@ -429,4 +429,59 @@ class RequisicionController extends Controller
         }
     }
 
+    public function habilitarPeriodo()
+    {
+        $periodo = DB::table('periodo')->first();
+
+        //dd($periodo);
+
+        if ($periodo->estado == 1) {
+            // code...
+            $estado = "Habilitado";
+        }else{
+            $estado = "Deshabilitado";
+        }
+
+
+        return view('Requisicion.habilitar', compact('estado'));
+    }
+
+    public function editarEstado(Request $request)
+    {   
+
+        //dd($request->input('periodoEstado'));
+
+        if ($request->input('periodoEstado') == "1") {
+            // code...
+            $nuevoEstado = 1;
+        }else{
+            $nuevoEstado = 0;
+        }
+
+        //dd($nuevoEstado);
+
+        DB::table('periodo')->where('periodo_id',1)->update(['estado' => $nuevoEstado]);
+
+        flash('Periodo de solicitudes actualizado exitosamente', 'success');
+        return redirect()->route('habilitarPeriodo');
+
+        
+    }
+
+    public function verResumen(){
+
+
+        $solicitudes = DB::table('articulo')
+        ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
+        ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
+        ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
+        ->select('codigo_articulo', 'nombre_articulo', DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->groupBy('codigo_articulo')
+        ->get();
+
+        //dd($solicitudes);
+
+        return view('Requisicion.resumen', compact('solicitudes'));
+    }
+
 }

@@ -45,6 +45,10 @@ Route::group(['middleware' => ['auth','admin_financiero','depto','admin_bodega',
     Route::get('register','UsersController@getRegister');
     Route::post('register','UsersController@postRegister');
     Route::get('usuario/create/{id}','UsersController@create')->name('usuario-departamento');
+    Route::get('habilitar', 'RequisicionController@habilitarPeriodo')->name('habilitarPeriodo');
+    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+
+
 });
 
 /*========================================================================================
@@ -170,6 +174,9 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
         'as'=>'get.reactivos.asignados',
         'uses'=>'ArticuloController@getReactivosAsignados'
     ]);
+
+    //Ver resumen de requisiciones
+    Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
 
 });
 
