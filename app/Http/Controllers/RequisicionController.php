@@ -468,4 +468,20 @@ class RequisicionController extends Controller
         
     }
 
+    public function verResumen(){
+
+
+        $solicitudes = DB::table('articulo')
+        ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
+        ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
+        ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
+        ->select('codigo_articulo', 'nombre_articulo', DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->groupBy('codigo_articulo')
+        ->get();
+
+        //dd($solicitudes);
+
+        return view('Requisicion.resumen', compact('solicitudes'));
+    }
+
 }

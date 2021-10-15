@@ -170,6 +170,9 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
         'uses'=>'ArticuloController@getReactivosAsignados'
     ]);
 
+    //Ver resumen de requisiciones
+    Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
+
 });
 
 

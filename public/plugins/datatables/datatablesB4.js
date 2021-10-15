@@ -11385,7 +11385,7 @@
 		 *      } );
 		 *    } )
 		 */
-		"iDisplayLength": 10,
+		"iDisplayLength": 15,
 	
 	
 		/**
@@ -11818,7 +11818,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "Seleccione cantidad a ver: _MENU_ ",
 	
 	
 			/**
