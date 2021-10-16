@@ -45,10 +45,18 @@ class CategoriaController extends Controller {
             //'descripcion' => 'regex: /^[a-zA-Z0-9áéíóúñÑ\s\/]*$/'
         ]);
         try {
-            $newcategoria= new Categoria();
-            $newcategoria->nombre =  $request->input('nombre');
-            $newcategoria->descripcion = $request->input('descripcion');
-            $newcategoria->save();
+
+
+            DB::table('categoria')->insert([
+                'id_categoria' => 2,
+                'nombre' => $request->input('nombre'),
+                'descripcion' => $request->input('descripcion')
+            ]);
+
+    //        $newcategoria= new Categoria();
+      //      $newcategoria->nombre =  $request->input('nombre');
+        //    $newcategoria->descripcion = $request->input('descripcion');
+          //  $newcategoria->save();
            
             flash('Categoría guardado exitosamente', 'success');
             return redirect()->route('categoria.index');
