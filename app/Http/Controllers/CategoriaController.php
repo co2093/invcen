@@ -48,7 +48,7 @@ class CategoriaController extends Controller {
 
 
             DB::table('categoria')->insert([
-                'id_categoria' => 2,
+                //'id_categoria' => 2,
                 'nombre' => $request->input('nombre'),
                 'descripcion' => $request->input('descripcion')
             ]);
