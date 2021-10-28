@@ -4,26 +4,36 @@
 @section('content')
 
  <div class="encabezado">
-        <h3>Resumen de solicitudes</h3>
+        <h3>Resumen de plan de compras</h3>
     </div>
 
-    <div class="table-responsive">
+<a href="#" class="btn btn-success">Descargar PDF</a>
+<a href="{{ route('plandecompras.excel') }}" class="btn btn-success">Descargar EXCEL</a>
+<div class="panel-body table-responsive ">
+
+  
         <table class="table table-hover table-striped table-bordered table-condensed" id="TablaResumen" >
             <thead>
             <tr class="success">
-                <th>C&oacute;digo</th>
-                <th>Nombre</th>
                 <th>Cantidad</th>
-                <th>Unidad de medida</th>
+                <th>Nombre del producto</th>
+                <th>Especificaciones</th>
+                <th>Precio unitario</th>
+                <th>Costo total</th>
+                <th>Proveedor</th>
+                <th>Cotización</th>
             </tr>
             </thead>
             <tbody>
 
             @foreach ($solicitudes as $s)
                 <tr>
-                    <td>{{$s->codigo_articulo}}</td>
-                    <td>{{$s->nombre_articulo}}</td>
                     <td>{{$s->cantidad}}</td>
+                    <td>{{$s->nombre_articulo}}</td>
+                    <td>-</td>
+                    <td>${{round($s->precio_unitario,2)}}</td>
+                    <td>${{round($s->precio_unitario,2)*$s->cantidad}}</td>
+                    <td>-</td>
                     <td>-</td>
                 </tr>
             @endforeach
@@ -43,8 +53,8 @@
 
             $('#TablaResumen').DataTable(
                 {
-                    "lengthChange": true,
-                    "autoWidth": true
+                    "lengthChange": false,
+                    "autoWidth": false
                 });
         });
     </script>

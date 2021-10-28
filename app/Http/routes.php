@@ -178,6 +178,9 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
     //Ver resumen de requisiciones
     Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
 
+    //Descargar excel
+    Route::get('plandecompras-excel', 'RequisicionController@exportExcel')->name('plandecompras.excel');
+
 });
 
 

@@ -14,6 +14,7 @@ use Auth;
 use DB;
 use Exception;
 use sig\Models\MenosReactivo;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class RequisicionController extends Controller
@@ -474,14 +475,47 @@ class RequisicionController extends Controller
         $solicitudes = DB::table('articulo')
         ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
         ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
-        ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
-        ->select('codigo_articulo', 'nombre_articulo', DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->select('nombre_articulo', 'precio_unitario',  DB::raw('SUM(cantidad_solicitada) as cantidad'))
         ->groupBy('codigo_articulo')
         ->get();
 
         //dd($solicitudes);
 
         return view('Requisicion.resumen', compact('solicitudes'));
+    }
+
+    public function exportExcel(){
+
+          Excel::create('plandecompras', function($excel) {
+
+        $solicitudes = DB::table('articulo')
+        ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
+        ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
+        ->select('nombre_articulo', 'precio_unitario',  DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->groupBy('codigo_articulo')
+        ->get();
+
+           
+            $excel->sheet('plandecompras', function($sheet) use($solicitudes) {
+                $sheet->row(3, ['', 'Cuadro de plan de compras'
+                ]);
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                ]);
+
+
+                foreach($solicitudes as $index => $s) {                    
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_articulo, '',round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,'','',''
+                    ]); 
+                }
+                
+    
+
+            });
+
+        })->export('xlsx');
+
     }
 
 }
