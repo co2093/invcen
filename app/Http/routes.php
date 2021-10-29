@@ -181,6 +181,9 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
     //Descargar excel
     Route::get('plandecompras-excel', 'RequisicionController@exportExcel')->name('plandecompras.excel');
 
+    //Descargar pdf
+    Route::get('plandecompras-pdf', 'RequisicionController@exportPdf')->name('plandecompras.pdf');
+
 });
 
 

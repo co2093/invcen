@@ -214,7 +214,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class, 
         'Flash'=> Laracasts\Flash\Flash::class,
         'Date' => Jenssegers\Date\Date::class,
-        //'PDF' => Barryvdh\DomPDF\Facade::class,
+        //'PDF2' => Barryvdh\DomPDF\Facade::class,
         'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class, 
 	'Excel' => Maatwebsite\Excel\Facades\Excel::class,

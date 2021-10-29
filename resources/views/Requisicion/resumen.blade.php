@@ -7,7 +7,7 @@
         <h3>Resumen de plan de compras</h3>
     </div>
 
-<a href="#" class="btn btn-success">Descargar PDF</a>
+<a href="{{ route('plandecompras.pdf') }}" class="btn btn-success">Descargar PDF</a>
 <a href="{{ route('plandecompras.excel') }}" class="btn btn-success">Descargar EXCEL</a>
 <div class="panel-body table-responsive ">
 
