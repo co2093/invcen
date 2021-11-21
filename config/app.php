@@ -217,7 +217,8 @@ return [
         //'PDF2' => Barryvdh\DomPDF\Facade::class,
         'PDF' => Elibyy\TCPDF\Facades\TCPDF::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class, 
-	'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+	    'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
   
 
     ],

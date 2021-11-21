@@ -28,18 +28,43 @@ class ArticuloController extends Controller
     }
 
 
-    public function index(){
-        try 
-        {           
-            $articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();         
-            
-            return view('articulos.index', ['articulos' => $articulos]);
-        }catch (Exception $ex){
-            return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+    public function index(Request $request){
+                
+        if(request()->ajax())
+        {
+            if($request->id_especifico)
+            {
+                //consulta para mostrar articulos de una categoría seleccionada
+                $data = DB::table('articulo')
+                ->join('especificos', 'especificos.id', '=', 'articulo.id_especifico')
+                ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
+                ->select('especificos.titulo_especifico', 'articulo.codigo_articulo', 'articulo.nombre_articulo','unidad_medida.nombre_unidadmedida')
+                ->where('articulo.id_especifico', $request->id_especifico);
+            }
+            else
+            {
+                //si no se selecciona una categoría 
+                $data = DB::table('articulo')
+                ->join('especificos', 'especificos.id', '=', 'articulo.id_especifico')
+                ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
+                ->select('especificos.titulo_especifico', 'articulo.codigo_articulo', 'articulo.nombre_articulo','unidad_medida.nombre_unidadmedida');
+            }
+            return datatables()->of($data)->make(true);
         }
+
+            $especificos = DB::table('especificos')
+                            ->select("*")
+                            ->get();
+ 
+ 
+            return view('articulos.index', compact('especificos'));
+
+
+            //$articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();         
+            //$especificos = Especifico::get();
+           // return view('articulos.index', ['articulos' => $articulos]);
+        
     }
-
-
 
     public function create()
     {

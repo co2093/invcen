@@ -5,7 +5,7 @@
     <div class="panel panel-info">
         <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-                <strong>Nuevo espec&iacute;fico</strong>
+                <strong>Nueva Categoría</strong>
             </h4>
         </div>
         <div class="panel-body">
@@ -26,7 +26,7 @@
             </div>
 
             <div class="form-group">
-                {!!Form::label('Titulo', 'Titulo *', array('class' =>'control-label col-md-2' )) !!}
+                {!!Form::label('Titulo', 'Nombre *', array('class' =>'control-label col-md-2' )) !!}
                 <div class="col-md-7">
                     {!!Form::text('titulo', null, array('placeholder' => 'Quimicos','class' => 'form-control')) !!}
                     <div class="error">

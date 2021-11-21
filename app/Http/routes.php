@@ -127,8 +127,8 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
     Route::get('articulo/delete/{codigoArticulo}','ArticuloController@delete')->name('delete_articulo');
 
     //rutas para categoria
-    Route::resource('categoria', 'CategoriaController');
-    Route::get('categoria/delete/{id_categoria}', 'CategoriaController@delete')->name('delete_categoria');
+   // Route::resource('categoria', 'CategoriaController');
+    //Route::get('categoria/delete/{id_categoria}', 'CategoriaController@delete')->name('delete_categoria');
 
 
     //rutas para ingreso

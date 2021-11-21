@@ -25,7 +25,6 @@ class Articulo extends Model
 		
         return $this->belongsTo('sig\Models\Especifico','id_especifico','id');
     }
-	
 	public function monto(){
 		return (round($this->precio_unitario,4) * $this->existencia);
 	}

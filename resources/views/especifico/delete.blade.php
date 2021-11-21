@@ -5,20 +5,20 @@
     <div class="panel panel-info">
         <div class="panel-heading" role="tab">
             <h4 class="panel-title">
-                <strong>Eliminar espec&iacute;fico</strong>
+                <strong>Eliminar Categoría</strong>
             </h4>
         </div>
         <div class="panel-body">
 
             @if($especifico)
                 <div class="col-md-offset-1">
-                    <h4>¿Est&aacute; seguro que desea eliminar el siguiente espec&iacute;fico?</h4>
+                    <h4>¿Est&aacute; seguro que desea eliminar la siguiente categoría?</h4>
                 </div>
                 <dl class="dl-horizontal">
                     <dt>C&oacute;digo:</dt>
                     <dd>{{ $especifico->id}}</dd>
 
-                    <dt>T&iacute;tulo:</dt>
+                    <dt>Nombre:</dt>
                     <dd>{{ $especifico->titulo_especifico }}</dd>
 
                     <dt>Descripci&oacute;n:</dt>
