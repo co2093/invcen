@@ -480,9 +480,8 @@ class RequisicionController extends Controller
         ->groupBy('codigo_articulo')
         ->get();
 
-        //dd($solicitudes);
 
-        return view('Requisicion.resumen', compact('solicitudes'));
+        return view('Requisicion.resumen', compact('solicitudes', 'categorias'));
     }
 
     public function exportExcel(){

@@ -52,7 +52,7 @@
         <li><a href="{{route('habilitar-envios')}}"><i class="glyphicon glyphicon-chevron-right"></i>Habilitar Envios</a></li>
 
         @endif
-        <li><a href="{{route('requisicion.resumen')}}"><i class="glyphicon glyphicon-chevron-right"></i>Resumen de Solicitudes</a></li>
+        <li><a href="{{route('requisicion.resumen')}}"><i class="glyphicon glyphicon-chevron-right"></i>Plan de compras</a></li>
 
     </ul>
 </li>
