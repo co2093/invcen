@@ -4,7 +4,7 @@
 	<div class="panel panel-info">
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
-				<strong>Detalle del espec&iacute;fico</strong>
+				<strong>Detalle de la Categoría</strong>
 			</h4>
 		</div>
 		<div class="panel-body">
@@ -15,7 +15,7 @@
 					<dt>N&uacute;mero: </dt>
 					<dd>{{ $especifico->id}}</dd>
 
-					<dt>T&iacute;tulo: </dt>
+					<dt>Nombre: </dt>
 					<dd>{{ $especifico->titulo_especifico }}</dd>
 
 					<dt>Descripci&oacute;n: </dt>

@@ -1,6 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
+
 <div class="encabezado">
 <h3>Productos</h3>
 </div>
@@ -9,8 +10,14 @@
 <div class="table-responsive">
 <table class="table table-hover table-striped table-bordered table-condensed" id="TablaArticulo" >
     <thead>
-        <tr class="success">
-            <th>Espec&iacute;fico</th>
+            <th>Categoría
+                <select name="category_filter" id="category_filter" class="form-control">
+                    <option>Seleccione la Categoría</option>
+                        @foreach($especificos as $row)
+                            <option value="{{ $row->id }}">{{ $row->titulo_especifico }}</option>            
+                        @endforeach           
+                </select>
+            </th>
             <th>C&oacute;d. prod.</th>
             <th>Producto</th>
 	        <th>Unidad de medida</th>
@@ -19,24 +26,7 @@
 	</thead>
 <tbody>
  
-@foreach ($articulos as $articulo)
-    <tr>
-        <td>{{$articulo->id_especifico}}</td>
-        <td>{{$articulo->getCodigoArticuloReporte()}}</td>
-        <td>{{$articulo->nombre_articulo}}</td>
-	    <td>{{$articulo->unidad->nombre_unidadmedida}}</td>
 
-	    <td class="col-md-3">
-	        <a class="btn btn-default btn-sm" href="{{route('delete_articulo',$articulo->codigo_articulo)}}" title="Eliminar"><span class="glyphicon glyphicon-trash"></span></a>
-	        <a class="btn btn-default btn-sm" href="{{route('articulo.show',$articulo->codigo_articulo)}}" title="Detalle"><span class="glyphicon glyphicon-th-large"></span></a>
-	        <a class="btn btn-default btn-sm" href="{{route('articulo.edit',$articulo->codigo_articulo)}}" title="Editar"><span class="glyphicon glyphicon-pencil"></span></a>
-          <a class="btn btn-default btn-sm" href="{{route('addExistencia',$articulo->codigo_articulo)}}" title="Agregar existencia"><span class="glyphicon glyphicon-book"></span></a>
-
-          
-	    </td>
-	    
-    </tr>
- @endforeach
 
 </tbody>  
 </table>
@@ -46,15 +36,52 @@
 
 @section('script')
 <script type="text/javascript">
-  $(document).ready(function(){
-  
-    $('#TablaArticulo').DataTable(
-      {         
-          "lengthChange": false,
-           "autoWidth": false  
-      });
-  }); 
+$(document).ready(function(){
+fetch_data();
+function fetch_data(especificos = '')
+{
+
+  $('#TablaArticulo').DataTable({
+   processing: true,
+   serverSide: true,
+    ajax: {
+    url:"{{ route('articulo.index') }}",
+    data: {especificos:especificos}
+ },
+   columns:[
+    {
+     data: 'titulo_especifico',
+     name: 'titulo_especifico'
+     orderable: false
+    },
+    {
+     data: 'codigo_articulo',
+     name: 'codigo_articulo'
+    },
+    {
+     data: 'nombre_articulo',
+     name: 'nombre_articulo',
+    },
+    {
+     data: 'nombre_unidadmedida',
+     name:'nombre_unidadmedida'
+    }
+
+   ]
+
+  });
+
+}
+
+$('#category_filter').change(function(){
+    var category_id = $('#category_filter').val();
+
+    $('#TablaArticulo').DataTable().destroy();
+
+    fetch_data(category_id);
+});
+
+});
+
 </script>
 @endsection
-
-

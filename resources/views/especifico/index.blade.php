@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="encabezado">
-    <h3>Especif&iacute;cos</h3>
+    <!--<h3>Especif&iacute;cos</h3>-->
+    <h3>Categorías</h3>
 </div>
 
 <a href="{{ route('especifico.create')}}" class="btn btn-success" title="Nuevo especifico"><span class="glyphicon glyphicon-plus"></span>Nuevo</a>
