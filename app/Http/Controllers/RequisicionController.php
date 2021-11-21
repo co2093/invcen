@@ -14,6 +14,8 @@ use Auth;
 use DB;
 use Exception;
 use sig\Models\MenosReactivo;
+use Maatwebsite\Excel\Facades\Excel;
+use TCPDF;
 
 
 class RequisicionController extends Controller
@@ -474,14 +476,89 @@ class RequisicionController extends Controller
         $solicitudes = DB::table('articulo')
         ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
         ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
-        ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
-        ->select('codigo_articulo', 'nombre_articulo', DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->select('nombre_articulo', 'precio_unitario',  DB::raw('SUM(cantidad_solicitada) as cantidad'))
         ->groupBy('codigo_articulo')
         ->get();
 
         //dd($solicitudes);
 
         return view('Requisicion.resumen', compact('solicitudes'));
+    }
+
+    public function exportExcel(){
+
+          Excel::create('plandecompras', function($excel) {
+
+        $solicitudes = DB::table('articulo')
+        ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
+        ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
+        ->select('nombre_articulo', 'precio_unitario',  DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->groupBy('codigo_articulo')
+        ->get();
+
+           
+            $excel->sheet('plandecompras', function($sheet) use($solicitudes) {
+                $sheet->row(3, ['', 'Cuadro de plan de compras'
+                ]);
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                ]);
+
+
+                foreach($solicitudes as $index => $s) {                    
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_articulo, '',round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,'','',''
+                    ]); 
+                }
+                
+    
+
+            });
+
+        })->export('xlsx');
+
+    }
+
+
+    public function exportPdf(){
+
+
+
+        $solicitudes = DB::table('articulo')
+        ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
+        ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
+        ->select('nombre_articulo', 'precio_unitario',  DB::raw('SUM(cantidad_solicitada) as cantidad'))
+        ->groupBy('codigo_articulo')
+        ->get();
+
+        $view = \View::make('Requisicion.plandecompras', ['solicitudes' => $solicitudes]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Plan de Compras');
+                    $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('L');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                    $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);
+
+
+                    $pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'plandecompras.pdf';
+                    $pdf->Output($nombre);
     }
 
 }
