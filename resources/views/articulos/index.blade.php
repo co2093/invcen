@@ -11,8 +11,9 @@
 <table class="table table-hover table-striped table-bordered table-condensed" id="TablaArticulo" >
     <thead>
             <th>Categoría
+
                 <select name="category_filter" id="category_filter" class="form-control">
-                    <option>Seleccione la Categoría</option>
+                  
                         @foreach($especificos as $row)
                             <option value="{{ $row->id }}">{{ $row->titulo_especifico }}</option>            
                         @endforeach           
@@ -35,53 +36,7 @@
 @endsection
 
 @section('script')
-<script type="text/javascript">
-$(document).ready(function(){
-fetch_data();
-function fetch_data(especificos = '')
-{
+    
+    {!! Html::script('js/filter.js') !!}
 
-  $('#TablaArticulo').DataTable({
-   processing: true,
-   serverSide: true,
-    ajax: {
-    url:"{{ route('articulo.index') }}",
-    data: {especificos:especificos}
- },
-   columns:[
-    {
-     data: 'titulo_especifico',
-     name: 'titulo_especifico'
-     orderable: false
-    },
-    {
-     data: 'codigo_articulo',
-     name: 'codigo_articulo'
-    },
-    {
-     data: 'nombre_articulo',
-     name: 'nombre_articulo',
-    },
-    {
-     data: 'nombre_unidadmedida',
-     name:'nombre_unidadmedida'
-    }
-
-   ]
-
-  });
-
-}
-
-$('#category_filter').change(function(){
-    var category_id = $('#category_filter').val();
-
-    $('#TablaArticulo').DataTable().destroy();
-
-    fetch_data(category_id);
-});
-
-});
-
-</script>
 @endsection

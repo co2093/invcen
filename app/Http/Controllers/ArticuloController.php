@@ -30,16 +30,17 @@ class ArticuloController extends Controller
 
     public function index(Request $request){
                 
-        if(request()->ajax())
+        if($request->ajax())
         {
-            if($request->id_especifico)
+            if($request->category_filter)
             {
                 //consulta para mostrar articulos de una categoría seleccionada
                 $data = DB::table('articulo')
                 ->join('especificos', 'especificos.id', '=', 'articulo.id_especifico')
                 ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
                 ->select('especificos.titulo_especifico', 'articulo.codigo_articulo', 'articulo.nombre_articulo','unidad_medida.nombre_unidadmedida')
-                ->where('articulo.id_especifico', $request->id_especifico);
+                ->where('articulo.id_especifico', $request->category_filter)
+                ->get();
             }
             else
             {
@@ -47,9 +48,12 @@ class ArticuloController extends Controller
                 $data = DB::table('articulo')
                 ->join('especificos', 'especificos.id', '=', 'articulo.id_especifico')
                 ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
-                ->select('especificos.titulo_especifico', 'articulo.codigo_articulo', 'articulo.nombre_articulo','unidad_medida.nombre_unidadmedida');
+                ->select('especificos.titulo_especifico', 'articulo.codigo_articulo', 'articulo.nombre_articulo','unidad_medida.nombre_unidadmedida')
+                ->get();
             }
             return datatables()->of($data)->make(true);
+        }else{
+            //return ("No ajax found");
         }
 
             $especificos = DB::table('especificos')
