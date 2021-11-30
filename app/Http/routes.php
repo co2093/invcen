@@ -311,6 +311,7 @@ Route::Group(['middleware'=>['admin','equipo']], function (){
     //Ruta para ver en detalle a la requisicion
     Route::get('requisicion/detalle/{detalle}','DetalleRequisicionController@show')->name('requisicion.detalle.show');
     Route::get('plan-indv-pdf/{detalle}','DetalleRequisicionController@reporteindvPlanPDF')->name('requisicion.detalle.pdf');
+    Route::get('plan-indv-excel/{detalle}','DetalleRequisicionController@reporteindvPlanEXCEL')->name('requisicion.detalle.excel');
 });
 
 /*========================================================================================

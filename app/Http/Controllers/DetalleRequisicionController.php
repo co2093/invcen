@@ -394,7 +394,7 @@ class DetalleRequisicionController extends Controller
 
                     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
                     $pdf->SetTitle('Plan de Compras Individual');
-                    $pdf->SetHeaderData('', '', '', 'Reporte de compra individual', array(0,0,0), array(0,64,128));
+                    $pdf->SetHeaderData('', '', '', 'Reporte de compra individual', array(0,0,0), array(52, 20, 44));
                     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 
                     $pdf->AddPage('P');
@@ -420,8 +420,38 @@ class DetalleRequisicionController extends Controller
     }
 
     
-    public function reporteindvPlanEXCEL(){
+    public function reporteindvPlanEXCEL($id){
         
+        
+        Excel::create('reporte-individual-plancompras', function($excel) {
+
+            $req  = Requisicion::FindOrFail($id);
+            $detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
+    
+               
+                $excel->sheet('plandecomprasIndividual', function($sheet) use($detalle) {
+                    $sheet->row(2, ['', 'Plan de Compras Individual'
+                    ]);
+                    $sheet->row(4, ['', 'Plan de compras de:' ]);
+                    $sheet->row(5, ['', 'Fecha de Solicitud:' ]);
+                    $sheet->row(6, ['', 'Orden requisición nº:' ]);
+                    $sheet->row(7, ['', 'Solicitud:' ]);
+                    $sheet->row(8, [
+                        'Especifico','Código Producto', 'Nombre del producto', 'Unidad de Medida', 'Cant. solicitada', 'Precio unitario ($)'
+                    ]);
+    
+    
+                    foreach($detalle as $index => $i) {                    
+                           $sheet->row($index+7, [
+                            $i->articulo->id_especifico, $i->articulo->getCodigoArticuloReporte(), $i->articulo['nombre_articulo'],$i->articulo['unidad']['nombre_unidadmedida'], $i->cantidad_solicitada,round($i->precio,2)
+                        ]); 
+                    }
+                    
+        
+    
+                });
+    
+            })->export('xlsx');
     }
    
 }

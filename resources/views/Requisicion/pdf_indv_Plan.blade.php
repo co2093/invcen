@@ -126,7 +126,7 @@
     @endif
     </strong></h3>
 
-    <h3> Progreso: 
+    <h3> Progreso: <strong>
     @if(($requisicion->estado == 'aprobada'))
     <h2 style="color: #005733">{{$requisicion->estado}}</h2>
     @else 

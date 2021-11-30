@@ -46,7 +46,7 @@
           @endif
         </td>
         <td>
-        <a class="btn btn-success btn-sm" target="_blank" title="archivo de excel" href=""><span class="fa fa-file-excel-o fa-2x"></span></a>
+        <a class="btn btn-success btn-sm" target="_blank" title="archivo de excel" href="{{route('requisicion.detalle.excel',$r->id)}}"><span class="fa fa-file-excel-o fa-2x"></span></a>
         <a class="btn btn-danger btn-sm" target="_blank" title="archivo PDF" href="{{route('requisicion.detalle.pdf',$r->id)}}"><span class=" fa fa-file-pdf-o fa-2x"></span></a>
         </td>
     </tr>
