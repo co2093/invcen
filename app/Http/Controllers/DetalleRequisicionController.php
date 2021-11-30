@@ -375,5 +375,53 @@ class DetalleRequisicionController extends Controller
         }
     }
 
+    public function reporteindvPlanPDF($id){
+        
+        /*$plancompras = DB::table('articulo')
+        ->join('detalle_requisicions', 'articulo.codigo_articulo', '=', 'detalle_requisicions.articulo_id')
+        ->join('requisicions', 'requisicions.id', '=', 'detalle_requisicions.requisicion_id')
+        ->join('unidad_medida', 'unidad_medida.id_unidad_medida', '=', 'articulo.id_unidad_medida')
+        ->join('departments', 'departments.id', '=', 'requisicions.departamento_id')
+        ->join('especificos', 'especificos.id', '=', 'articulo.id_especifico')
+        ->select('especificos.id','codigo_articulo','nombre_articulo', 'nombre_unidadmedida', 'precio_unitario', 'cantidad_solicitada', 'departments.name','requisicions.id', 'observacion')
+        ->where('detalle_requisicions.id', '=', [$id]);*/
+        $req  = Requisicion::FindOrFail($id);
+        $detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
+
+        $view = \View::make('Requisicion.pdf_indv_Plan',['detalle'=>$detalle,'requisicion'=>$req]);
+       // $view = \View::make('Requisicion.plandecompras', ['solicitudes' => $solicitudes]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Plan de Compras Individual');
+                    $pdf->SetHeaderData('', '', '', 'Reporte de compra individual', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('P');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                   /* $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);*/
+
+
+                    /*$pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));*/
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'reporte-individual-plandecompras.pdf';
+                    $pdf->Output($nombre);
+    }
+
+    
+    public function reporteindvPlanEXCEL(){
+        
+    }
    
 }

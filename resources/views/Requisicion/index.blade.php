@@ -14,6 +14,7 @@
         <th>Fecha de Solicitud</th>  
         <th>Estado</th>         
         <th>Opciones</th>
+        <th>Reportes</th>
     </tr>
  </thead>
 <tbody>
@@ -43,6 +44,10 @@
             <a class="btn btn-default btn-sm" title="editar" href="{{route('requisicion.detalle.edit',$r->id)}}"><span class="glyphicon glyphicon-pencil "></span></a>
             @endif
           @endif
+        </td>
+        <td>
+        <a class="btn btn-success btn-sm" target="_blank" title="archivo de excel" href=""><span class="fa fa-file-excel-o fa-2x"></span></a>
+        <a class="btn btn-danger btn-sm" target="_blank" title="archivo PDF" href="{{route('requisicion.detalle.pdf',$r->id)}}"><span class=" fa fa-file-pdf-o fa-2x"></span></a>
         </td>
     </tr>
   
