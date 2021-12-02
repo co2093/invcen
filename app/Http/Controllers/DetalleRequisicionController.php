@@ -16,6 +16,8 @@ use sig\User;
 use PDF;
 use Exception;
 use TCPDF;
+use Maatwebsite\Excel\Facades\Excel;
+use DB;
 use sig\Models\ExistenciaReactivo;
 use sig\Models\MenosReactivo;
 
@@ -425,9 +427,11 @@ class DetalleRequisicionController extends Controller
         
         Excel::create('reporte-individual-plancompras', function($excel) {
 
-            $req  = Requisicion::FindOrFail($id);
-            $detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
-    
+          //  $req  = Requisicion::FindOrFail($id);
+             $req = DB::table('requisicions')->where('id', $id)->get();
+           // $detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
+             $detalle = DB::table('detalle_requisicions')->where('requisicion_id', $id)->get();
+            //dd($id);
                
                 $excel->sheet('plandecomprasIndividual', function($sheet) use($detalle) {
                     $sheet->row(2, ['', 'Plan de Compras Individual'
@@ -442,7 +446,7 @@ class DetalleRequisicionController extends Controller
     
     
                     foreach($detalle as $index => $i) {                    
-                           $sheet->row($index+7, [
+                           $sheet->row($index+9, [
                             $i->articulo->id_especifico, $i->articulo->getCodigoArticuloReporte(), $i->articulo['nombre_articulo'],$i->articulo['unidad']['nombre_unidadmedida'], $i->cantidad_solicitada,round($i->precio,2)
                         ]); 
                     }

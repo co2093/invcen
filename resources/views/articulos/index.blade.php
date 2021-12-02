@@ -37,6 +37,12 @@
 
 @section('script')
     
-    {!! Html::script('js/filter.js') !!}
+ <!--   {!! Html::script('js/filter.js') !!} -->
+
+ <script type="text/javascript">
+
+    
+
+ </script>
 
 @endsection
