@@ -424,10 +424,55 @@ class DetalleRequisicionController extends Controller
     
    public function reporteindvPlanEXCEL($id){
 
-        //$detalle = DetalleRequisicion::where('id', $id)->get();
+        $req = DB::table('requisicions')->where('id', $id)->get();
+         //$detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
         $detalle = DB::table('detalle_requisicions')->where('requisicion_id', $id)->get();
-        dd($detalle);
-        //return $exporter->download('Summary Detail.xlsx');
-   
+        //dd($detalle);
+          //  dd($detalle);
+
+        Excel::create('reporte-individual-plancompras', function($excel) use ($id) {
+
+          //  $req  = Requisicion::FindOrFail($id);
+
+        $detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
+        $req = Requisicion::FindOrFail($id);
+
+
+                $excel->sheet('plandecomprasIndividual', function($sheet) use($detalle) {
+                    $sheet->row(2, ['', 'Plan de Compras Individual'
+                    ]);
+                    $sheet->row(4, ['', 'Plan de compras de:' ]);
+                    $sheet->row(5, ['', 'Fecha de Solicitud:' ]);
+                    $sheet->row(6, ['', 'Orden requisición nº:' ]);
+                    $sheet->row(7, ['', 'Solicitud:' ]);
+                    $sheet->row(8, [
+                        'Especifico','Código Producto', 'Nombre del producto', 'Unidad de Medida', 'Cant. solicitada', 'Precio unitario ($)'
+                    ]);
+
+
+                    foreach($detalle as $index => $i) {                    
+                           $sheet->row($index+9, [
+                            $i->articulo->id_especifico, $i->articulo->getCodigoArticuloReporte(), $i->articulo['nombre_articulo'],$i->articulo['unidad']['nombre_unidadmedida'], $i->cantidad_solicitada,round($i->precio,2)
+                        ]); 
+                    }
+
+
+                });
+
+            })->export('xlsx');
+
    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
