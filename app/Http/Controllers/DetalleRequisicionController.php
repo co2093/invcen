@@ -441,11 +441,13 @@ class DetalleRequisicionController extends Controller
                 $excel->sheet('plandecomprasIndividual', function($sheet) use($detalle) {
                     $sheet->row(2, ['', 'Plan de Compras Individual'
                     ]);
-                    $sheet->row(4, ['', 'Plan de compras de:' ]);
-                    $sheet->row(5, ['', 'Fecha de Solicitud:' ]);
-                    $sheet->row(6, ['', 'Orden requisición nº:' ]);
-                    $sheet->row(7, ['', 'Solicitud:' ]);
-                    $sheet->row(8, [
+                    $sheet->row(4, ['', 'Plan de compras de:' , $req->departamento['name']]);
+                    $sheet->row(5, ['', 'Fecha de Solicitud:', $req->getFechaSolicitud()]);
+                    $sheet->row(6, ['', 'Orden requisición nº:', $req->ordenrequisicion]);
+                    $sheet->row(7, ['', 'Solicitud:', $req->getNumero()]);
+                    $sheet->row(8, ['', 'Observación:', $req->observacion]);
+                    $sheet->row(9, ['', 'Progreso:', $req->estado]);
+                    $sheet->row(11, [
                         'Especifico','Código Producto', 'Nombre del producto', 'Unidad de Medida', 'Cant. solicitada', 'Precio unitario ($)'
                     ]);
 
