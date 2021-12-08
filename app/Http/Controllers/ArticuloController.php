@@ -30,7 +30,7 @@ class ArticuloController extends Controller
 
     public function index(Request $request){
                 
-        if($request->ajax())
+       /* if($request->ajax())
         {
             if($request->category_filter)
             {
@@ -61,14 +61,25 @@ class ArticuloController extends Controller
                             ->get();
  
  
-            return view('articulos.index', compact('especificos'));
+            return view('articulos.index', compact('especificos'));*/
 
 
-            //$articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();         
-            //$especificos = Especifico::get();
-           // return view('articulos.index', ['articulos' => $articulos]);
+            try 
+            {           
+                $articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();         
+                
+                return view('articulos.index', ['articulos' => $articulos]);
+            }catch (Exception $ex){
+                return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+            }
         
     }
+     public function ajax(){
+        $especificos = Especifico::all();
+        $categorias = $especificos->sortBy('titulo_especifico')->pluck('titulo_especifico')->unique();
+        return view('articulos.index', compact('categorias'));
+
+     }
 
     public function create()
     {
