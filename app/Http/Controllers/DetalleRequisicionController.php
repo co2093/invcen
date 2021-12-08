@@ -437,8 +437,10 @@ class DetalleRequisicionController extends Controller
         $detalle = DetalleRequisicion::where('requisicion_id','=',$id)->get();
         $req = Requisicion::FindOrFail($id);
 
+        
 
-                $excel->sheet('plandecomprasIndividual', function($sheet) use($detalle) {
+
+                $excel->sheet('plandecomprasIndividual', function($sheet) use($detalle, $req) {
                     $sheet->row(2, ['', 'Plan de Compras Individual'
                     ]);
                     $sheet->row(4, ['', 'Plan de compras de:' , $req->departamento['name']]);
@@ -453,7 +455,7 @@ class DetalleRequisicionController extends Controller
 
 
                     foreach($detalle as $index => $i) {                    
-                           $sheet->row($index+9, [
+                           $sheet->row($index+12, [
                             $i->articulo->id_especifico, $i->articulo->getCodigoArticuloReporte(), $i->articulo['nombre_articulo'],$i->articulo['unidad']['nombre_unidadmedida'], $i->cantidad_solicitada,round($i->precio,2)
                         ]); 
                     }
