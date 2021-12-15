@@ -45,12 +45,12 @@
     </a>
     <ul class="treeview-menu">
 
-        @if($periodo->estado == 1)
+        
 
         <li><a href="{{url('requisicion/listar')}}"><i class="glyphicon glyphicon-chevron-right"></i>Solicitudes</a></li>
         <li><a href="{{route('habilitar-envios')}}"><i class="glyphicon glyphicon-chevron-right"></i>Habilitar Envios</a></li>
 
-        @endif
+      
         <li><a href="{{route('requisicion.resumen')}}"><i class="glyphicon glyphicon-chevron-right"></i>Plan de compras</a></li>
 
     </ul>
@@ -62,3 +62,17 @@
     </a>
 </li>
 
+@if($periodo->estado == 1)
+<li class="treeview">
+    <a href="#">
+        <i class="glyphicon glyphicon-folder-close"></i> <span>Plan de compras</span>
+        <i class="fa fa-angle-left pull-right"></i>
+    </a>
+    <ul class="treeview-menu">
+        <li><a href="{{route('plan.index')}}"><i class="glyphicon glyphicon-chevron-right"></i>Iniciar plan de compras</a></li>
+    </ul>
+        <ul class="treeview-menu">
+        <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i>Historial</a></li>
+    </ul>
+</li>
+@endif
