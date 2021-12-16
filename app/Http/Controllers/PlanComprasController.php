@@ -97,7 +97,7 @@ class PlanComprasController extends Controller
         ]);
 
         flash('Producto agregado al plan de compras exitosamente', 'success');
-        return redirect()->back();
+        return redirect()->route('plan.index');
 
     }
 
@@ -137,6 +137,31 @@ class PlanComprasController extends Controller
 
         flash('Producto editado exitosamente', 'info');
         return redirect()->route('plan.index');
+    }
+
+    public function historial(){
+        $planDelUsuario = DB::table('plan_compras')
+        ->where('user_id', '=', Auth::user()->id)
+        ->where('estado', '!=', "Pendiente")
+        ->get();
+        
+        return view('plandecompras.historial', compact('planDelUsuario'));
+        
+    }
+
+
+    public function solicitarExistencias($idProduct){
+
+
+        $product = DB::table('articulo')
+        ->where('codigo_articulo', '=', $idProduct)
+        ->first();
+
+        return view('plandecompras.solicitarexistencias', compact('product'));
+    }
+
+    public function existencias(Request $request){
+        return ("M");
     }
 
 

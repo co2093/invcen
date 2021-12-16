@@ -437,6 +437,10 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
     Route::get('plancompras/delete/producto/{idProduct}', 'PlanComprasController@deleteProduct')->name('plandecompras.deleteProduct');
     Route::get('plancompras/edit/producto/{idProduct}', 'PlanComprasController@editProduct')->name('plandecompras.edit');
     Route::post('plancompras/update/producto', 'PlanComprasController@updateProduct')->name('plandecompras.update');
+    Route::get('plancompras/historial', 'PlanComprasController@historial')->name('plandecompras.historial');
+    Route::get('plancompras/solicitar/existencias/{idProduct}', 'PlanComprasController@solicitarExistencias')->name('plandecompras.solicitar');
+    
+    
 
 
 

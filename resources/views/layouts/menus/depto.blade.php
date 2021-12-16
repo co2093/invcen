@@ -40,7 +40,7 @@
         
     </ul>
     <ul class="treeview-menu">
-        <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i>Historial</a></li>
+        <li><a href="{{route('plandecompras.historial')}}"><i class="glyphicon glyphicon-chevron-right"></i>Historial</a></li>
     </ul>
 
 
