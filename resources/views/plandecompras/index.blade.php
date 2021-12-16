@@ -15,7 +15,8 @@
         <div>
             <a href="{{route('plandecompras.productos')}}" class="btn btn-info" title="Agregar producto">Consultar productos en bodega</a>
             <a href="{{route('plandecompras.agregarNuevo')}}" class="btn btn-primary" title="SolicitarNuevo">Solicitar producto nuevo</a>
-            <a href="#" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
+            <a href="{{route('plandecompras.excel.descargar')}}" class="btn btn-success pull-right" title="DescargarExcel">Descargar en Excel</a>
+            <a href="{{route('plandecompras.pdf.descargar')}}" class="btn btn-danger pull-right" title="DescargarPDF">Descargar en PDF</a>
         </div>
     </div>
 
