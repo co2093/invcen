@@ -43,14 +43,14 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad</label>
-					<input type="number" name="cantidad" id="cantidad" class="form-control" required>
+					<input type="number" name="cantidad" id="cantidad" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio unitario</label>
-					<input type="number" step="any" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control">
+					<input type="number" step="any" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 
@@ -64,7 +64,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">
 					<label>Cotización</label>
-					<input type="number" step="any" name="cotizacion" id="cotizacion" class="form-control">
+					<input type="number" step="any" name="cotizacion" id="cotizacion" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 

@@ -427,11 +427,6 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
 
     Route::get('plancompras','PlanComprasController@index')->name('plan.index');
     Route::get('plancompras/consultar/productos','PlanComprasController@consultarProductos')->name('plandecompras.productos');
-    Route::post('plancompras/add', 'PlanComprasController@add')->name('add.plancompras');
-    Route::get('plancompras/vaciar', 'PlanComprasController@vaciar')->name('plandecompras.vaciar');
-    Route::get('plancompras/trash', 'PlanComprasController@trash')->name('plandecompras.trash');
-    Route::get('plancompras/delete/{cod}', 'PlanComprasController@delete')->name('plandecompras.delete');
-    Route::get('plancompras/agregar/nuevo', 'PlanComprasController@agregarNuevo')->name('plandecompras.agregarNuevo');
 
     Route::post('plancompras/nuevo/producto', 'PlanComprasController@store')->name('plandecompras.store');
     Route::get('plancompras/delete/producto/{idProduct}', 'PlanComprasController@deleteProduct')->name('plandecompras.deleteProduct');

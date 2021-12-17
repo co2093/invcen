@@ -32,14 +32,14 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad</label>
-					<input type="number" name="cantidad" id="cantidad" placeholder="Cantidad" class="form-control" required>
+					<input type="number" name="cantidad" id="cantidad" placeholder="1" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio unitario</label>
-					<input type="number" step="any" name="precio" id="precio" placeholder="0.00" class="form-control">
+					<input type="number" step="any" name="precio" id="precio" placeholder="0.00" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 
@@ -53,7 +53,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">
 					<label>Cotización</label>
-					<input type="number" step="any" name="cotizacion" id="cotizacion" placeholder="0.00" class="form-control">
+					<input type="number" step="any" name="cotizacion" id="cotizacion" placeholder="0.00" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 
