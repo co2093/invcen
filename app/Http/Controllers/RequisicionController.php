@@ -465,7 +465,7 @@ class RequisicionController extends Controller
         DB::table('periodo')->where('periodo_id',1)->update(['estado' => $nuevoEstado]);
 
         flash('Periodo de solicitudes actualizado exitosamente', 'success');
-        return redirect()->route('habilitarPeriodo');
+        return redirect()->route('plandecompras.habilitar');
 
         
     }
@@ -496,8 +496,8 @@ class RequisicionController extends Controller
         ->get();
 
            
-            $excel->sheet('plandecompras', function($sheet) use($solicitudes) {
-                $sheet->row(3, ['', 'Cuadro de plan de compras'
+            $excel->sheet('resumensolicitudes', function($sheet) use($solicitudes) {
+                $sheet->row(3, ['', 'Resumen de solicitudes'
                 ]);
                 $sheet->row(6, [
                     'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
@@ -534,7 +534,7 @@ class RequisicionController extends Controller
                     $html = $view->render();
 
                     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
-                    $pdf->SetTitle('Plan de Compras');
+                    $pdf->SetTitle('Resumen de solicitudes');
                     $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
                     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 

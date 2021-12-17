@@ -14,7 +14,10 @@
         <i class="fa fa-angle-left pull-right"></i>
     </a>
     <ul class="treeview-menu">
-        <li><a href="#"><i class="glyphicon glyphicon-chevron-right"></i>Iniciar plan de compras</a></li>
+        <li><a href="{{route('plan.index')}}"><i class="glyphicon glyphicon-chevron-right"></i>Iniciar plan de compras</a></li>
+    </ul>
+        <ul class="treeview-menu">
+        <li><a href="{{route('plandecompras.historial')}}"><i class="glyphicon glyphicon-chevron-right"></i>Historial</a></li>
     </ul>
 </li>
 @endif

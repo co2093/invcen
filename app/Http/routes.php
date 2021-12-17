@@ -45,7 +45,7 @@ Route::group(['middleware' => ['auth','admin_financiero','depto','admin_bodega',
     Route::get('register','UsersController@getRegister');
     Route::post('register','UsersController@postRegister');
     Route::get('usuario/create/{id}','UsersController@create')->name('usuario-departamento');
-    Route::get('habilitar', 'RequisicionController@habilitarPeriodo')->name('habilitarPeriodo');
+    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
     Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
 
 
@@ -279,6 +279,11 @@ Route::Group(['middleware'=>['admin','admin_financiero','admin_bodega','equipo']
         Route::get('requisicion/volvereditar/{cod}',['as'=>'editar-confirm','uses'=>'RequisicionController@editarConfirm']);
         Route::post('requisicion/editar/{cod}',['as'=>'volver-editar','uses'=>'RequisicionController@volverEditar']);
 
+        Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
+        Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
+
+
+
     });
 
 /*========================================================================================
@@ -427,7 +432,6 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
 
     Route::get('plancompras','PlanComprasController@index')->name('plan.index');
     Route::get('plancompras/consultar/productos','PlanComprasController@consultarProductos')->name('plandecompras.productos');
-
     Route::post('plancompras/nuevo/producto', 'PlanComprasController@store')->name('plandecompras.store');
     Route::get('plancompras/delete/producto/{idProduct}', 'PlanComprasController@deleteProduct')->name('plandecompras.deleteProduct');
     Route::get('plancompras/edit/producto/{idProduct}', 'PlanComprasController@editProduct')->name('plandecompras.edit');
@@ -436,6 +440,10 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
     Route::get('plancompras/solicitar/existencias/{idProduct}', 'PlanComprasController@solicitarExistencias')->name('plandecompras.solicitar');
     Route::get('plancompras/excel', 'PlanComprasController@exportExcel')->name('plandecompras.excel.descargar');
     Route::get('plancompras/pdf', 'PlanComprasController@exportPdf')->name('plandecompras.pdf.descargar');
+    Route::get('plancompras/nuevo', 'PlanComprasController@agregarNuevo')->name('plandecompras.agregarNuevo');
+    Route::get('plancompras/resumen/', 'PlanComprasController@resumen')->name('plandecompras.resumen');
+    Route::get('plancompras/resumen/excel', 'PlanComprasController@resumenExcel')->name('plandecompras.resumen.excel');
+    Route::get('plancompras/resumen/pdf', 'PlanComprasController@resumenPdf')->name('plandecompras.resumen.pdf');
     
 
 

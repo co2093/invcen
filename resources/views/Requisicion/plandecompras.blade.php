@@ -73,7 +73,7 @@
                 <strong>
                     Centro de Investigaciones y Desarrollo en Salud<br>
                     Universidad de El Salvador<br>
-                    Plan de compras<br>
+                    Solicitudes<br>
                 </strong>
             </div>
         </td>

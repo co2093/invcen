@@ -11,6 +11,13 @@
 		</div>
 		<div class="panel-body">
 
+
+    <div>
+        <a href="#" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
+        <a href="#" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
+    </div>
+
+
     <div class="panel-body table-responsive ">
 
         <table class="table table-hover table-striped table-bordered table-condensed" id="TablaRequisicion">

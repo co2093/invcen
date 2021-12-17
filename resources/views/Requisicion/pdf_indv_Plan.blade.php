@@ -84,7 +84,7 @@
     
 </table>
 
-    <h3>Plan de compras: <i style="color: #34142c">{{$requisicion->departamento['name']}}</i></h3>
+    <h3>Solicitudes de: <i style="color: #34142c">{{$requisicion->departamento['name']}}</i></h3>
     <h3>Fecha de Solicitud: <strong style="color: #5f2434">{{$requisicion->getFechaSolicitud()}}</strong></h3>
     <h3>Orden requisici&oacute;n nº: <strong style="color: #5f2434">{{$requisicion->ordenrequisicion}}</strong></h3>
     <h3>Solicitud: <strong style="color: #5f2434">{{$requisicion->getNumero()}}</strong></h3>
