@@ -464,7 +464,18 @@ class RequisicionController extends Controller
 
         DB::table('periodo')->where('periodo_id',1)->update(['estado' => $nuevoEstado]);
 
-        flash('Periodo de solicitudes actualizado exitosamente', 'success');
+        if($request->input('periodoEstado') == "1"){
+
+            flash('Plan de compras habilitado exitosamente', 'success');
+
+
+        }else if ($request->input('periodoEstado') == "0") {
+
+            flash('Plan de compras deshabilitado exitosamente', 'success');
+
+        }
+
+
         return redirect()->route('plandecompras.habilitar');
 
         

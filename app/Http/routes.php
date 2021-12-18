@@ -45,8 +45,7 @@ Route::group(['middleware' => ['auth','admin_financiero','depto','admin_bodega',
     Route::get('register','UsersController@getRegister');
     Route::post('register','UsersController@postRegister');
     Route::get('usuario/create/{id}','UsersController@create')->name('usuario-departamento');
-    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
-    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+
 
 
 });
@@ -175,14 +174,7 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
         'uses'=>'ArticuloController@getReactivosAsignados'
     ]);
 
-    //Ver resumen de requisiciones
-    Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
 
-    //Descargar excel
-    Route::get('plandecompras-excel', 'RequisicionController@exportExcel')->name('plandecompras.excel');
-
-    //Descargar pdf
-    Route::get('plandecompras-pdf', 'RequisicionController@exportPdf')->name('plandecompras.pdf');
 
 });
 
@@ -279,9 +271,7 @@ Route::Group(['middleware'=>['admin','admin_financiero','admin_bodega','equipo']
         Route::get('requisicion/volvereditar/{cod}',['as'=>'editar-confirm','uses'=>'RequisicionController@editarConfirm']);
         Route::post('requisicion/editar/{cod}',['as'=>'volver-editar','uses'=>'RequisicionController@volverEditar']);
 
-        Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
-        Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
-        Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+       
 
 
 
@@ -303,6 +293,18 @@ Route::Group(['middleware'=>['admin','depto','equipo']], function (){
 
    //Ruta para aprobar la requisicion
     Route::put('requisicion/detalle/aprobar/{id}','DetalleRequisicionController@aprobar')->name('requisicion.detalle.aprobar');
+
+    //Ver resumen de requisiciones
+    Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
+
+    //Descargar excel
+    Route::get('plandecompras-excel', 'RequisicionController@exportExcel')->name('plandecompras.excel');
+
+    //Descargar pdf
+    Route::get('plandecompras-pdf', 'RequisicionController@exportPdf')->name('plandecompras.pdf');
+
+    Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
+
 
 });
 
@@ -426,10 +428,23 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
 
 
 /*========================================================================================
- * RUTAS PARA EL PLAN DE COMPRAS
+ * RUTAS PARA EL ADMINISTRADOR DEL SISTEMA Y EL ADMINISTRADOR FINANCIERO
  =========================================================================================*/
 
 
+
+Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], function (){
+
+    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
+    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+
+
+
+});
+
+/*========================================================================================
+ * RUTAS PARA EL PLAN DE COMPRAS (Todos los usuarios)
+ =========================================================================================*/
 
     Route::get('plancompras','PlanComprasController@index')->name('plan.index');
     Route::get('plancompras/consultar/productos','PlanComprasController@consultarProductos')->name('plandecompras.productos');
