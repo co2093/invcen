@@ -16,26 +16,54 @@ class PlanComprasController extends Controller
 
     public function index(){
             
-        $planDelUsuario = DB::table('plan_compras')
-        ->where('user_id', '=', Auth::user()->id)
-        ->where('estado', '=', "Pendiente")
-        ->get();
-        
-        return view('plandecompras.index', compact('planDelUsuario'));
-        
+        $periodo = DB::table('periodo')->first();
+
+        //dd($periodo);
+
+        if($periodo->estado==1){
+            $planDelUsuario = DB::table('plan_compras')
+            ->where('user_id', '=', Auth::user()->id)
+            ->where('estado', '=', "Pendiente")
+            ->get();
+            
+            return view('plandecompras.index', compact('planDelUsuario'));
+        }else{
+
+            return redirect()->route('plandecompras.error');
+        }
+                
     }
 
 
     public function consultarProductos(){
+
+        $periodo = DB::table('periodo')->first();
+
+        if($periodo->estado==1){
+
         $articulos = Articulo::all();
 
         return view('plandecompras.consultarproducto', compact('articulos'));
+
+        }else{
+
+            return redirect()->route('plandecompras.error');
+        }
     }    
 
 
     public function agregarNuevo(){
 
+        $periodo = DB::table('periodo')->first();
+
+        if($periodo->estado==1){
+
         return view('plandecompras.agregarproducto');
+
+        }else{
+
+            return redirect()->route('plandecompras.error');
+        }
 
     }
 
@@ -75,11 +103,22 @@ class PlanComprasController extends Controller
 
     public function editProduct($idProduct){
 
+        $periodo = DB::table('periodo')->first();
+
+        if($periodo->estado==1){
+
+
+
         $product = DB::table('plan_compras')
         ->where('id', '=', $idProduct)
         ->first();
 
         return view('plandecompras.edit', compact('product'));
+
+        }else{
+
+            return redirect()->route('plandecompras.error');
+        }
 
     }
 
@@ -114,12 +153,21 @@ class PlanComprasController extends Controller
 
     public function solicitarExistencias($idProduct){
 
+        $periodo = DB::table('periodo')->first();
+
+        if($periodo->estado==1){
+
 
         $product = DB::table('articulo')
         ->where('codigo_articulo', '=', $idProduct)
         ->first();
 
         return view('plandecompras.solicitarexistencias', compact('product'));
+
+        }else{
+
+            return redirect()->route('plandecompras.error');
+        }
     }
 
     
@@ -275,6 +323,10 @@ class PlanComprasController extends Controller
 
 
 
+    }
+
+    public function error(){
+        return view('plandecompras.error');
     }
 
 }

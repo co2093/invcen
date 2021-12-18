@@ -281,6 +281,7 @@ Route::Group(['middleware'=>['admin','admin_financiero','admin_bodega','equipo']
 
         Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
         Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
+        Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
 
 
 
@@ -444,6 +445,7 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
     Route::get('plancompras/resumen/', 'PlanComprasController@resumen')->name('plandecompras.resumen');
     Route::get('plancompras/resumen/excel', 'PlanComprasController@resumenExcel')->name('plandecompras.resumen.excel');
     Route::get('plancompras/resumen/pdf', 'PlanComprasController@resumenPdf')->name('plandecompras.resumen.pdf');
+    Route::get('plancompras/error', 'PlanComprasController@error')->name('plandecompras.error');
     
 
 
