@@ -17,7 +17,7 @@
 <div class="panel panel-default">
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title text-center">
-				<strong>Agregar al plan de compras articulo {{$articulo->nombre_producto}}</strong>
+				<strong>Agregar al plan de compras articulo: {{$product->nombre_articulo}}</strong>
 			</h4>
 		</div>
 
@@ -29,7 +29,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
-					<input type="text" name="nombre_producto" id="nombre_producto" value="{{$product->nombre_articulo}}" class="form-control">
+					<input type="text" name="nombre_producto" id="nombre_producto" value="{{$product->nombre_articulo}}" class="form-control" readonly="readonly">
 				</div>
 				</div>
 

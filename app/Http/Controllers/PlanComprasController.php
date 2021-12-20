@@ -264,6 +264,7 @@ class PlanComprasController extends Controller
 
 
             $excel->sheet('plandecompras', function($sheet) use($planDelUsuario) {
+
                 $sheet->row(3, ['', 'Cuadro de plan de compras'
                 ]);
                 $sheet->row(6, [
@@ -271,7 +272,7 @@ class PlanComprasController extends Controller
                 ]);
 
 
-                foreach($planDelUsuario as $index => $s) {                    
+                foreach($planDelUsuario as $index => $s) {
                        $sheet->row($index+7, [
                         $s->cantidad, $s->nombre_producto, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,$s->proveedor,$s->cotizacion
                     ]); 

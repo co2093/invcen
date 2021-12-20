@@ -66,7 +66,7 @@ class ArticuloController extends Controller
 
             try 
             {           
-                $articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();         
+                $articulos = Articulo::orderBy('id_especifico','asc')->get();         
                 
                 return view('articulos.index', ['articulos' => $articulos]);
             }catch (Exception $ex){
@@ -74,12 +74,7 @@ class ArticuloController extends Controller
             }
         
     }
-     public function ajax(){
-        $especificos = Especifico::all();
-        $categorias = $especificos->sortBy('titulo_especifico')->pluck('titulo_especifico')->unique();
-        return view('articulos.index', compact('categorias'));
 
-     }
 
     public function create()
     {
