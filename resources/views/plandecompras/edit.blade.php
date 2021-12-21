@@ -24,6 +24,25 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
+					<label>Categoría</label>
+
+					<select name="categoria" id="categoria" class="form-control">
+							<option value="{{$product->categoria}}">{{$product->categoria}}</option>
+						@foreach($categorias as $c)
+						@if($c->titulo_especifico!=$product->categoria)
+							<option value="{{$c->titulo_especifico}}">{{$c->titulo_especifico}}</option>
+						@endif
+						@endforeach
+
+					</select>
+
+
+				</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
 					<label>Especificaciones</label>
 					<input type="text" name="especificaciones" id="especificaciones" value="{{$product->especificaciones}}" class="form-control">
 				</div>

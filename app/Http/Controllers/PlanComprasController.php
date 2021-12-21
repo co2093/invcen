@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use sig\Http\Requests;
 use DB;
 use sig\Models\Articulo;
+use sig\Models\Especifico;
 use Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use TCPDF;
+use Carbon\Carbon;
 
 class PlanComprasController extends Controller
 {
@@ -55,10 +57,11 @@ class PlanComprasController extends Controller
     public function agregarNuevo(){
 
         $periodo = DB::table('periodo')->first();
+        $categorias = Especifico::all();
 
         if($periodo->estado==1){
 
-        return view('plandecompras.agregarproducto');
+        return view('plandecompras.agregarproducto', compact('categorias'));
 
         }else{
 
@@ -69,9 +72,34 @@ class PlanComprasController extends Controller
 
     public function store(Request $request){
 
-        DB::table('plan_compras')->where('nombre_producto', '=', $request->input('nombre_producto'))->first();
+        $e = DB::table('plan_compras')->where('nombre_producto', '=', $request->input('nombre_producto'))
 
+        ->get();
 
+        
+
+        if($e){
+
+        $fecha = Carbon::now();
+
+        $request2 = array(
+            $request->input('cantidad'), //0
+            $request->input('nombre_producto'),  //1
+            $request->input('especificaciones'),  //2
+            $request->input('precio'),  //3
+            $request->input('proveedor'),  //4
+            $request->input('cotizacion'), //5
+            $request->input('user_id'),  //6
+            $request->input('categoria'),  //7
+            $fecha,  //8
+            'Pendiente' //9
+        );
+
+        return view('plandecompras.revision', compact('e', 'request2'));
+
+        }else{
+
+        $fecha = Carbon::now();
 
         
 
@@ -83,11 +111,17 @@ class PlanComprasController extends Controller
             'proveedor' => $request->input('proveedor'),
             'cotizacion' => $request->input('cotizacion'),
             'user_id' => $request->input('user_id'),
+            'categoria' => $request->input('categoria'),
+            'fecha' => $fecha,
             'estado' => 'Pendiente' 
         ]);
 
         flash('Producto agregado al plan de compras exitosamente', 'success');
         return redirect()->route('plan.index');
+
+        }
+
+
 
     }
 
@@ -104,6 +138,8 @@ class PlanComprasController extends Controller
     public function editProduct($idProduct){
 
         $periodo = DB::table('periodo')->first();
+        $categorias = Especifico::all();
+
 
         if($periodo->estado==1){
 
@@ -113,7 +149,7 @@ class PlanComprasController extends Controller
         ->where('id', '=', $idProduct)
         ->first();
 
-        return view('plandecompras.edit', compact('product'));
+        return view('plandecompras.edit', compact('product', 'categorias'));
 
         }else{
 
@@ -125,6 +161,9 @@ class PlanComprasController extends Controller
 
     public function updateProduct(Request $request){
 
+        $fecha = Carbon::now();
+
+
         DB::table('plan_compras')
         ->where('id', $request->input('idProduct'))
         ->update([
@@ -133,6 +172,8 @@ class PlanComprasController extends Controller
             'especificaciones'=>$request->input('especificaciones'),
             'precio_unitario'=>$request->input('precio'),
             'proveedor'=>$request->input('proveedor'),
+            'categoria' => $request->input('categoria'),
+            'fecha' => $fecha,
             'cotizacion'=>$request->input('cotizacion')
         ]);
 
@@ -157,10 +198,10 @@ class PlanComprasController extends Controller
 
         if($periodo->estado==1){
 
-
-        $product = DB::table('articulo')
-        ->where('codigo_articulo', '=', $idProduct)
-        ->first();
+        $product = Articulo::findOrFail($idProduct);    
+      //  $product = DB::table('articulo')
+      //  ->where('codigo_articulo', '=', $idProduct)
+      //  ->first();
 
         return view('plandecompras.solicitarexistencias', compact('product'));
 
@@ -328,6 +369,37 @@ class PlanComprasController extends Controller
 
     public function error(){
         return view('plandecompras.error');
+    }
+
+    public function confirmar(Request $request){
+
+        $fecha = Carbon::now();
+
+        $p = $request->input('precio');
+
+        if ($p == "") {
+            // code...
+            $p = 0.0;
+        }
+
+
+        
+        DB::table('plan_compras')->insert([
+            'cantidad' => $request->input('cantidad'),
+            'nombre_producto' => $request->input('nombre_producto'),
+            'especificaciones' => $request->input('especificaciones'),
+            'precio_unitario' => $p,
+            'proveedor' => $request->input('proveedor'),
+            'cotizacion' => $request->input('cotizacion'),
+            'user_id' => $request->input('user_id'),
+            'categoria' => $request->input('categoria'),
+            'fecha' => $fecha,
+            'estado' => $request->input('estado') 
+        ]);
+
+        flash('Producto agregado al plan de compras exitosamente', 'success');
+        return redirect()->route('plan.index');
+
     }
 
 }

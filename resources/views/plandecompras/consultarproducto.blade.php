@@ -10,16 +10,16 @@
 
 @section('content')
 
-<a href="javascript:window.history.back();" class="btn btn-primary mov" title="Ver requisicion">Ver plan de compras</a>
+<a href="{{route('plan.index')}}" class="btn btn-primary mov" title="Ver requisicion">Ver plan de compras</a>
 <div class="panel-body table-responsive">
 
 
 <table class="table table-hover table-striped table-bordered table-condensed" id="TablaProd">
 <thead>
     <tr>
-        <th>Espec&iacute;fico</th>
         <th>C&oacute;d. prod.</th>
         <th>Producto</th>
+        <th>Categoría</th>
         <th>Unidad de Medida</th>
         <th>Existencias en bodega</th>
         <th>Agregar</th>
@@ -30,9 +30,9 @@
 @foreach ($articulos as $a) 
 
     <tr>
-        <td>{{$a->id_especifico}}</td>
         <td>{{$a->getCodigoArticuloReporte()}}</td>
-        <td>{{$a->nombre_articulo}}</td>        
+        <td>{{$a->nombre_articulo}}</td>
+        <td>{{$a->especifico->titulo_especifico}}</td>        
         <td>{{$a->unidad->nombre_unidadmedida}}</td>
         <td>{{$a->existencia}}</td>       
         <td >

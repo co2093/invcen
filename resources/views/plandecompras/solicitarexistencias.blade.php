@@ -35,8 +35,15 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
+					<label>Categoría</label>
+					<input type="text" name="categoria" id="categoria" value="{{$product->especifico->titulo_especifico}}" class="form-control" readonly="readonly">
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
 					<label>Especificaciones</label>
-					<input type="text" name="especificaciones" id="especificaciones" class="form-control">
+					<input type="text" name="especificaciones" id="" class="form-control">
 				</div>
 				</div>
 
@@ -50,7 +57,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio unitario</label>
-					<input type="number" step="any" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control" readonly ="readonly">
 				</div>
 				</div>
 

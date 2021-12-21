@@ -18,14 +18,30 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
-					<input type="text" name="nombre_producto" id="nombre_producto" placeholder="Nombre del producto" class="form-control" required>
+					<input type="text" name="nombre_producto" id="nombre_producto" placeholder="" class="form-control" required>
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Categoría</label>
+
+					<select name="categoria" id="categoria" class="form-control">
+
+						@foreach($categorias as $c)
+							<option value="{{$c->titulo_especifico}}">{{$c->titulo_especifico}}</option>
+						@endforeach
+
+					</select>
+
+
 				</div>
 				</div>
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Especificaciones</label>
-					<input type="text" name="especificaciones" id="especificaciones" placeholder="Especificaciones" class="form-control">
+					<input type="text" name="especificaciones" id="especificaciones" placeholder="" class="form-control">
 				</div>
 				</div>
 
@@ -46,7 +62,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Proveedor</label>
-					<input type="text" name="proveedor" id="proveedor" placeholder="Proveedor" class="form-control">
+					<input type="text" name="proveedor" id="proveedor" placeholder="" class="form-control">
 				</div>
 				</div>
 

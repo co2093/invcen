@@ -461,6 +461,7 @@ Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], functio
     Route::get('plancompras/resumen/excel', 'PlanComprasController@resumenExcel')->name('plandecompras.resumen.excel');
     Route::get('plancompras/resumen/pdf', 'PlanComprasController@resumenPdf')->name('plandecompras.resumen.pdf');
     Route::get('plancompras/error', 'PlanComprasController@error')->name('plandecompras.error');
+    Route::post('plancompras/confirmar', 'PlanComprasController@confirmar')->name('plandecompras.confirmar');
     
 
 
