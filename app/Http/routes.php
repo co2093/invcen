@@ -463,6 +463,10 @@ Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], functio
     Route::get('plancompras/error', 'PlanComprasController@error')->name('plandecompras.error');
     Route::post('plancompras/confirmar', 'PlanComprasController@confirmar')->name('plandecompras.confirmar');
     
+    Route::post('plancompras/buscar/', 'PlanComprasController@buscar')->name('plandecompras.filter');
+    Route::get('plancompras/pdf/{categoria}', 'PlanComprasController@pdfCategoria')->name('plandecompras.pdf.categoria');
+    Route::get('plancompras/excel/{categoria}', 'PlanComprasController@excelCategoria')->name('plandecompras.excel.categoria');
+    
 
 
 

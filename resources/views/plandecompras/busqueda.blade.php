@@ -3,54 +3,18 @@
 @section('content')
 
 
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <h4 class="panel-title"><strong>Buscar por categoría</strong></h4>
-    </div>
-    <div class="panel-body">
-
-    <form method="POST" action="{{route('plandecompras.filter')}}">
-        {{ csrf_field() }}
-
-        <div class="form-group">
-            <div class="col-xs-offset-3">
-                <label>Categoría</label>
-
-                    <select name="categoria" id="categoria" class="form-control">
-
-                        @foreach($categorias as $c)
-                            <option value="{{$c->id}}">{{$c->titulo_especifico}}</option>
-                        @endforeach
-
-                    </select>
-
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-xs-offset-3">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </div>
-        </div>
-
-     </form>   
-
-    </div>
-</div>
-
 
 <div class="panel panel-default">
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
-				<strong>Resumen del plan de compras general</strong>
+				<strong>Resumen del plan de compras de la categoría: {{$categoria->titulo_especifico}}</strong>
 			</h4>
 		</div>
 		<div class="panel-body">
 
     <div>
-        <a href="{{route('plandecompras.resumen.excel')}}" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
-        <a href="{{route('plandecompras.resumen.pdf')}}" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
+        <a href="{{route('plandecompras.excel.categoria', $categoria->id)}}" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
+        <a href="{{route('plandecompras.pdf.categoria', $categoria->id)}}" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
     </div>
 
 
@@ -76,7 +40,7 @@
                     <tr>
                         <td>{{$a->cantidad}}</td>
                         <td>{{$a->nombre_producto}}</td>
-                        <td>{{$a->categoria}}</td>
+                        <td>{{$categoria->titulo_especifico}}</td>
                         <td>{{$a->especificaciones}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>

@@ -214,7 +214,10 @@ class PlanComprasController extends Controller
     
     public function exportExcel(){
 
-        Excel::create('plandecompras', function($excel) {
+        $fecha = Carbon::now();
+
+
+        Excel::create('plan de compras '.$fecha, function($excel) {
 
         $planDelUsuario = DB::table('plan_compras')
         ->where('user_id', '=', Auth::user()->id)
@@ -289,14 +292,20 @@ class PlanComprasController extends Controller
         ->groupBy('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
         ->get();
 
+        $categorias = Especifico::all();
+
         
         
-        return view('plandecompras.resumen', compact('planDelUsuario'));
+        return view('plandecompras.resumen', compact('planDelUsuario', 'categorias'));
     }
 
     public function resumenExcel(){
 
-        Excel::create('plandecompras', function($excel) {
+
+        $fecha = Carbon::now();
+
+
+        Excel::create('plan de compras '.$fecha, function($excel) {
 
         $planDelUsuario = DB::table('plan_compras')
         ->select('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
@@ -400,6 +409,105 @@ class PlanComprasController extends Controller
         flash('Producto agregado al plan de compras exitosamente', 'success');
         return redirect()->route('plan.index');
 
+    }
+
+    public function buscar(Request $request){
+
+        $categoria = DB::table('especificos')->where('id', $request->input('categoria'))->first();
+        //dd($categoria);
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->where('categoria', $categoria->titulo_especifico)
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->get();
+
+
+        return view ('plandecompras.busqueda', compact('categoria', 'planDelUsuario'));
+    }
+
+    public function pdfCategoria($categoria){
+
+        $categoria = DB::table('especificos')->where('id', $categoria)->first();
+
+        
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->where('categoria', $categoria->titulo_especifico)
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->get();
+
+        $view = \View::make('plandecompras.planpdf', ['solicitudes' => $planDelUsuario]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Plan de Compras');
+                    $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('L');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                    $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);
+
+
+                    $pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'plandecompras.pdf';
+                    $pdf->Output($nombre);
+    }
+
+    public function excelCategoria($categoria){
+
+
+        $fecha = Carbon::now();
+
+
+        $categoria = DB::table('especificos')->where('id', $categoria)->first();
+
+        //dd($categoria);
+
+        Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($categoria) {
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->where('categoria', $categoria->titulo_especifico)
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->get();
+
+        //dd($planDelUsuario);
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario) {
+
+                $sheet->row(3, ['', 'Cuadro de plan de compras'
+                ]);
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                ]);
+
+
+                foreach($planDelUsuario as $index => $s) {
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,$s->proveedor,$s->cotizacion
+                    ]); 
+                }
+
+
+
+            });
+
+        })->export('xlsx');
     }
 
 }
