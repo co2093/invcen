@@ -44,7 +44,9 @@ class IngresoController extends Controller
     public function create($codProducto){
         try {
             $proveedores = Provider::orderBy('nombre', 'asc')->get();
-            $articulo = Articulo::findOrFail($codProducto);           
+            $articulo = Articulo::findOrFail($codProducto); 
+            //traer el ingreso correspondiente al           
+            //$transaccion = Trasaccion::find($articulo);
 
             $data['proveedores'] = $proveedores;
             $data['articulo'] = $articulo;
@@ -94,11 +96,17 @@ class IngresoController extends Controller
                 $existencia_anterior = $articulo->existencia;
                 //Existencia nueva
                 $nuevaExistencia = $request->input('cantidad') + $existencia_anterior;
-                //precio nuevo
-                $nuevoPrecio = round((($precio_anterior * $existencia_anterior) + ($request->input('cantidad') * $request->input('precio'))) / $nuevaExistencia,4);
+                //precio total por cantidad
+                $nuevoPrecio = round(($request->input('cantidad') * $request->input('precio')),2);
+                // precio individual ingresado
+                $precioIndividual = round($request->input('precio'), 2);
+
+                //monto total acumulado
+                $montoTotal = round((($precio_anterior * $existencia_anterior) + ($request->input('cantidad') * $request->input('precio'))), 2);
 
                 $articulo->existencia = $nuevaExistencia;
-                $articulo->precio_unitario = $nuevoPrecio;
+                $articulo->precio_unitario = $precioIndividual;
+                $articulo->monto = $montoTotal;
 
                 $transaccion = new Transaccion();
                 $transaccion->cantidad = $request->input('cantidad');
