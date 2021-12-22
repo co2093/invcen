@@ -63,6 +63,29 @@ Route::group(['middleware'=>['auth']],function(){
 
     Route::get('user/{id}',['as'=>'usuario-eliminar','uses'=>'UsersController@mostrar']);
     Route::get('{id}/edit','UsersController@getEdit');
+
+/*========================================================================================
+* RUTAS PARA EL PLAN DE COMPRAS (Todos los usuarios)
+=========================================================================================*/
+
+    Route::get('plancompras','PlanComprasController@index')->name('plan.index');
+    Route::get('plancompras/consultar/productos','PlanComprasController@consultarProductos')->name('plandecompras.productos');
+    Route::post('plancompras/nuevo/producto', 'PlanComprasController@store')->name('plandecompras.store');
+    Route::get('plancompras/delete/producto/{idProduct}', 'PlanComprasController@deleteProduct')->name('plandecompras.deleteProduct');
+    Route::get('plancompras/edit/producto/{idProduct}', 'PlanComprasController@editProduct')->name('plandecompras.edit');
+    Route::post('plancompras/update/producto', 'PlanComprasController@updateProduct')->name('plandecompras.update');
+    Route::get('plancompras/historial', 'PlanComprasController@historial')->name('plandecompras.historial');
+    Route::get('plancompras/solicitar/existencias/{idProduct}', 'PlanComprasController@solicitarExistencias')->name('plandecompras.solicitar');
+    Route::get('plancompras/excel', 'PlanComprasController@exportExcel')->name('plandecompras.excel.descargar');
+    Route::get('plancompras/pdf', 'PlanComprasController@exportPdf')->name('plandecompras.pdf.descargar');
+    Route::get('plancompras/nuevo', 'PlanComprasController@agregarNuevo')->name('plandecompras.agregarNuevo');
+    Route::get('plancompras/resumen/', 'PlanComprasController@resumen')->name('plandecompras.resumen');
+    Route::get('plancompras/resumen/excel', 'PlanComprasController@resumenExcel')->name('plandecompras.resumen.excel');
+    Route::get('plancompras/resumen/pdf', 'PlanComprasController@resumenPdf')->name('plandecompras.resumen.pdf');
+    Route::get('plancompras/error', 'PlanComprasController@error')->name('plandecompras.error');
+    Route::post('plancompras/confirmar', 'PlanComprasController@confirmar')->name('plandecompras.confirmar');
+
+
 });
 
 /*========================================================================================
@@ -439,33 +462,17 @@ Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], functio
     Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
 
 
-
-});
-
-/*========================================================================================
- * RUTAS PARA EL PLAN DE COMPRAS (Todos los usuarios)
- =========================================================================================*/
-
-    Route::get('plancompras','PlanComprasController@index')->name('plan.index');
-    Route::get('plancompras/consultar/productos','PlanComprasController@consultarProductos')->name('plandecompras.productos');
-    Route::post('plancompras/nuevo/producto', 'PlanComprasController@store')->name('plandecompras.store');
-    Route::get('plancompras/delete/producto/{idProduct}', 'PlanComprasController@deleteProduct')->name('plandecompras.deleteProduct');
-    Route::get('plancompras/edit/producto/{idProduct}', 'PlanComprasController@editProduct')->name('plandecompras.edit');
-    Route::post('plancompras/update/producto', 'PlanComprasController@updateProduct')->name('plandecompras.update');
-    Route::get('plancompras/historial', 'PlanComprasController@historial')->name('plandecompras.historial');
-    Route::get('plancompras/solicitar/existencias/{idProduct}', 'PlanComprasController@solicitarExistencias')->name('plandecompras.solicitar');
-    Route::get('plancompras/excel', 'PlanComprasController@exportExcel')->name('plandecompras.excel.descargar');
-    Route::get('plancompras/pdf', 'PlanComprasController@exportPdf')->name('plandecompras.pdf.descargar');
-    Route::get('plancompras/nuevo', 'PlanComprasController@agregarNuevo')->name('plandecompras.agregarNuevo');
-    Route::get('plancompras/resumen/', 'PlanComprasController@resumen')->name('plandecompras.resumen');
-    Route::get('plancompras/resumen/excel', 'PlanComprasController@resumenExcel')->name('plandecompras.resumen.excel');
-    Route::get('plancompras/resumen/pdf', 'PlanComprasController@resumenPdf')->name('plandecompras.resumen.pdf');
-    Route::get('plancompras/error', 'PlanComprasController@error')->name('plandecompras.error');
-    Route::post('plancompras/confirmar', 'PlanComprasController@confirmar')->name('plandecompras.confirmar');
-    
     Route::post('plancompras/buscar/', 'PlanComprasController@buscar')->name('plandecompras.filter');
     Route::get('plancompras/pdf/{categoria}', 'PlanComprasController@pdfCategoria')->name('plandecompras.pdf.categoria');
     Route::get('plancompras/excel/{categoria}', 'PlanComprasController@excelCategoria')->name('plandecompras.excel.categoria');
+
+
+
+});
+
+
+    
+
     
 
 
