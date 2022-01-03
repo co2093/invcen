@@ -19,8 +19,8 @@
                 <strong>C&oacute;d. prod: </strong>{{$articulo->getCodigoArticuloReporte()}}<br/>
                 <strong>Producto: </strong>{{$articulo->nombre_articulo}}<br/>
                 <Strong>Existencia: </strong>{{$articulo->existencia}}<br/>
-                <strong>Precio: </strong>{{number_format($articulo->precio_unitario,2,'.','')}}<br/>
-                <strong>Monto: </strong>{{number_format($articulo->monto(),2,'.','')}}
+                <strong>Precio Actual : </strong> ${{number_format($articulo->precio_unitario,2,'.','')}}<br/>
+                <strong>Monto: </strong>${{$ingreso->num_factura}}
                 <hr/>
             </div>
 
