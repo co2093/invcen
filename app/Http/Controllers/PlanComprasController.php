@@ -288,8 +288,8 @@ class PlanComprasController extends Controller
     public function resumen(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
-        ->groupBy('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
         ->get();
 
         $categorias = Especifico::all();
