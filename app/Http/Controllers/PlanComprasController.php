@@ -58,10 +58,11 @@ class PlanComprasController extends Controller
 
         $periodo = DB::table('periodo')->first();
         $categorias = Especifico::all();
+        $proveedores = DB::table('providers')->get();
 
         if($periodo->estado==1){
 
-        return view('plandecompras.agregarproducto', compact('categorias'));
+        return view('plandecompras.agregarproducto', compact('categorias', 'proveedores'));
 
         }else{
 
@@ -139,6 +140,8 @@ class PlanComprasController extends Controller
 
         $periodo = DB::table('periodo')->first();
         $categorias = Especifico::all();
+        $proveedores = DB::table('providers')->get();
+
 
 
         if($periodo->estado==1){
@@ -149,7 +152,7 @@ class PlanComprasController extends Controller
         ->where('id', '=', $idProduct)
         ->first();
 
-        return view('plandecompras.edit', compact('product', 'categorias'));
+        return view('plandecompras.edit', compact('product', 'categorias', 'proveedores'));
 
         }else{
 
@@ -195,6 +198,8 @@ class PlanComprasController extends Controller
     public function solicitarExistencias($idProduct){
 
         $periodo = DB::table('periodo')->first();
+        $proveedores = DB::table('providers')->get();
+
 
         if($periodo->estado==1){
 
@@ -203,7 +208,7 @@ class PlanComprasController extends Controller
       //  ->where('codigo_articulo', '=', $idProduct)
       //  ->first();
 
-        return view('plandecompras.solicitarexistencias', compact('product'));
+        return view('plandecompras.solicitarexistencias', compact('product', 'proveedores'));
 
         }else{
 

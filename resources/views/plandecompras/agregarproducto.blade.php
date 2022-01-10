@@ -62,7 +62,14 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Proveedor</label>
-					<input type="text" name="proveedor" id="proveedor" placeholder="" class="form-control">
+					
+					<select name="categoria" id="categoria" class="form-control">
+
+						@foreach($proveedores as $c)
+							<option value="{{$c->titulo_especifico}}">{{$c->nombre}}</option>
+						@endforeach
+
+					</select>
 				</div>
 				</div>
 
