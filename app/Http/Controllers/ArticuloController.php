@@ -262,4 +262,17 @@ class ArticuloController extends Controller
         
         return $reactivosAsignados;
     }
+
+    public function calculoMonto($codigoArticulo){
+        
+        $monto = DB::select("sum(montoTotal) as MT"
+            (DB::raw("SELECT pre_unit_ant, exis_ant, cantidad, pre_unit, sum((cantidad*pre_unit)) as montoTotal
+                FROM inventario.articulo inner join inventario.transaccion on articulo.codigo_articulo = transaccion.codigo_articulo
+                inner join inventario.ingreso on transaccion.id_transaccion=ingreso.id_ingreso
+                where articulo.codigo_articulo = '$codigoArticulo'
+                group by pre_unit_ant, exis_ant, cantidad, pre_unit) as MON"
+            )))
+            ->get();
+
+    }
 }

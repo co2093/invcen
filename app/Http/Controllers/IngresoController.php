@@ -40,7 +40,20 @@ class IngresoController extends Controller
         }
     }
 
-    //Agrega existencia a un prouducto
+    public function calculoMonto($codProducto){
+        
+        $monto = DB::select('sum(montoTotal) as MT',
+            (DB::raw("SELECT pre_unit_ant, exis_ant, cantidad, pre_unit, sum((cantidad*pre_unit)) as montoTotal
+                FROM inventario.articulo inner join inventario.transaccion on articulo.codigo_articulo = transaccion.codigo_articulo
+                inner join inventario.ingreso on transaccion.id_transaccion=ingreso.id_ingreso
+                where articulo.codigo_articulo = $codProducto
+                group by pre_unit_ant, exis_ant, cantidad, pre_unit) as MON"
+            )))
+            ->get();
+        dd($monto);
+            return view('ingresos.addExistencia', ['monto' => $monto]);
+    }
+
     public function create($codProducto){
         try {
             $proveedores = Provider::orderBy('nombre', 'asc')->get();
@@ -102,11 +115,11 @@ class IngresoController extends Controller
                 $precioIndividual = round($request->input('precio'), 2);
 
                 //monto total acumulado
-                $montoTotal = round((($precio_anterior * $existencia_anterior) + ($request->input('cantidad') * $request->input('precio'))), 2);
+                //$montoTotal = round((($precio_anterior * $existencia_anterior) + ($request->input('cantidad') * $request->input('precio'))), 2);
 
                 $articulo->existencia = $nuevaExistencia;
                 $articulo->precio_unitario = $precioIndividual;
-                $articulo->monto = $montoTotal;
+                //$articulo->monto = $montoTotal;
 
                 $transaccion = new Transaccion();
                 $transaccion->cantidad = $request->input('cantidad');
