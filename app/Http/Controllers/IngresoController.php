@@ -64,7 +64,20 @@ class IngresoController extends Controller
             $data['proveedores'] = $proveedores;
             $data['articulo'] = $articulo;
             
-            return view('ingresos.addExistencia', $data);
+            $montoTotal = DB::table('transaccion')
+
+            ->select(DB::raw('SUM(pre_unit*cantidad)'))
+
+            ->where('codigo_articulo','=',$articulo->codigo_articulo)
+
+            ->groupBy('codigo_articulo')
+
+            ->first();
+
+            //dd($montoTotal->sum);
+
+
+            return view('ingresos.addExistencia', compact('proveedores', 'articulo', 'montoTotal'));
         }catch (Exception $ex){
             return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
         }
