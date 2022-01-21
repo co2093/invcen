@@ -23,7 +23,7 @@
 
 		<div class="panel-body">
 
-			<form method="POST" action="{{route('plandecompras.store')}}">
+			<form method="POST" action="{{route('plandecompras.store')}}" accept-charset="UTF-8" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="user_id" id="user_id" value="{{Auth::User()->id}}">
 				<div class="form-group">
@@ -79,7 +79,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">
 					<label>Cotización</label>
-					<input type="number" step="any" name="cotizacion" id="cotizacion" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+					<input type="file" name="cotizacion" id="cotizacion" class="form-control" >
 				</div>
 				</div>
 

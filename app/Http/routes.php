@@ -76,6 +76,8 @@ Route::group(['middleware'=>['auth']],function(){
     Route::post('plancompras/update/producto', 'PlanComprasController@updateProduct')->name('plandecompras.update');
     Route::get('plancompras/historial', 'PlanComprasController@historial')->name('plandecompras.historial');
     Route::get('plancompras/solicitar/existencias/{idProduct}', 'PlanComprasController@solicitarExistencias')->name('plandecompras.solicitar');
+    Route::get('/plancompras/{cotizacion}/','PlanComprasController@generate')->name('plandecompras.visualizar');
+    Route::get('/plancompras/delete/{cotizacion}/','PlanComprasController@deleteCot')->name('plandecompras.deleteCot');
     Route::get('plancompras/excel', 'PlanComprasController@exportExcel')->name('plandecompras.excel.descargar');
     Route::get('plancompras/pdf', 'PlanComprasController@exportPdf')->name('plandecompras.pdf.descargar');
     Route::get('plancompras/nuevo', 'PlanComprasController@agregarNuevo')->name('plandecompras.agregarNuevo');

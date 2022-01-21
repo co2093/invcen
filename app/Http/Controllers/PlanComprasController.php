@@ -11,6 +11,8 @@ use Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use TCPDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File; 
+
 
 class PlanComprasController extends Controller
 {
@@ -101,7 +103,32 @@ class PlanComprasController extends Controller
         }else{
 
         $fecha = Carbon::now();
+        
+        /*if($request->file('cotizacion')->isValid()){
+            $image_name = $request->hidden_name;
+            $destino = $request->file('cotizacion');
+            $image_name = rand().'.'.$destino->getClientOriginalExtension();
+            $destino->move(public_path('cotizacion'), $image_name);
+        }*/
+        
+            
 
+            if ($request->hasFile('cotizacion')) {
+
+                $file = $request->file('cotizacion');              
+                $nombreOriginal = $file->getClientOriginalName(); 
+                //$ext = $file->getClientoriginalExtension(); 
+                //$type = $file->getClientMimeType();    
+                //$filename = date('Y-m-d').'-'.uniqid().'.'.$ext;
+                 $newName = "cotizacion/".$nombreOriginal;
+                 $file->move(public_path('cotizacion/'), $nombreOriginal);
+                //$bool = \Storage::disk('local')->put($filename, \File::get($file));
+               // var_dump($bool);
+
+            }
+            else{
+                echo "Debes subir documento";
+            }
         
 
         DB::table('plan_compras')->insert([
@@ -110,7 +137,7 @@ class PlanComprasController extends Controller
             'especificaciones' => $request->input('especificaciones'),
             'precio_unitario' => $request->input('precio'),
             'proveedor' => $request->input('proveedor'),
-            'cotizacion' => $request->input('cotizacion'),
+            'cotizacion' => $nombreOriginal,
             'user_id' => $request->input('user_id'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
@@ -177,7 +204,7 @@ class PlanComprasController extends Controller
             'proveedor'=>$request->input('proveedor'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
-            'cotizacion'=>$request->input('cotizacion')
+            'cotizacion'=>$request->file('cotizacion')
         ]);
 
         flash('Producto editado exitosamente', 'info');
@@ -513,6 +540,30 @@ class PlanComprasController extends Controller
             });
 
         })->export('xlsx');
+    }
+
+    public function generate($cotizacion)
+    {
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+        return view('plandecompras.visualizar', $archivo);
+
+       // $arch = DB::table('plan_compras')->where('cotizacion', $cotizacion)->firstOrFail();
+
+       // $file = Storage::disk('local')->get($arch);
+       
+       
+    }
+
+    public function deleteCot($cotizacion){
+        //funcion para eliminar el archivo de la cotización
+        
+        //$arch = DB::table('plan_compras')->where('cotizacion', $cotizacion)->firstOrFail();
+        //ver la ruta del archivo
+        //$path = public_path($arch);
+        //dd($path);
+       
+        $path = public_path()."/cotizacion/".$cotizacion;
+        unlink($path); 
     }
 
 }
