@@ -197,6 +197,14 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
         'uses'=>'ArticuloController@getReactivosAsignados'
     ]);
 
+    Route::get('articulo/editar/existencia/{idProduct}', 'ArticuloController@editarExistencia')->name('articulo.editar.existencia');
+    Route::get('articulo/editar/precio/{idProduct}', 'ArticuloController@editarPrecio')->name('articulo.editar.precio');
+
+    Route::post('articulo/editar/existencia/', 'ArticuloController@editE')->name('articulo.editar.e');
+    Route::post('articulo/editar/precio/', 'ArticuloController@editP')->name('articulo.editar.p');
+
+
+
 
 
 });
