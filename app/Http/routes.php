@@ -464,22 +464,32 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
 
 
 
-Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], function (){
-
-    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
-    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+Route::group(['middleware' => ['auth','depto','equipo']], function (){
 
 
     Route::post('plancompras/buscar/', 'PlanComprasController@buscar')->name('plandecompras.filter');
     Route::get('plancompras/pdf/{categoria}', 'PlanComprasController@pdfCategoria')->name('plandecompras.pdf.categoria');
     Route::get('plancompras/excel/{categoria}', 'PlanComprasController@excelCategoria')->name('plandecompras.excel.categoria');
 
+   
 
 
-});
+});   
 
 
-    
+
+Route::group(['middleware' => ['auth','depto','equipo','admin_bodega']], function (){
+
+    Route::get('plancompras/finalizar/', 'PlanComprasController@finalizar')->name('plandecompras.finalizar');
+    Route::get('plancompras/finalizar/confirmar', 'PlanComprasController@finalizarconfirmado')->name('plandecompras.finalizar.confirmar');
+
+
+    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
+    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+
+
+
+});    
 
     
 

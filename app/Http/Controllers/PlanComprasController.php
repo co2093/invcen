@@ -293,8 +293,9 @@ class PlanComprasController extends Controller
     public function resumen(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
-        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
+        ->where('estado', '=', "Pendiente")
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario')
         ->get();
 
         $categorias = Especifico::all();
@@ -307,20 +308,22 @@ class PlanComprasController extends Controller
     public function resumenExcel(){
 
 
-        $fecha = Carbon::now();
+        $fecha = Carbon::now()->format('d-m-Y');
 
 
-        Excel::create('plan de compras '.$fecha, function($excel) {
+        Excel::create('plan de compras '.$fecha, function($excel) use($fecha) {
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
-        ->groupBy('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
+        ->where('estado', '=', "Pendiente")
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario')
         ->get();
 
 
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario) {
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha) {
 
-                $sheet->row(3, ['', 'Cuadro de plan de compras'
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Cuadro de plan de compras general'
                 ]);
                 $sheet->row(6, [
                     'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
@@ -344,8 +347,9 @@ class PlanComprasController extends Controller
     public function resumenPdf(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
-        ->groupBy('nombre_producto', 'especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
+        ->where('estado', '=', "Pendiente")
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario')
         ->get();
 
         $view = \View::make('plandecompras.planpdf', ['solicitudes' => $planDelUsuario]);
@@ -424,6 +428,7 @@ class PlanComprasController extends Controller
         $planDelUsuario = DB::table('plan_compras')
         ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
         ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
         ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
         ->get();
 
@@ -439,6 +444,7 @@ class PlanComprasController extends Controller
         $planDelUsuario = DB::table('plan_compras')
         ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
         ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
         ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
         ->get();
 
@@ -475,28 +481,30 @@ class PlanComprasController extends Controller
     public function excelCategoria($categoria){
 
 
-        $fecha = Carbon::now();
+        $fecha = Carbon::now()->format('d-m-Y');
 
 
         $categoria = DB::table('especificos')->where('id', $categoria)->first();
 
         //dd($categoria);
 
-        Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($categoria) {
+        Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($categoria, $fecha) {
 
         $planDelUsuario = DB::table('plan_compras')
         ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
         ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
         ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
         ->get();
 
         //dd($planDelUsuario);
 
 
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario) {
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $categoria, $fecha) {
 
-                $sheet->row(3, ['', 'Cuadro de plan de compras'
-                ]);
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Cuadro de plan de compras']);
+                $sheet->row(4, ['', 'Categoría', $categoria->titulo_especifico]);
                 $sheet->row(6, [
                     'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
                 ]);
@@ -513,6 +521,29 @@ class PlanComprasController extends Controller
             });
 
         })->export('xlsx');
+    }
+
+
+    public function finalizar(){
+
+
+        return view('plandecompras.finalizar');
+    }
+
+    public function finalizarconfirmado(){
+
+        
+        DB::table('plan_compras')
+        ->where('estado', "Pendiente")
+        ->update([
+            'estado'=>"Finalizado"
+        ]);
+
+
+
+        flash('Plan de compras reiniciado exitosamente', 'success');
+
+        return redirect()->route('plandecompras.resumen');
     }
 
 }

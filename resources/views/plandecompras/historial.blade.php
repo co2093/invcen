@@ -29,7 +29,6 @@
                 <th>Especificaciones</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
-                <th>Proveedor</th>
                 <th>Cotización</th>
                 <th>Estado</th>
             </tr>
@@ -44,7 +43,6 @@
                         <td>{{$a->especificaciones}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
-                        <td>{{$a->proveedor}}</td>
                         <td>$ {{round(($a->cotizacion),2)}} </td>
                         <td>{{$a->estado}}</td>
                     </tr>

@@ -57,6 +57,27 @@
             </div>
         </div>
     </div>
+
+        <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading text-center"><strong>Reiniciar plan de compras</strong></div>
+                <div class="panel-body text-center">                   
+                                <label class="control-label text-danger">Con esta acción se daría por finalizado el período de compras y se reiniciaría todo el plan de compras.</label> 
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4"><br>
+                                <a href="{{ route('plandecompras.finalizar') }}" class="btn btn-danger btn-block">REINICIAR</a>
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 
