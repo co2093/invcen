@@ -17,11 +17,8 @@
             <tr class="success">
                 <th>Cantidad</th>
                 <th>Nombre del producto</th>
-                <th>Especificaciones</th>
                 <th>Precio unitario</th>
                 <th>Costo total</th>
-                <th>Proveedor</th>
-                <th>Cotización</th>
             </tr>
             </thead>
             <tbody>
@@ -30,11 +27,9 @@
                 <tr>
                     <td>{{$s->cantidad}}</td>
                     <td>{{$s->nombre_articulo}}</td>
-                    <td>-</td>
                     <td>${{round($s->precio_unitario,2)}}</td>
                     <td>${{round($s->precio_unitario,2)*$s->cantidad}}</td>
-                    <td>-</td>
-                    <td>-</td>
+
                 </tr>
             @endforeach
 
