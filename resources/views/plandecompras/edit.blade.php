@@ -68,7 +68,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">
 					<label>Cotización</label>
-					<input type="number" step="any" name="cotizacion" id="cotizacion" value="{{$product->cotizacion}}" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+					<input type="file"  name="cotizacion" id="cotizacion" value="{{$product->cotizacion}}" class="form-control">
 				</div>
 				</div>
 
