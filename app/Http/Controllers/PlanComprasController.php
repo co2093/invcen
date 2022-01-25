@@ -11,7 +11,8 @@ use Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use TCPDF;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\File; 
+use Illuminate\Support\Facades\File;
+use Response;
 
 
 class PlanComprasController extends Controller
@@ -193,6 +194,14 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now();
 
+      
+
+            $file = $request->file('cotizacion');              
+            $nombreOriginal = $file->getClientOriginalName(); 
+            $newName = "cotizacion/".$nombreOriginal;
+            $file->move(public_path('cotizacion/'), $nombreOriginal);
+            
+
 
         DB::table('plan_compras')
         ->where('id', $request->input('idProduct'))
@@ -204,7 +213,7 @@ class PlanComprasController extends Controller
             'proveedor'=>$request->input('proveedor'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
-            'cotizacion'=>$request->file('cotizacion')
+            'cotizacion'=>$nombreOriginal
         ]);
 
         flash('Producto editado exitosamente', 'info');
@@ -542,28 +551,15 @@ class PlanComprasController extends Controller
         })->export('xlsx');
     }
 
-    public function generate($cotizacion)
+    public function downloadFile($cotizacion)
     {
         $archivo= public_path()."/cotizacion/".$cotizacion;
-        return view('plandecompras.visualizar', $archivo);
-
-       // $arch = DB::table('plan_compras')->where('cotizacion', $cotizacion)->firstOrFail();
-
-       // $file = Storage::disk('local')->get($arch);
+        if (file_exists($archivo)) {
+            return Response::download($archivo);
+        }
        
        
     }
 
-    public function deleteCot($cotizacion){
-        //funcion para eliminar el archivo de la cotización
-        
-        //$arch = DB::table('plan_compras')->where('cotizacion', $cotizacion)->firstOrFail();
-        //ver la ruta del archivo
-        //$path = public_path($arch);
-        //dd($path);
-       
-        $path = public_path()."/cotizacion/".$cotizacion;
-        unlink($path); 
-    }
 
 }

@@ -12,7 +12,7 @@
 		</div>
 		<div class="panel-body">
 
-			<form method="POST" action="{{route('plandecompras.update')}}">
+			<form method="POST" action="{{route('plandecompras.update')}}" enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="idProduct" id="idProduct" value="{{$product->id}}">
 				<div class="form-group">
@@ -79,7 +79,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">
 					<label>Cotización</label>
-					<input type="file"  name="cotizacion" id="cotizacion" value="{{$product->cotizacion}}" class="form-control">
+					<input type="file"  name="cotizacion" id="cotizacion" class="form-control">
 				</div>
 				</div>
 
