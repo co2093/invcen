@@ -460,10 +460,8 @@ Route::Group(['pregix'=>'equipo','middleware'=>['admin','depto','admin_financier
 
 
 
-Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], function (){
+Route::group(['middleware' => ['auth','depto','equipo']], function (){
 
-    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
-    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
 
 
     Route::post('plancompras/buscar/', 'PlanComprasController@buscar')->name('plandecompras.filter');
@@ -474,7 +472,18 @@ Route::group(['middleware' => ['auth','depto','admin_bodega','equipo']], functio
 
 });
 
+Route::group(['middleware' => ['auth','depto','equipo','admin_bodega']], function (){
 
+    Route::get('plancompras/finalizar/', 'PlanComprasController@finalizar')->name('plandecompras.finalizar');
+    Route::get('plancompras/finalizar/confirmar', 'PlanComprasController@finalizarconfirmado')->name('plandecompras.finalizar.confirmar');
+
+
+    Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
+    Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
+
+
+
+});  
     
 
     
