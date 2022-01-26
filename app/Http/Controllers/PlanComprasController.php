@@ -418,7 +418,18 @@ class PlanComprasController extends Controller
             $p = 0.0;
         }
 
+        
+        if ($request->hasFile('cotizacion')) {
 
+            $file = $request->file('cotizacion');              
+            $nombreOriginal = $file->getClientOriginalName(); 
+            $file->move(public_path('cotizacion/'), $nombreOriginal);
+
+        }
+        else{
+            echo "Debes subir documento";
+        }
+    
         
         DB::table('plan_compras')->insert([
             'cantidad' => $request->input('cantidad'),
@@ -426,7 +437,7 @@ class PlanComprasController extends Controller
             'especificaciones' => $request->input('especificaciones'),
             'precio_unitario' => $p,
             'proveedor' => $request->input('proveedor'),
-            'cotizacion' => $request->input('cotizacion'),
+            'cotizacion' => $nombreOriginal,
             'user_id' => $request->input('user_id'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
@@ -573,8 +584,23 @@ class PlanComprasController extends Controller
         if (file_exists($archivo)) {
             return Response::download($archivo);
         }
+       else{
+            flash('No existe archivo de cotización asociado a este producto', 'danger');
+            return redirect()->back(); 
+        }
        
-       
+    }
+
+    public function deleteArchivo($cotizacion)
+    {   
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+        
+        if (file_exists($archivo)) {
+            unlink($archivo);  
+        }
+        
+        flash('Archivo eliminado del plan de compras exitosamente', 'danger');
+        return redirect()->back();
     }
 
 }

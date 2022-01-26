@@ -68,7 +68,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">
 					<label>Cotización</label>
-					<input type="file" name="cotizacion" id="cotizacion" class="form-control" >
+					<input type="file" name="cotizacion" id="cotizacion" class="form-control" required>
 				</div>
 				</div>
 

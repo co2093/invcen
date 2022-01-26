@@ -85,6 +85,7 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('plancompras/error', 'PlanComprasController@error')->name('plandecompras.error');
     Route::post('plancompras/confirmar', 'PlanComprasController@confirmar')->name('plandecompras.confirmar');
     Route::get('plancompras/{cotizacion}/','PlanComprasController@descargarArchivo')->name('pladecompras.descargar');
+    Route::get('plancompras/delete/{cotizacion}/','PlanComprasController@deleteArchivo')->name('plandecompras.eliminar');
 
 
 });

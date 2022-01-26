@@ -9,7 +9,7 @@
 				<strong>Plan de compras de {{Auth::user()->name}}</strong>
 			</h4>
 		</div>
-		<div class="panel-body">
+	<div class="panel-body">
 
     <div>       
         <div>
@@ -50,6 +50,8 @@
                         <td>{{$a->proveedor}}</td>
                         <td>
                             <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>
+                            <a class="btn btn-danger btn-xs"  title="Eliminar" href="{{route('plandecompras.eliminar', $a->cotizacion) }}"><span class="fa fa-trash fa-2x"></span></a>
+                                                        
                         </td>
                         <td>
                         	<a href="{{route('plandecompras.edit', $a->id)}}" class="btn btn-default btn-sm" title="Editar">
@@ -69,6 +71,7 @@
 
     </div>
 
+    </div>
 </div>
 @endsection
 
