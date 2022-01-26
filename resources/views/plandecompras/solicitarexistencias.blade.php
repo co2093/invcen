@@ -43,7 +43,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Especificaciones</label>
-					<input type="text" name="especificaciones" id="" class="form-control">
+					<textarea class="form-control rounded-0" id="especificaciones" name="especificaciones" rows="5"></textarea>
 				</div>
 				</div>
 
@@ -56,25 +56,14 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Precio unitario</label>
-					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control" readonly ="readonly">
-				</div>
-				</div>
-
-				<div class="form-group">
-					<div class="col-xs-offset-3">
-					<label>Proveedor</label>
-					
-					<select name="categoria" id="categoria" class="form-control">
-
-						@foreach($proveedores as $c)
-							<option value="{{$c->titulo_especifico}}">{{$c->nombre}}</option>
-						@endforeach
-
-					</select>
+					<label>Precio cotizado</label>
+					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control">
 
 				</div>
 				</div>
+
+
+
 
 				<div class="form-group">
 				<div class="col-xs-offset-3">

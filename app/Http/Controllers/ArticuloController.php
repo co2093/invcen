@@ -275,4 +275,72 @@ class ArticuloController extends Controller
             ->get();
 
     }
+
+
+    public function editarExistencia($idProduct){
+
+        $product = Articulo::findOrFail($idProduct);
+
+        return view('articulos.editarExistencia', ['product' => $product]);
+
+    }
+
+    public function editarPrecio($idProduct){
+
+        $product = Articulo::findOrFail($idProduct);
+
+        return view('articulos.editarPrecio', ['product' => $product]);
+
+    }
+
+    public function editE(Request $request){
+
+        $product = Articulo::findOrFail($request->input('idProduct'));
+
+
+        DB::table('articulo')
+        ->where('codigo_articulo', $request->input('idProduct'))
+        ->update([
+            'existencia'=>$request->input('existencia')
+        ]);
+
+
+        flash('Exisitencia del producto editada exitosamente', 'success');
+
+
+        return redirect('/articulo/'.$product->codigo_articulo);
+
+
+    }
+
+
+    public function editP(Request $request){
+
+
+        $product = Articulo::findOrFail($request->input('idProduct'));
+
+        DB::table('articulo')
+        ->where('codigo_articulo', $request->input('idProduct'))
+        ->update([
+            'precio_unitario'=>$request->input('precio')
+        ]);
+
+
+        flash('Precio del producto editado exitosamente', 'success');
+
+
+        return redirect('/articulo/'.$product->codigo_articulo);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 }

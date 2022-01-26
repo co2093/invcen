@@ -33,7 +33,16 @@
 		   <dd>{{$articulo->formula}}</dd>
 		@endif
 	 </dl>
-	 <div class="col-md-offset-1">
+
+	<div class="form-group">
+		<div class="col-xs">
+			<a href="{{ route('articulo.editar.existencia', $articulo->codigo_articulo) }}" class="btn btn-info">Modificar existencia</a>
+			<a href="{{ route('articulo.editar.precio', $articulo->codigo_articulo) }}" class="btn btn-success">Modificar precio</a>
+		</div>
+	</div>
+
+	<br><br>
+	 <div class="col-md">
          <a href="{{ route('articulo.index')}}" class="btn btn-primary">Vover a la lista</a>
      </div>            
  
