@@ -48,7 +48,9 @@
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
                         <td>{{$a->proveedor}}</td>
-                        <td>${{ round(($a->cotizacion),2) }}</td>
+                        <td>
+                            <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>
+                        </td>
                         <td>
                         	<a href="{{route('plandecompras.edit', $a->id)}}" class="btn btn-default btn-sm" title="Editar">
                             <span class="glyphicon glyphicon-pencil">

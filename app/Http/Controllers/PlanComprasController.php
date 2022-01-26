@@ -11,6 +11,9 @@ use Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use TCPDF;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Response;
+
 
 class PlanComprasController extends Controller
 {
@@ -102,7 +105,18 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now();
 
-        
+        if ($request->hasFile('cotizacion')) {
+
+            $file = $request->file('cotizacion');              
+            $nombreOriginal = $file->getClientOriginalName(); 
+             $newName = "cotizacion/".$nombreOriginal;
+             $file->move(public_path('cotizacion/'), $nombreOriginal);
+            
+
+        }
+        else{
+            echo "Debes subir documento";
+        }
 
         DB::table('plan_compras')->insert([
             'cantidad' => $request->input('cantidad'),
@@ -110,7 +124,7 @@ class PlanComprasController extends Controller
             'especificaciones' => $request->input('especificaciones'),
             'precio_unitario' => $request->input('precio'),
             'proveedor' => $request->input('proveedor'),
-            'cotizacion' => $request->input('cotizacion'),
+            'cotizacion' => $nombreOriginal,
             'user_id' => $request->input('user_id'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
@@ -166,6 +180,10 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now();
 
+        $file = $request->file('cotizacion');              
+        $nombreOriginal = $file->getClientOriginalName(); 
+        $newName = "cotizacion/".$nombreOriginal;
+        $file->move(public_path('cotizacion/'), $nombreOriginal);
 
         DB::table('plan_compras')
         ->where('id', $request->input('idProduct'))
@@ -177,7 +195,7 @@ class PlanComprasController extends Controller
             'proveedor'=>$request->input('proveedor'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
-            'cotizacion'=>$request->input('cotizacion')
+            'cotizacion'=>$nombreOriginal
         ]);
 
         flash('Producto editado exitosamente', 'info');
@@ -546,6 +564,17 @@ class PlanComprasController extends Controller
         flash('Plan de compras reiniciado exitosamente', 'success');
 
         return redirect()->route('plandecompras.resumen');
+    }
+
+    
+    public function descargarArchivo($cotizacion)
+    {
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+        if (file_exists($archivo)) {
+            return Response::download($archivo);
+        }
+       
+       
     }
 
 }
