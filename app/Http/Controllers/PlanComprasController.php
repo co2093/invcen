@@ -345,13 +345,13 @@ class PlanComprasController extends Controller
                 $sheet->row(3, ['', 'Cuadro de plan de compras general'
                 ]);
                 $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total'
                 ]);
 
 
                 foreach($planDelUsuario as $index => $s) {
                        $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_producto, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,$s->proveedor,$s->cotizacion
+                        $s->cantidad, $s->nombre_producto, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
                     ]); 
                 }
 
