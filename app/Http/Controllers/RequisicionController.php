@@ -16,6 +16,8 @@ use Exception;
 use sig\Models\MenosReactivo;
 use Maatwebsite\Excel\Facades\Excel;
 use TCPDF;
+use Carbon\Carbon;
+
 
 
 class RequisicionController extends Controller
@@ -511,13 +513,13 @@ class RequisicionController extends Controller
                 $sheet->row(3, ['', 'Resumen de solicitudes'
                 ]);
                 $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                    'Cantidad','Nombre del producto', 'Precio unitario', 'Costo total'
                 ]);
 
 
                 foreach($solicitudes as $index => $s) {                    
                        $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_articulo, '',round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,'','',''
+                        $s->cantidad, $s->nombre_articulo,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
                     ]); 
                 }
                 
@@ -532,6 +534,8 @@ class RequisicionController extends Controller
 
     public function exportPdf(){
 
+
+        $fecha = Carbon::now()->format('d-m-Y');
 
 
         $solicitudes = DB::table('articulo')
@@ -567,7 +571,7 @@ class RequisicionController extends Controller
 
                     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
                     $pdf->writeHTML($html, true, false, true, false, '');
-                    $nombre = 'plandecompras.pdf';
+                    $nombre = 'solicitudes '.$fecha.'.pdf';
                     $pdf->Output($nombre);
     }
 

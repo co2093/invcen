@@ -82,12 +82,11 @@
     <thead>
         <tr class="atributos">
             <th style="width: 10%;"><strong>Cantidad</strong></th>
-            <th style="width: 20%;"><strong>Nombre del producto</strong></th>
-            <th style="width: 25%;"><strong>Especificaciones</strong></th>
+            <th style="width: 15%;"><strong>Nombre del producto</strong></th>
+            <th style="width: 15%;"><strong>Categoría</strong></th>
+            <th style="width: 40%;"><strong>Especificaciones</strong></th>
             <th style="width: 10%;"><strong>Precio unitario ($)</strong></th>
             <th style="width: 10%;"><strong>Costo total ($)</strong></th>
-            <th style="width: 15%;"><strong>Proveedor</strong></th>
-            <th style="width: 10%;"><strong>Cotización</strong></th>
        	</tr>
     </thead>
  	
@@ -95,12 +94,11 @@
         @foreach ($solicitudes as $s)
             <tr>
             	<td style="width: 10%;"><strong>{{$s->cantidad}}</strong></td>
-                <td style="width: 20%;"><strong>{{$s->nombre_producto}}</strong></td>
-                <td style="width: 25%;"><strong>{{$s->especificaciones}}</strong></td>
+                <td style="width: 15%;"><strong>{{$s->nombre_producto}}</strong></td>
+                <td style="width: 15%;"><strong>{{$s->categoria}}</strong></td>
+                <td style="width: 40%;"><strong>{{$s->especificaciones}}</strong></td>
                 <td style="width: 10%;"><strong>{{round($s->precio_unitario,2)}}</strong></td>
                 <td style="width: 10%;"><strong>{{round($s->precio_unitario,2)*$s->cantidad}}</strong></td>
-                <td style="width: 15%;"><strong>{{$s->proveedor}}</strong></td>
-                <td style="width: 10%;"><strong>{{$s->cotizacion}}</strong></td>
             </tr>
         @endforeach
 	</tbody>

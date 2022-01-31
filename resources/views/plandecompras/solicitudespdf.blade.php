@@ -3,29 +3,24 @@
         margin-bottom: 15px;
         border-collapse: collapse;
     }
-
     .table{
         border: 1px solid #b8c7ce;
         border-collapse: collapse;
         margin-top: 10px;
     }
-
     .table > tr > th,
     .table > tr > td,
     .table > thead > tr >td,
     .table > tbody > tr > td{
         padding: 10px !important;
         border: 1px solid #b8c7ce;
-
     }
     .text-center{
         text-align: center;
     }
-
     .encabezado{
         font-size: 14px;
     }
-
     .distancia{
         font-size: 15px;
         margin-bottom: 0px;
@@ -52,11 +47,9 @@
     .atributos{
         background-color: lightgreen;
     }
-
     .firma{
         margin-left: 30px;
     }
-
 </style>
 
 
@@ -92,7 +85,6 @@
             <th style="width: 55%;"><strong>Nombre del producto</strong></th>
             <th style="width: 15%;"><strong>Precio unitario ($)</strong></th>
             <th style="width: 15%;"><strong>Costo total ($)</strong></th>
-
        	</tr>
     </thead>
  	
@@ -100,10 +92,9 @@
         @foreach ($solicitudes as $s)
             <tr>
             	<td style="width: 15%;"><strong>{{$s->cantidad}}</strong></td>
-                <td style="width: 55%;"><strong>{{$s->nombre_articulo}}</strong></td>
+                <td style="width: 55%;"><strong>{{$s->nombre_producto}}</strong></td>
                 <td style="width: 15%;"><strong>{{round($s->precio_unitario,2)}}</strong></td>
                 <td style="width: 15%;"><strong>{{round($s->precio_unitario,2)*$s->cantidad}}</strong></td>
-
             </tr>
         @endforeach
 	</tbody>

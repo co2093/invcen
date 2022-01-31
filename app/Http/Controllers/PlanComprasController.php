@@ -13,6 +13,7 @@ use TCPDF;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Response;
+use sig\User;
 
 
 class PlanComprasController extends Controller
@@ -303,7 +304,7 @@ class PlanComprasController extends Controller
 
                     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
                     $pdf->writeHTML($html, true, false, true, false, '');
-                    $nombre = 'plandecompras.pdf';
+                    $nombre = 'plandecompras '.$fecha.'.pdf';
                     $pdf->Output($nombre);
 
     }
@@ -396,7 +397,7 @@ class PlanComprasController extends Controller
 
                     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
                     $pdf->writeHTML($html, true, false, true, false, '');
-                    $nombre = 'plandecompras.pdf';
+                    $nombre = 'plandecompras '.$fecha.'.pdf';
                     $pdf->Output($nombre);
 
 
@@ -505,7 +506,7 @@ class PlanComprasController extends Controller
 
                     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
                     $pdf->writeHTML($html, true, false, true, false, '');
-                    $nombre = 'plandecompras.pdf';
+                    $nombre = 'plandecompras '.$fecha.'.pdf';
                     $pdf->Output($nombre);
     }
 
@@ -601,6 +602,102 @@ class PlanComprasController extends Controller
         
         flash('Archivo eliminado del plan de compras exitosamente', 'danger');
         return redirect()->back();
+    }
+
+    public function individual(){
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->where('estado', '=', "Pendiente")
+
+        ->get();
+
+        $categorias = Especifico::all();
+        $users = User::all();
+
+        return view('plandecompras.individual', compact('planDelUsuario', 'categorias', 'users'));
+    }
+
+    public function excelIndividual(){
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+
+       
+
+        Excel::create("Plan de Compras Individual".$fecha, function($excel) use($fecha) {
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->where('estado', '=', "Pendiente")
+        ->get();
+
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha) {
+
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Cuadro de plan de compras']);
+               
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total'
+                ]);
+
+
+                foreach($planDelUsuario as $index => $s) {
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
+                    ]); 
+                }
+
+
+
+            });
+
+        })->export('xlsx');
+    }
+
+
+    public function pdfIndividual(){
+
+        
+        $fecha = Carbon::now()->format('d-m-Y');
+
+        
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->where('estado', '=', "Pendiente")
+
+        ->get();
+
+        $view = \View::make('plandecompras.planpdf', ['solicitudes' => $planDelUsuario]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Plan de Compras');
+                    $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('L');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                    $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);
+
+
+                    $pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'plandecompras '.$fecha.'.pdf';
+                    $pdf->Output($nombre);
     }
 
 }
