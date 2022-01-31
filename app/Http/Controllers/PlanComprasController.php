@@ -77,7 +77,7 @@ class PlanComprasController extends Controller
 
     public function store(Request $request){
 
-        $e = DB::table('plan_compras')->where('nombre_producto', '=', $request->input('nombre_producto'))
+        $e = DB::table('plan_compras')->where('nombre_producto', '=', $request->input('nombre_producto'))->where('estado','=','Pendiente')
 
         ->get();
 
@@ -253,13 +253,13 @@ class PlanComprasController extends Controller
                 $sheet->row(3, ['', 'Cuadro de plan de compras'
                 ]);
                 $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                    'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total'
                 ]);
 
 
                 foreach($planDelUsuario as $index => $s) {                    
                        $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_producto, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,$s->proveedor,$s->cotizacion
+                        $s->cantidad, $s->nombre_producto, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
                     ]); 
                 }
 
@@ -456,11 +456,11 @@ class PlanComprasController extends Controller
         //dd($categoria);
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
         ->where('categoria', $categoria->titulo_especifico)
         ->where('estado', '=', "Pendiente")
 
-        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario')
         ->get();
 
 
@@ -473,11 +473,11 @@ class PlanComprasController extends Controller
 
         
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
         ->where('categoria', $categoria->titulo_especifico)
         ->where('estado', '=', "Pendiente")
 
-        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario')
         ->get();
 
         $view = \View::make('plandecompras.planpdf', ['solicitudes' => $planDelUsuario]);
@@ -523,11 +523,11 @@ class PlanComprasController extends Controller
         Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($categoria, $fecha) {
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion', DB::raw('SUM(cantidad) as cantidad'))
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
         ->where('categoria', $categoria->titulo_especifico)
         ->where('estado', '=', "Pendiente")
 
-        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor', 'cotizacion')
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario')
         ->get();
 
         //dd($planDelUsuario);
@@ -539,13 +539,13 @@ class PlanComprasController extends Controller
                 $sheet->row(3, ['', 'Cuadro de plan de compras']);
                 $sheet->row(4, ['', 'Categoría', $categoria->titulo_especifico]);
                 $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total', 'Proveedor','Cotización'
+                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total'
                 ]);
 
 
                 foreach($planDelUsuario as $index => $s) {
                        $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad,$s->proveedor,$s->cotizacion
+                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
                     ]); 
                 }
 
@@ -698,6 +698,109 @@ class PlanComprasController extends Controller
                     $pdf->writeHTML($html, true, false, true, false, '');
                     $nombre = 'plandecompras '.$fecha.'.pdf';
                     $pdf->Output($nombre);
+    }
+
+    public function buscarIndividual(Request $request){
+
+        $categoria = DB::table('especificos')->where('id', $request->input('categoria'))->first();
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->where('estado', '=', "Pendiente")
+        ->where('categoria', $categoria->titulo_especifico)
+        ->get();
+
+
+        return view ('plandecompras.busquedaIndividual', compact('categoria', 'planDelUsuario'));
+    }
+
+
+
+
+    public function pdfCategoriaInd($categoria){
+
+        $categoria = DB::table('especificos')->where('id', $categoria)->first();
+
+        
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
+        ->get();
+
+        $view = \View::make('plandecompras.planpdf', ['solicitudes' => $planDelUsuario]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Plan de Compras');
+                    $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('L');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                    $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);
+
+
+                    $pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'plandecompras '.$fecha.'.pdf';
+                    $pdf->Output($nombre);
+    }
+
+    public function excelCategoriaInd($categoria){
+
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+
+        $categoria = DB::table('especificos')->where('id', $categoria)->first();
+
+        //dd($categoria);
+
+        Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($categoria, $fecha) {
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
+        ->get();
+
+
+        //dd($planDelUsuario);
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $categoria, $fecha) {
+
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Cuadro de plan de compras']);
+                $sheet->row(4, ['', 'Categoría', $categoria->titulo_especifico]);
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total'
+                ]);
+
+
+                foreach($planDelUsuario as $index => $s) {
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
+                    ]); 
+                }
+
+
+
+            });
+
+        })->export('xlsx');
     }
 
 }

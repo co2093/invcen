@@ -2,14 +2,14 @@
 
 @section('content')
 
-<!--
+
 <div class="panel panel-info">
     <div class="panel-heading">
         <h4 class="panel-title"><strong>Buscar por categoría</strong></h4>
     </div>
     <div class="panel-body">
 
-    <form method="POST" action="{{route('plandecompras.filter')}}">
+    <form method="POST" action="{{route('plandecompras.filter.individual')}}">
         {{ csrf_field() }}
 
         <div class="form-group">
@@ -38,7 +38,7 @@
 
     </div>
 </div>
--->
+
 
 <div class="panel panel-default">
 		<div class="panel-heading" role="tab">

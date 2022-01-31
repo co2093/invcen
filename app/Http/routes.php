@@ -473,7 +473,10 @@ Route::group(['middleware' => ['auth','depto','equipo']], function (){
     Route::get('plandecompras/individual', 'PlanComprasController@individual')->name('plandecompras.individual');
     Route::get('plandecompras/pdf/individual', 'PlanComprasController@pdfIndividual')->name('plandecompras.individual.pdf');
     Route::get('plandecompras/excel/individual', 'PlanComprasController@excelIndividual')->name('plandecompras.individual.excel');
+    Route::post('plandecompras/buscar/individual', 'PlanComprasController@buscarIndividual')->name('plandecompras.filter.individual');
 
+    Route::get('plandecompras/pdf/{categoria}', 'PlanComprasController@pdfCategoriaInd')->name('plandecompras.pdf.categoria.ind');
+    Route::get('plandecompras/excel/{categoria}', 'PlanComprasController@excelCategoriaInd')->name('plandecompras.excel.categoria.ind');
 
 
 });
