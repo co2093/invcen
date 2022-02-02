@@ -106,25 +106,29 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now();
 
+        $p = $request->input('precio');
+
+        if ($p == "") {
+            // code...
+            $p = 0.0;
+        }
+
         if ($request->hasFile('cotizacion')) {
 
             $file = $request->file('cotizacion');              
-            $nombreOriginal = $file->getClientOriginalName(); 
-             $newName = "cotizacion/".$nombreOriginal;
+            $nombreOriginal =  'cotizacion'.$fecha.Auth::user()->id.$file->getClientOriginalName(); 
+             //$newName = "cotizacion/".$nombreOriginal;
              $file->move(public_path('cotizacion/'), $nombreOriginal);
             
 
         }
-        else{
-            echo "Debes subir documento";
-        }
+
 
         DB::table('plan_compras')->insert([
             'cantidad' => $request->input('cantidad'),
             'nombre_producto' => $request->input('nombre_producto'),
             'especificaciones' => $request->input('especificaciones'),
-            'precio_unitario' => $request->input('precio'),
-            'proveedor' => $request->input('proveedor'),
+            'precio_unitario' => $p,
             'cotizacion' => $nombreOriginal,
             'user_id' => $request->input('user_id'),
             'categoria' => $request->input('categoria'),
@@ -143,9 +147,27 @@ class PlanComprasController extends Controller
 
     public function deleteProduct($idProduct){
 
+        
+
+
+        $cotizacion = DB::table('plan_compras')
+        ->select('cotizacion')
+        ->where('id', '=', $idProduct)
+        ->value('cotizacion');
+
+        
+
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+
+        if (file_exists($archivo)) {
+            unlink($archivo);  
+        }
+
+
         DB::table('plan_compras')
         ->where('id', '=', $idProduct)
         ->delete();
+
 
         flash('Producto eliminado del plan de compras exitosamente', 'danger');
         return redirect()->back();
@@ -181,9 +203,30 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now();
 
+        $cotizacion = DB::table('plan_compras')
+        ->select('cotizacion')
+        ->where('id', '=', $request->input('idProduct'))
+        ->value('cotizacion');
+
+        
+
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+
+        if (file_exists($archivo)) {
+            unlink($archivo);  
+        }
+
+        DB::table('plan_compras')
+        ->where('id', $request->input('idProduct'))
+        ->update([
+            'cotizacion'=>""
+        ]);
+
+
+
         $file = $request->file('cotizacion');              
-        $nombreOriginal = $file->getClientOriginalName(); 
-        $newName = "cotizacion/".$nombreOriginal;
+        $nombreOriginal =  'cotizacion'.$fecha.Auth::user()->id.$file->getClientOriginalName(); 
+        //$newName = "cotizacion/".$nombreOriginal;
         $file->move(public_path('cotizacion/'), $nombreOriginal);
 
         DB::table('plan_compras')
@@ -193,7 +236,6 @@ class PlanComprasController extends Controller
             'nombre_producto'=>$request->input('nombre_producto'),
             'especificaciones'=>$request->input('especificaciones'),
             'precio_unitario'=>$request->input('precio'),
-            'proveedor'=>$request->input('proveedor'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
             'cotizacion'=>$nombreOriginal
@@ -223,9 +265,7 @@ class PlanComprasController extends Controller
         if($periodo->estado==1){
 
         $product = Articulo::findOrFail($idProduct);    
-      //  $product = DB::table('articulo')
-      //  ->where('codigo_articulo', '=', $idProduct)
-      //  ->first();
+
 
         return view('plandecompras.solicitarexistencias', compact('product', 'proveedores'));
 
@@ -420,7 +460,7 @@ class PlanComprasController extends Controller
         }
 
         
-        if ($request->hasFile('cotizacion')) {
+       /* if ($request->hasFile('cotizacion')) {
 
             $file = $request->file('cotizacion');              
             $nombreOriginal = $file->getClientOriginalName(); 
@@ -430,7 +470,7 @@ class PlanComprasController extends Controller
         else{
             echo "Debes subir documento";
         }
-    
+    */
         
         DB::table('plan_compras')->insert([
             'cantidad' => $request->input('cantidad'),
@@ -438,7 +478,7 @@ class PlanComprasController extends Controller
             'especificaciones' => $request->input('especificaciones'),
             'precio_unitario' => $p,
             'proveedor' => $request->input('proveedor'),
-            'cotizacion' => $nombreOriginal,
+            //'cotizacion' => $nombreOriginal,
             'user_id' => $request->input('user_id'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
@@ -453,7 +493,6 @@ class PlanComprasController extends Controller
     public function buscar(Request $request){
 
         $categoria = DB::table('especificos')->where('id', $request->input('categoria'))->first();
-        //dd($categoria);
 
         $planDelUsuario = DB::table('plan_compras')
         ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
@@ -585,13 +624,9 @@ class PlanComprasController extends Controller
         if (file_exists($archivo)) {
             return Response::download($archivo);
         }
-       else{
-            flash('No existe archivo de cotización asociado a este producto', 'danger');
-            return redirect()->back(); 
-        }
        
     }
-
+    /*
     public function deleteArchivo($cotizacion)
     {   
         $archivo= public_path()."/cotizacion/".$cotizacion;
@@ -604,10 +639,12 @@ class PlanComprasController extends Controller
         return redirect()->back();
     }
 
+    */
+
     public function individual(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion')
         ->where('estado', '=', "Pendiente")
 
         ->get();
@@ -705,7 +742,7 @@ class PlanComprasController extends Controller
         $categoria = DB::table('especificos')->where('id', $request->input('categoria'))->first();
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion')
         ->where('estado', '=', "Pendiente")
         ->where('categoria', $categoria->titulo_especifico)
         ->get();
@@ -766,7 +803,6 @@ class PlanComprasController extends Controller
 
         $categoria = DB::table('especificos')->where('id', $categoria)->first();
 
-        //dd($categoria);
 
         Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($categoria, $fecha) {
 
@@ -777,7 +813,6 @@ class PlanComprasController extends Controller
         ->get();
 
 
-        //dd($planDelUsuario);
 
 
             $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $categoria, $fecha) {

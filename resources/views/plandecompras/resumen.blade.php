@@ -65,7 +65,6 @@
                 <th>Especificaciones</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
-                <th>Cotización</th>
             </tr>
             </thead>
             <tbody>
@@ -79,7 +78,6 @@
                         <td>{{$a->especificaciones}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
-                        <td></td>
                     </tr>
 
                 @endforeach

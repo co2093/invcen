@@ -69,7 +69,7 @@
 
 				<div class="form-group">
 				<div class="col-xs-offset-3">
-					<button type="submit" class="btn btn-primary">Agregar</button>
+					<button type="submit" class="btn btn-primary" id="sub-btn" name="sub-btn">Agregar</button>
 					<a href=" javascript:window.history.back(); " class="btn btn-danger">Cancelar</a>
 				</div>
 				</div>
@@ -81,4 +81,17 @@
 </div>
 </div>
 
+@endsection
+
+@section('script')
+ <script type="text/javascript">
+    $("#sub-btn").click(function(e) {
+      var logoimg = document.getElementById("cotizacion");
+            let size = cotizacion.files[0].size; 
+            if (size > 2000000) {
+                alert("La cotizacion no debe ser mayor a 2 MB");
+                event.preventDefault(); 
+            }
+    });
+</script>
 @endsection

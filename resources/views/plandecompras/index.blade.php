@@ -47,8 +47,13 @@
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
                         <td>
+                            @if($a->cotizacion)
                             <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>
-                            <a class="btn btn-danger btn-xs"  title="Eliminar" href="{{route('plandecompras.eliminar', $a->cotizacion) }}"><span class="fa fa-trash fa-2x"></span></a>
+                           @else
+                                No hay cotización
+                           @endif
+                           <!-- <a class="btn btn-danger btn-xs"  title="Eliminar" href="{{route('plandecompras.eliminar', $a->cotizacion) }}"><span class="fa fa-trash fa-2x"></span></a>
+                           -->
                                                         
                         </td>
                         <td>

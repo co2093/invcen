@@ -39,6 +39,8 @@
 			<br>
 			<label>Categoria:</label>{{$p->categoria}}
 			<br>
+			<label>Especificaciones:</label>{{$p->especificaciones}}
+			<br>
 			<label>Cantidad solicitada:</label>{{$p->cantidad}}
 			<br>
 				@php

@@ -44,7 +44,13 @@
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
                         
-                        <td></td>
+                        <td>
+                            @if($a->cotizacion)
+                            <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>
+                           @else
+                                No hay cotización
+                           @endif
+                        </td>
                     </tr>
 
                 @endforeach
