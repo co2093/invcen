@@ -30,6 +30,7 @@
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Cotización</th>
+                <th>Finalizar</th>
             </tr>
             </thead>
             <tbody>
@@ -50,6 +51,10 @@
                            @else
                                 No hay cotización
                            @endif
+                        </td>
+                        <td>
+                            <a onclick="return confirm('¿Eliminar producto del plan de compras?')" href="{{route('plandecompras.finalizarCompra', $a->id)}}" class="btn btn-danger btn-sm" title="Eliminar">
+                            <span class="glyphicon glyphicon-remove"></span>
                         </td>
                     </tr>
 

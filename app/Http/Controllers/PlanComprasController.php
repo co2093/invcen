@@ -156,13 +156,13 @@ class PlanComprasController extends Controller
         ->value('cotizacion');
 
         
-
+        if($cotizacion){
         $archivo= public_path()."/cotizacion/".$cotizacion;
 
         if (file_exists($archivo)) {
             unlink($archivo);  
+            }
         }
-
 
         DB::table('plan_compras')
         ->where('id', '=', $idProduct)
@@ -644,7 +644,7 @@ class PlanComprasController extends Controller
     public function individual(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion')
+        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id')
         ->where('estado', '=', "Pendiente")
 
         ->get();
@@ -742,7 +742,7 @@ class PlanComprasController extends Controller
         $categoria = DB::table('especificos')->where('id', $request->input('categoria'))->first();
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id')
         ->where('estado', '=', "Pendiente")
         ->where('categoria', $categoria->titulo_especifico)
         ->get();
@@ -836,6 +836,23 @@ class PlanComprasController extends Controller
             });
 
         })->export('xlsx');
+    }
+
+
+    public function finalizarCompra($idProduct){
+
+
+        DB::table('plan_compras')
+        ->where('id', '=', $idProduct)
+        ->update([
+            'estado'=>"Finalizado"
+        ]);
+
+
+
+        flash('Compra finalizada exitosamente', 'success');
+
+        return redirect()->route('plandecompras.individual');
     }
 
 }
