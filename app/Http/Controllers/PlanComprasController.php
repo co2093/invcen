@@ -848,6 +848,21 @@ class PlanComprasController extends Controller
             'estado'=>"Finalizado"
         ]);
 
+        $cotizacion = DB::table('plan_compras')
+        ->select('cotizacion')
+        ->where('id', '=', $idProduct)
+        ->value('cotizacion');
+
+        
+        if($cotizacion){
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+
+        if (file_exists($archivo)) {
+            unlink($archivo);  
+            }
+        }
+
+
 
 
         flash('Compra finalizada exitosamente', 'success');
