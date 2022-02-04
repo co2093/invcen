@@ -87,6 +87,7 @@
     </div>
 
 </div>
+</div>
 @endsection
 
 @section('script')
