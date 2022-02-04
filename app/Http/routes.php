@@ -87,6 +87,9 @@ Route::group(['middleware'=>['auth']],function(){
     Route::get('plancompras/{cotizacion}/','PlanComprasController@descargarArchivo')->name('pladecompras.descargar');
     Route::get('plancompras/delete/{cotizacion}/','PlanComprasController@deleteArchivo')->name('plandecompras.eliminar');
 
+    Route::get('plandecompras/excel/historial', 'PlanComprasController@excelHistorial')->name('plandecompras.excel.historial');
+
+
 
 });
 
@@ -485,8 +488,8 @@ Route::group(['middleware' => ['auth','depto','equipo']], function (){
 
 Route::group(['middleware' => ['auth','depto','equipo','admin_bodega']], function (){
 
-    Route::get('plancompras/finalizar/', 'PlanComprasController@finalizar')->name('plandecompras.finalizar');
-    Route::get('plancompras/finalizar/confirmar', 'PlanComprasController@finalizarconfirmado')->name('plandecompras.finalizar.confirmar');
+    Route::get('plandecom/finalizar/', 'PlanComprasController@finalizar')->name('plandecompras.finalizar');
+    Route::get('plandecom/finalizar/confirmar', 'PlanComprasController@finalizarconfirmado')->name('plandecompras.finalizar.confirmar');
 
 
     Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');

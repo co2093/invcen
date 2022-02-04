@@ -12,11 +12,10 @@
 		<div class="panel-body">
 
 
-   <!-- <div>
-        <a href="#" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
-        <a href="#" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
+   <div>
+        <a href="{{route('plandecompras.excel.historial')}}" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
     </div> 
-    -->
+    
 
 
     <div class="panel-body table-responsive ">

@@ -88,8 +88,8 @@
     $("#sub-btn").click(function(e) {
       var logoimg = document.getElementById("cotizacion");
             let size = cotizacion.files[0].size; 
-            if (size > 2000000) {
-                alert("La cotizacion no debe ser mayor a 2 MB");
+            if (size > 1000000000) {
+                alert("La cotizacion no debe ser mayor a 1 GB");
                 event.preventDefault(); 
             }
     });
