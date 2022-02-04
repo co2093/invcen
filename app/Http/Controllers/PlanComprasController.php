@@ -288,10 +288,15 @@ class PlanComprasController extends Controller
         ->where('estado', '=', "Pendiente")
         ->get();
 
+        $nombreUsuario = Auth::user()->name;
 
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario) {
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $nombreUsuario) {
                 $sheet->row(3, ['', 'Cuadro de plan de compras'
                 ]);
+                $sheet->row(4, ['', 'Usuario', $nombreUsuario]);
+
                 $sheet->row(6, [
                     'Cantidad','Nombre del producto', 'Especificaciones', 'Precio unitario', 'Costo total'
                 ]);
@@ -868,6 +873,48 @@ class PlanComprasController extends Controller
         flash('Compra finalizada exitosamente', 'success');
 
         return redirect()->route('plandecompras.individual');
+    }
+
+
+    public function excelHistorial(){
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+        Excel::create("Plan de Compras ".$fecha, function($excel) use($fecha) {
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->where('user_id', '=', Auth::user()->id)
+        ->where('estado', '=', "Finalizado")
+        ->get();
+
+        $nombreUsuario = Auth::user()->name;
+
+
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha, $nombreUsuario) {
+
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Historial de plan de compras']);
+                $sheet->row(3, ['', 'Usuario', $nombreUsuario]);
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Precio unitario', 'Costo total'
+                ]);
+
+
+                foreach($planDelUsuario as $index => $s) {
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
+                    ]); 
+                }
+
+
+
+            });
+
+        })->export('xlsx');
+
+
     }
 
 }
