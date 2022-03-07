@@ -64,6 +64,7 @@
                 <th>Nombre del producto</th>
                 <th>Categoría</th>
                 <th>Especificaciones</th>
+                <th>Proveedor</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Cotización</th>
@@ -93,6 +94,7 @@
                         <td>{{$a->nombre_producto}}</td>
                         <td>{{$a->categoria}}</td>
                         <td>{{$a->especificaciones}}</td>
+                        <td>{{$a->proveedor}}</td>
                         <td>{{$a->precio_unitario}}</td>
                         <td>{{$a->cantidad*$a->precio_unitario}}</td>
                         <td>

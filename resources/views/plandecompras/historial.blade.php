@@ -26,6 +26,7 @@
                 <th>Cantidad</th>
                 <th>Nombre del producto</th>
                 <th>Especificaciones</th>
+                <th>Proveedor</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Estado</th>
@@ -39,6 +40,7 @@
                         <td>{{$a->cantidad}}</td>
                         <td>{{$a->nombre_producto}}</td>
                         <td>{{$a->especificaciones}}</td>
+                        <td>{{$a->proveedor}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
                         <td>{{$a->estado}}</td>

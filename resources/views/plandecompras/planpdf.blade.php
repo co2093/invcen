@@ -85,8 +85,9 @@
             <th style="width: 15%;"><strong>Nombre del producto</strong></th>
             <th style="width: 15%;"><strong>Categoría</strong></th>
             <th style="width: 40%;"><strong>Especificaciones</strong></th>
-            <th style="width: 10%;"><strong>Precio unitario ($)</strong></th>
-            <th style="width: 10%;"><strong>Costo total ($)</strong></th>
+            <th style="width: 10%;"><strong>Proveedor</strong></th>
+            <th style="width: 5%;"><strong>Precio unitario ($)</strong></th>
+            <th style="width: 5%;"><strong>Costo total ($)</strong></th>
        	</tr>
     </thead>
  	
@@ -97,8 +98,9 @@
                 <td style="width: 15%;"><strong>{{$s->nombre_producto}}</strong></td>
                 <td style="width: 15%;"><strong>{{$s->categoria}}</strong></td>
                 <td style="width: 40%;"><strong>{{$s->especificaciones}}</strong></td>
-                <td style="width: 10%;"><strong>{{round($s->precio_unitario,2)}}</strong></td>
-                <td style="width: 10%;"><strong>{{round($s->precio_unitario,2)*$s->cantidad}}</strong></td>
+                <td style="width: 10%;"><strong>{{$s->proveedor}}</strong></td>
+                <td style="width: 5%;"><strong>{{round($s->precio_unitario,2)}}</strong></td>
+                <td style="width: 5%;"><strong>{{round($s->precio_unitario,2)*$s->cantidad}}</strong></td>
             </tr>
         @endforeach
 	</tbody>

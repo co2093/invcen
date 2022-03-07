@@ -31,6 +31,7 @@
                 <th>Especificaciones</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
+                <th>Proveedor</th>
                 <th>Cotización</th>
                 <th colspan="2">Opciones</th>
             </tr>
@@ -46,6 +47,7 @@
                         <td>{{$a->especificaciones}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
                         <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
+                        <td>{{$a->proveedor}}</td>
                         <td>
                             @if($a->cotizacion)
                             <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>

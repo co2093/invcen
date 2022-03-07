@@ -56,6 +56,20 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
+					<label>Proveedor</label>
+
+					<select name="proveedor" id="proveedor" class="form-control">
+
+						@foreach($proveedores as $c)
+							<option value="{{$c->nombre}}">{{$c->nombre}}</option>
+						@endforeach
+
+					</select>
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
 					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control">
 

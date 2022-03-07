@@ -57,6 +57,20 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
+					<label>Proveedor</label>
+
+					<select name="proveedor" id="proveedor" class="form-control">
+
+						@foreach($proveedores as $c)
+							<option value="{{$c->nombre}}">{{$c->nombre}}</option>
+						@endforeach
+
+					</select>
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
 					<input type="number" step="any" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
