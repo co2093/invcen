@@ -14,7 +14,7 @@
                 <div class="form-group">
                     {!! Form::label('Unidad de medida', 'Unidad de medida *', array('class' =>'control-label col-md-2' )) !!}
                     <div class="col-md-7">
-                        {!!Form::text('nombre_unidadmedida', $unidad->nombre_unidadmedida, array('placeholder' => 'Gramo,Litro','class' => 'form-control')) !!}
+                        {!!Form::textarea('nombre_unidadmedida', $unidad->nombre_unidadmedida, ['class' => 'form-control rounded-0', 'rows' => 50, 'cols' => 50, 'style' => 'resize:both']) !!}
                         <div class="error">
                             <ul>@foreach($errors->get('nombre_unidadmedida') as $msg)<li>{{$msg}}</li> @endforeach</ul>
                         </div>

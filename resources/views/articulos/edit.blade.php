@@ -30,7 +30,7 @@
 				<div class="form-group">
 					{!!Form::label('Nombre', 'Nombre *', array('class' =>'col-md-2 control-label' )) !!}
 					<div class="col-md-7">
-						{!!Form::text('nombre', $articulo->nombre_articulo, array('placeholder' => 'Escoba, Azucar','class' => 'form-control')) !!}
+						{!!Form::textarea('nombre', $articulo->nombre_articulo, array('class' => 'form-control rounded-0', 'rows' => 50, 'cols' => 50, 'style' => 'resize:both')) !!}
 						<div class="error">
 							<ul>@foreach($errors->get('nombre') as $msg)<li>{{$msg}}</li> @endforeach</ul>
 						</div>

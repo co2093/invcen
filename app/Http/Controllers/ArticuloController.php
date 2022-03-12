@@ -93,7 +93,7 @@ class ArticuloController extends Controller
 
             'unidad' => 'required | integer|min:1',
             'especifico' => 'required |integer | digits:5|min:1| exists:especificos,id',
-            'nombre' => 'required |regex: /^[a-zA-Z0-9áéíóúñÑ\s\/]*$/ |unique:articulo,nombre_articulo'
+            'nombre' => 'required|unique:articulo,nombre_articulo'
         ]);
         try {
             $articulos = Articulo::where([
@@ -147,7 +147,7 @@ class ArticuloController extends Controller
     public function update(Request $request, $codigoArticulo)
     {
         $this->validate($request,[
-            'nombre'=>'required |regex: /^[a-zA-Z0-9áéíóúñÑ\s\/]*$/ |unique:articulo,nombre_articulo,'.$codigoArticulo.',codigo_articulo',
+            'nombre'=>'required|unique:articulo,nombre_articulo,'.$codigoArticulo.',codigo_articulo',
             'unidad' => 'required | integer |min:1',
             'especifico' => 'required |digits:5 |min:1| exists:especificos,id'
         ]);

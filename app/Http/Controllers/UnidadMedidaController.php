@@ -43,7 +43,7 @@ class UnidadMedidaController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nombre_unidadmedida' => 'required|regex: /^[a-zA-Z0-9áéíóúñÑ\/\s]*$/ |unique:unidad_medida,nombre_unidadmedida',
+            'nombre_unidadmedida' => 'required|unique:unidad_medida,nombre_unidadmedida',
         ]);
         try {
             UnidadMedida::create([
@@ -82,7 +82,7 @@ class UnidadMedidaController extends Controller
     {
         //Valida que el nombre de la unidad de medida sea unica, exceptuando ella misma
         $this->validate($request,[
-            'nombre_unidadmedida'=>'required|regex: /^[a-zA-Z0-9áéíóúñÑ\/\s]*$/ |unique:unidad_medida,nombre_unidadmedida,'.$id.',id_unidad_medida'
+            'nombre_unidadmedida'=>'required|unique:unidad_medida,nombre_unidadmedida,'.$id.',id_unidad_medida'
         ]);
         try {
             $unidad = UnidadMedida::FindOrFail($id);

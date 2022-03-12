@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<label for="nombre" class="col-sm-2 control-label">Nombre *</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" id="nombre" name="nombre" value="{{$provider->nombre}}" >
+							<textarea class="form-control" id="nombre" name="nombre" rows="50" cols="50" style="resize: both;">{{$provider->nombre}}</textarea>
 							<div class="error">
 								<ul>@foreach($errors->get('nombre') as $msg)<li>{{$msg}}</li> @endforeach</ul>
 							</div>
@@ -30,7 +30,7 @@
 					<div class="form-group">
 						<label for="direccion" class="col-sm-2 control-label">Direccion *</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" id="direccion" name="direccion" value="{{$provider->direccion}}">
+							<textarea class="form-control" id="direccion" name="direccion" rows="50" cols="50" style="resize: both;">{{$provider->direccion}}</textarea>
 							<div class="error">
 								<ul>@foreach($errors->get('direccion') as $msg)<li>{{$msg}}</li> @endforeach</ul>
 							</div>
@@ -67,7 +67,7 @@
 					<div class="form-group">
 						<label for="vendedor" class="col-sm-2 control-label">Vendedor *</label>
 						<div class="col-sm-6">
-							<input type="text" class="form-control" id="vendedor" name="vendedor" value="{{$provider->vendedor}}">
+							<textarea class="form-control" id="vendedor" name="vendedor" rows="50" cols="50" style="resize: both;">{{$provider->vendedor}}</textarea>
 							<div class="error">
 								<ul>@foreach($errors->get('vendedor') as $msg)<li>{{$msg}}</li> @endforeach</ul>
 							</div>

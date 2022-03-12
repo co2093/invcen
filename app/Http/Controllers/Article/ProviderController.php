@@ -47,9 +47,9 @@ class ProviderController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nombre'=>'required|unique:providers|regex: /^[a-zA-Z0-9áéíóúñÑ,\s\-\.]*$/|max:60 ',
-            'direccion'=>'required|regex: /^[a-zA-Z0-9áéíóúñÑ,\s\-\.]*$/ ',
-            'vendedor'=>'required|regex: /^[a-zA-Z0-9áéíóúñÑ,\s]*$/|max:60',
+            'nombre'=>'required|unique:providers',
+            'direccion'=>'required',
+            'vendedor'=>'required',
             'telefono'=>'required|max:9',
             'fax'=>'max:15',
         ]);
@@ -93,9 +93,9 @@ class ProviderController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-            'nombre'=>'max:60|required|regex: /^[a-zA-Z0-9áéíóúñÑ,\s\-\.]*$/ |unique:providers,nombre,'.$id.',id',
-            'direccion'=>'required|regex: /^[a-zA-Z0-9áéíóúñÑ,\.\s\-]*$/ ',
-            'vendedor'=>'required|regex: /^[a-zA-Z0-9áéíóúñÑ,\s]*$/|max:60',
+            'nombre'=>'required|unique:providers,nombre,'.$id.',id',
+            'direccion'=>'required',
+            'vendedor'=>'required',
             'telefono'=>'required|max:9',
             'fax'=>'max:15',
 
