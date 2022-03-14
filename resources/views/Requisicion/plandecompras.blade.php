@@ -71,7 +71,7 @@
         <td class="ancho-c">
             <div class="text-center distancia">
                 <strong>
-                    Centro de Investigaciones y Desarrollo en Salud<br>
+                    CENTRO DE INVESTIGACIÓN Y DESARROLLO EN SALUD "CENSALUD"<br>
                     Universidad de El Salvador<br>
                     Solicitudes<br>
                 </strong>

@@ -73,7 +73,7 @@
         <td class="ancho-c">
             <div class="text-center distancia">
                 <strong class="t2">
-                    <h1><i>Centro de Investigaciones y Desarrollo en Salud</i></h1>
+                    <h1><i>CENTRO DE INVESTIGACIÓN Y DESARROLLO EN SALUD "CENSALUD"</i></h1>
                     <h4 class="titulo">Universidad de El Salvador</h4><br>
                     <br>
                 </strong>
