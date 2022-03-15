@@ -19,7 +19,7 @@
                     <div class="form-group">
                         {!!Form::label('nombre', 'Nombre *', array('class' =>'col-md-2 control-label' )) !!}
                         <div class="col-md-6">
-                            {!!Form::textarea('nombre', '', array('placeholder' => 'Digite nombre del nuevo proveedor','class' => 'form-control rounded-0','required','autofocus'=>'on', 'rows' => 50, 'cols' => 50, 'style' => 'resize:both')) !!}
+                            {!!Form::textarea('nombre', '', array('placeholder' => 'Digite nombre del nuevo proveedor','class' => 'form-control rounded-0','required','autofocus'=>'on', 'rows' => 10, 'cols' => 10, 'style' => 'resize:both')) !!}
                             <div class="error">
                                 <ul>@foreach($errors->get('nombre') as $msg)
                                         <li>{{$msg}}</li> @endforeach</ul>
@@ -33,7 +33,7 @@
                         <div class="col-sm-6">
                             <textarea class="form-control rounded-0" id="direccion" name="direccion"
                                    value="{{ old('direccion') }}" placeholder="Digite La Direccion del nuevo proveedor"
-                                   required rows="50" cols="50" style="resize: both;"></textarea>
+                                   required rows="10" cols="10" style="resize: both;"></textarea>
                             <div class="error">
                                 <ul>@foreach($errors->get('direccion') as $msg)
                                         <li>{{$msg}}</li> @endforeach</ul>
@@ -70,7 +70,7 @@
                         <div class="col-sm-6">
                             <textarea  class="form-control rounded-0" id="vendedor" name="vendedor"
                                    value="{{ old('vendedor') }}" placeholder="Ingrese vendedor del nuevo proveedor"
-                                   required rows="50" cols="50" style="resize: both;"></textarea>
+                                   required rows="10" cols="10" style="resize: both;"></textarea>
                             <div class="error">
                                 <ul>@foreach($errors->get('vendedor') as $msg)
                                         <li>{{$msg}}</li> @endforeach</ul>
