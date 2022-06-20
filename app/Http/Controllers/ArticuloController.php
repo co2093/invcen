@@ -198,22 +198,22 @@ class ArticuloController extends Controller
 
     public function destroy($codigoArticulo)
     {
-        try {
+       try {
             $articulo = Articulo::findOrFail($codigoArticulo);
-            if($articulo->transacciones->count() > 0){
-                flash('Error al eliminar producto, tiene tiene transacciones asociadas', 'danger');
-                return redirect()->back();
-            }elseif ($articulo->existencia > 0 && precio >= 0.00){
-                flash('Error al eliminar producto, hay articulos en existencia', 'danger');
-                return redirect()->back();
-            }else{
+          //  if($articulo->transacciones->count() > 0){
+              //  flash('Error al eliminar producto, tiene tiene transacciones asociadas', 'danger');
+            //    return redirect()->back();
+          //  }elseif ($articulo->existencia > 0 && precio >= 0.00){
+            //    flash('Error al eliminar producto, hay articulos en existencia', 'danger');
+             //   return redirect()->back();
+         //   }else{
                 flash('Producto eliminado exitosamente', 'success');
                 $articulo->delete();
                 return redirect()->route('articulo.index');
-            }
+          //  }
 
         }catch (Exception $ex){
-            return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
+           return 'Codigo: '.$ex->getCode().' Mensaje: '.$ex->getMessage();
         }
     }
 
