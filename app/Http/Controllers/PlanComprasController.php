@@ -31,8 +31,10 @@ class PlanComprasController extends Controller
             ->where('user_id', '=', Auth::user()->id)
             ->where('estado', '=', "Pendiente")
             ->get();
+
+            $proveedores = DB::table('providers')->get();            
             
-            return view('plandecompras.index', compact('planDelUsuario'));
+            return view('plandecompras.index', compact('planDelUsuario', 'proveedores'));
         }else{
 
             return redirect()->route('plandecompras.error');
@@ -691,15 +693,16 @@ class PlanComprasController extends Controller
     public function individual(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id', 'proveedor')
+        ->select('user_id','nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id', 'proveedor', 'total', 'unidad', 'nuevoproveedor')
         ->where('estado', '=', "Pendiente")
 
         ->get();
+        $proveedores = DB::table('providers')->get();  
 
         $categorias = Especifico::all();
         $users = User::all();
 
-        return view('plandecompras.individual', compact('planDelUsuario', 'categorias', 'users'));
+        return view('plandecompras.individual', compact('planDelUsuario', 'categorias', 'users', 'proveedores'));
     }
 
     public function excelIndividual(){
@@ -787,15 +790,32 @@ class PlanComprasController extends Controller
     public function buscarIndividual(Request $request){
 
         $categoria = DB::table('especificos')->where('id', $request->input('categoria'))->first();
+        $proveedores = DB::table('providers')->get();   
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id', 'proveedor')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id', 'proveedor', 'total', 'nuevoproveedor', 'unidad')
         ->where('estado', '=', "Pendiente")
         ->where('categoria', $categoria->titulo_especifico)
         ->get();
 
 
-        return view ('plandecompras.busquedaIndividual', compact('categoria', 'planDelUsuario'));
+        return view ('plandecompras.busquedaIndividual', compact('categoria', 'planDelUsuario', 'proveedores'));
+    }
+
+    public function buscarIndividualUser(Request $request){
+
+        $usuario = DB::table('users')->where('id', $request->input('usuario'))->first();
+        $proveedores = DB::table('providers')->get();   
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id', 'proveedor', 'total', 'nuevoproveedor', 'unidad', 'categoria')
+        ->where('estado', '=', "Pendiente")
+        ->where('user_id', $usuario->id)
+        ->get();
+        
+
+
+        return view ('plandecompras.busquedaIndividualUser', compact('usuario', 'planDelUsuario', 'proveedores'));
     }
 
 

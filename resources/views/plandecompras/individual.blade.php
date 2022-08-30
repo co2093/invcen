@@ -5,6 +5,43 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
+        <h4 class="panel-title"><strong>Buscar por usuario</strong></h4>
+    </div>
+    <div class="panel-body">
+
+    <form method="POST" action="{{route('plandecompras.filter.individual.user')}}">
+        {{ csrf_field() }}
+
+        <div class="form-group">
+            <div class="col-xs-offset-3">
+                <label>Usuario</label>
+
+                    <select name="usuario" id="usuario" class="form-control">
+
+                        @foreach($users as $c)
+                            <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+
+                    </select>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-xs-offset-3">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+
+     </form>   
+
+    </div>
+</div>
+
+
+<div class="panel panel-info">
+    <div class="panel-heading">
         <h4 class="panel-title"><strong>Buscar por categoría</strong></h4>
     </div>
     <div class="panel-body">
@@ -64,7 +101,10 @@
                 <th>Nombre del producto</th>
                 <th>Categoría</th>
                 <th>Especificaciones</th>
+                <th>Unidad de medida</th>
                 <th>Proveedor</th>
+                <th>Nuevo proveedor</th>
+                <th>Teléfono</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Cotización</th>
@@ -94,9 +134,18 @@
                         <td>{{$a->nombre_producto}}</td>
                         <td>{{$a->categoria}}</td>
                         <td>{{$a->especificaciones}}</td>
+                        <td>{{$a->unidad}}</td>
                         <td>{{$a->proveedor}}</td>
-                        <td>{{$a->precio_unitario}}</td>
-                        <td>{{$a->cantidad*$a->precio_unitario}}</td>
+                        <td>
+                            @foreach ($proveedores as $p)
+                                @if ($p->telefono == $a->nuevoproveedor)
+                                    {{$p->nombre}}
+                                @endif
+                            @endforeach                           
+                        </td>
+                        <td>{{$a->nuevoproveedor}}</td>
+                        <td>${{ round($a->precio_unitario,2) }}</td>
+                        <td>${{ round(($a->total),2) }}</td>
                         <td>
                         @if($a->cotizacion)
                             <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>

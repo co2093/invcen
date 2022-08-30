@@ -29,9 +29,12 @@
                 <th>Nombre del producto</th>
                 <th>Categoría</th>
                 <th>Especificaciones</th>
+                <th>Unidad de medida</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Proveedor</th>
+                <th>Nuevo proveedor</th>
+                <th>Teléfono</th>
                 <th>Cotización</th>
                 <th colspan="2">Opciones</th>
             </tr>
@@ -45,9 +48,18 @@
                         <td>{{$a->nombre_producto}}</td>
                         <td>{{$a->categoria}}</td>
                         <td>{{$a->especificaciones}}</td>
+                        <td>{{$a->unidad}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
-                        <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
+                        <td>${{ round(($a->total),2) }}</td>
                         <td>{{$a->proveedor}}</td>
+                        <td>
+                            @foreach ($proveedores as $p)
+                                @if ($p->telefono == $a->nuevoproveedor)
+                                    {{$p->nombre}}
+                                @endif
+                            @endforeach                           
+                        </td>
+                        <td>{{$a->nuevoproveedor}}</td>
                         <td>
                             @if($a->cotizacion)
                             <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>
