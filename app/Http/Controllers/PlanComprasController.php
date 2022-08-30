@@ -83,26 +83,26 @@ class PlanComprasController extends Controller
 
         
 
-        if($e){
+       /* if($e){
 
-        $fecha = Carbon::now();
+       $fecha = Carbon::now();
 
-        $request2 = array(
-            $request->input('cantidad'), //0
+       $request2 = array(
+           $request->input('cantidad'), //0
             $request->input('nombre_producto'),  //1
-            $request->input('especificaciones'),  //2
+           $request->input('especificaciones'),  //2
             $request->input('precio'),  //3
             $request->input('proveedor'),  //4
-            $request->input('cotizacion'), //5
+           $request->input('cotizacion'), //5
             $request->input('user_id'),  //6
-            $request->input('categoria'),  //7
+          $request->input('categoria'),  //7
             $fecha,  //8
             'Pendiente' //9
         );
 
         return view('plandecompras.revision', compact('e', 'request2'));
 
-        }else{
+       *}else{*/
 
         $fecha = Carbon::now();
 
@@ -123,6 +123,17 @@ class PlanComprasController extends Controller
 
         }
 
+        $t = DB::table('providers')->where('telefono', '=', $request->input('telefono'))->first();
+        $t1 = DB::table('providers')->where('nombre', '=', $request->input('nuevoproveedor'))->first();
+
+        if ($t || $t1) {
+            // code...
+            flash('El proveedor nuevo ya existe, revisar en la lista', 'danger');
+            return redirect()->back();
+
+
+        }else{
+
 
         DB::table('plan_compras')->insert([
             'cantidad' => $request->input('cantidad'),
@@ -134,13 +145,24 @@ class PlanComprasController extends Controller
             'user_id' => $request->input('user_id'),
             'categoria' => $request->input('categoria'),
             'fecha' => $fecha,
-            'estado' => 'Pendiente' 
+            'estado' => 'Pendiente',
+            'nuevoproveedor' => $request->input('telefono'),
+            'unidad' => $request->input('unidadmedida'),
+            'total' => $request->input('total') 
+        ]);
+
+        DB::table('providers')->insert([
+            'nombre' => $request->input('nuevoproveedor'),
+            'telefono' =>$request->input('telefono'),
+            'direccion' => ' ',
+            'vendedor' => ' '
+
         ]);
 
         flash('Producto agregado al plan de compras exitosamente', 'success');
         return redirect()->route('plan.index');
 
-        }
+       }
 
 
 
@@ -190,7 +212,10 @@ class PlanComprasController extends Controller
         ->where('id', '=', $idProduct)
         ->first();
 
-        return view('plandecompras.edit', compact('product', 'categorias', 'proveedores'));
+        $nuevo = DB::table('providers')->where('telefono', '=', $product->nuevoproveedor)->first();
+
+
+        return view('plandecompras.edit', compact('product', 'categorias', 'proveedores', 'nuevo'));
 
         }else{
 
@@ -240,8 +265,23 @@ class PlanComprasController extends Controller
             'categoria' => $request->input('categoria'),
             'proveedor' => $request->input('proveedor'),
             'fecha' => $fecha,
+            'nuevoproveedor' => $request->input('telefono'),
+            'unidad' => $request->input('unidadmedida'),
+            'total' => $request->input('total'), 
             'cotizacion'=>$nombreOriginal
         ]);
+
+
+        
+
+        DB::table('providers')
+        ->where('telefono', '=', $request->input('antiguo'))
+        ->update([
+            'nombre'=>$request->input('nuevoproveedor'),
+            'telefono'=>$request->input('telefono')
+        ]);
+
+        
 
         flash('Producto editado exitosamente', 'info');
         return redirect()->route('plan.index');

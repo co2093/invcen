@@ -15,6 +15,8 @@
 			<form method="POST" action="{{route('plandecompras.update')}}"  enctype="multipart/form-data">
 				{{ csrf_field() }}
 				<input type="hidden" name="idProduct" id="idProduct" value="{{$product->id}}">
+				<input type="hidden" name="antiguo" id="antiguo" value="{{$nuevo->telefono}}">
+
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
@@ -50,7 +52,14 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Cantidad</label>
+					<label>Unidad de medida</label>
+					<input type="text" name="unidadmedida" id="unidadmedida" value="{{$product->unidad}}" class="form-control">
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Cantidad solicitada</label>
 					<input type="number" name="cantidad" id="cantidad" value="{{$product->cantidad}}" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
@@ -71,8 +80,31 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
+					<label>Nombre de nuevo proveedor</label>
+					<input type="text" name="nuevoproveedor" id="nuevoproveedor" value="{{$nuevo->nombre}}" class="form-control" required>
+				</div>
+				</div>
+
+				
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Teléfono de nuevo proveedor</label>
+					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" value="{{$nuevo->telefono}}" class="form-control" required>
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
 					<input type="number" step="any" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Total</label>
+					<input type="number" step="any" name="total" id="total" value="{{$product->total}}" class="form-control">
+
 				</div>
 				</div>
 

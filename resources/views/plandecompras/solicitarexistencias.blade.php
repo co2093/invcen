@@ -11,7 +11,9 @@
     	<div class="panel-body">
     		Actualmente hay <strong>{{$product->existencia}}</strong> existencias del articulo <strong>{{$product->nombre_articulo}}</strong> en bodega.
     	</div>
-  	</div>
+  	</div>	<div class="panel panel-success">
+
+
 
 
 <div class="panel panel-default">
@@ -49,7 +51,14 @@
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Cantidad</label>
+					<label>Unidad de medida</label>
+					<input type="text" name="unidadmedida" id="unidadmedida" value="{{$product->unidad->nombre_unidadmedida}}" class="form-control">
+				</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Cantidad solicitada</label>
 					<input type="number" name="cantidad" id="cantidad" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
@@ -68,10 +77,38 @@
 				</div>
 				</div>
 
+				
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Nombre de nuevo proveedor</label>
+					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control" required>
+				</div>
+				</div>
+
+				
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Teléfono de nuevo proveedor</label>
+					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control" required>
+				</div>
+				</div>
+
+
+
+
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
 					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control">
+
+				</div>
+				</div>
+
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label>Total</label>
+					<input type="number" step="any" name="total" id="total" class="form-control">
 
 				</div>
 				</div>
