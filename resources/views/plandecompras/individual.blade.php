@@ -97,7 +97,7 @@
             <thead>
             <tr>
                 <th>Usuario</th>
-                <th>Cantidad</th>
+                <th>Cantidad solicitada</th>
                 <th>Nombre del producto</th>
                 <th>Categoría</th>
                 <th>Especificaciones</th>
@@ -108,7 +108,8 @@
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Cotización</th>
-                <th>Finalizar</th>
+                <th>Aprobar cantidad</th>
+                <th>Eliminar</th>
             </tr>
             </thead>
             <tbody>
@@ -154,6 +155,9 @@
                         @endif
                         </td>
                         <td>
+                            <a href="{{ route('plandecompras.aprobar', $a->id) }}" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>
+                        </td>
+                        <td>
                             <a onclick="return confirm('¿Eliminar producto del plan de compras?')" href="{{route('plandecompras.finalizarCompra', $a->id)}}" class="btn btn-danger btn-sm" title="Eliminar">
                             <span class="glyphicon glyphicon-remove"></span>
                         </td>
@@ -178,7 +182,7 @@
                 {
                     "paging": true,
                     "lengthChange": false,
-                    "searching": false,
+                    "searching": true,
                     "ordering": true,
                     "info": false,
                     "autoWidth": true

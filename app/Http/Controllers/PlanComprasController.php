@@ -294,8 +294,11 @@ class PlanComprasController extends Controller
         ->where('user_id', '=', Auth::user()->id)
         ->where('estado', '!=', "Pendiente")
         ->get();
+
+        $proveedores = DB::table('providers')->get();            
+            
         
-        return view('plandecompras.historial', compact('planDelUsuario'));
+        return view('plandecompras.historial', compact('planDelUsuario', 'proveedores'));
         
     }
 
@@ -906,13 +909,14 @@ class PlanComprasController extends Controller
     }
 
 
-    public function finalizarCompra($idProduct){
+    public function finalizarCompra(Request $request){
 
 
         DB::table('plan_compras')
-        ->where('id', '=', $idProduct)
+        ->where('id', '=', $request->input('idProduct'))
         ->update([
-            'estado'=>"Finalizado"
+            'estado'=>"Finalizado",
+            'cantidad_aprobada'=>$request->input('aprobada')
         ]);
 
         $cotizacion = DB::table('plan_compras')
@@ -932,11 +936,23 @@ class PlanComprasController extends Controller
 
 
 
-        flash('Compra finalizada exitosamente', 'success');
+        flash('Producto aprobado exitosamente', 'success');
 
         return redirect()->route('plandecompras.individual');
     }
 
+    public function aprobar($idProduct){
+
+         $product = DB::table('plan_compras')
+        ->where('id', '=', $idProduct)
+        ->first();
+
+        $user = DB::table('users')
+        ->where('id', '=', $product->user_id)
+        ->first();
+
+        return view('plandecompras.aprobar', compact('product', 'user'));
+    }
 
     public function excelHistorial(){
 

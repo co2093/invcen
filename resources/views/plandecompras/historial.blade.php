@@ -23,12 +23,16 @@
         <table class="table table-hover table-striped table-bordered table-condensed" id="TablaRequisicion">
             <thead>
             <tr>
-                <th>Cantidad</th>
+                <th>Cantidad solicitada</th>
                 <th>Nombre del producto</th>
                 <th>Especificaciones</th>
+                <th>Unidad de medida</th>
                 <th>Proveedor</th>
+                <th>Nuevo proveedor</th>
+                <th>Teléfono</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
+                <th>Cantidad aprobada</th>
                 <th>Estado</th>
             </tr>
             </thead>
@@ -40,9 +44,19 @@
                         <td>{{$a->cantidad}}</td>
                         <td>{{$a->nombre_producto}}</td>
                         <td>{{$a->especificaciones}}</td>
+                        <td>{{$a->unidad}}</td>
                         <td>{{$a->proveedor}}</td>
+                        <td>
+                            @foreach ($proveedores as $p)
+                                @if ($p->telefono == $a->nuevoproveedor)
+                                    {{$p->nombre}}
+                                @endif
+                            @endforeach                           
+                        </td>
+                        <td>{{$a->nuevoproveedor}}</td>
                         <td>${{ round($a->precio_unitario,2) }}</td>
-                        <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
+                        <td>${{ round(($a->total),2) }}</td>
+                        <td>{{$a->cantidad_aprobada}}</td>
                         <td>{{$a->estado}}</td>
                     </tr>
 

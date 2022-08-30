@@ -26,6 +26,8 @@
 		   <dd>{{$articulo->existencia}}</dd>
 		<dt>Precio unitario:</dt>
 		   <dd>${{number_format($articulo->precio_unitario,2,'.','')}}</dd>
+		<dt>Total:</dt>
+		   <dd>${{ number_format(($articulo->precio_unitario*$articulo->existencia),2,'.','') }}</dd>
 		@if($articulo->es_reactivo=='S')
 		<dt>Reactivo:</dt>
 		   <dd>Si</dd>

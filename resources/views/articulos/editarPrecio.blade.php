@@ -5,7 +5,7 @@
 	<div class="panel panel-info">
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
-				<strong>Editar precio del producto: {{$product->codigo_articulo}}</strong>
+				<strong>Editar precio del producto: {{$product->nombre_articulo}}</strong>
 			</h4>
 		</div>
 		<div class="panel-body">

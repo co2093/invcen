@@ -483,7 +483,9 @@ Route::group(['middleware' => ['auth','depto','equipo']], function (){
     Route::get('plandecompras/pdf/{categoria}', 'PlanComprasController@pdfCategoriaInd')->name('plandecompras.pdf.categoria.ind');
     Route::get('plandecompras/excel/{categoria}', 'PlanComprasController@excelCategoriaInd')->name('plandecompras.excel.categoria.ind');
 
-    Route::get('plandecompras/finalizar/{idProduct}', 'PlanComprasController@finalizarCompra')->name('plandecompras.finalizarCompra');
+    Route::post('plandecompras/finalizar/producto', 'PlanComprasController@finalizarCompra')->name('plandecompras.finalizarCompra');
+    Route::get('plandecompras/aprobar/{idProduct}', 'PlanComprasController@aprobar')->name('plandecompras.aprobar');
+
 
 
 });
