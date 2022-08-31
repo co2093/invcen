@@ -108,8 +108,7 @@
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Cotización</th>
-                <th>Aprobar cantidad</th>
-                <th>Eliminar</th>
+                <th>Añadir al plan</th>
             </tr>
             </thead>
             <tbody>
@@ -157,10 +156,7 @@
                         <td>
                             <a href="{{ route('plandecompras.aprobar', $a->id) }}" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>
                         </td>
-                        <td>
-                            <a onclick="return confirm('¿Eliminar producto del plan de compras?')" href="{{route('plandecompras.finalizarCompra', $a->id)}}" class="btn btn-danger btn-sm" title="Eliminar">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </td>
+
                     </tr>
 
                 @endforeach

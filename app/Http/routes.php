@@ -499,6 +499,10 @@ Route::group(['middleware' => ['auth','depto','equipo','admin_bodega']], functio
     Route::get('plan/habilitar', 'RequisicionController@habilitarPeriodo')->name('plandecompras.habilitar');
     Route::post('habilitar/update', 'RequisicionController@editarEstado')->name('periodo.update');
 
+    Route::get('plancompras/historial/general', 'PlanComprasController@historialGeneral')->name('plandecompras.historial.general');
+    Route::get('plandecompras/excel/historial/general', 'PlanComprasController@excelHistorialGeneral')->name('plandecompras.excel.historial.general');
+
+
 
 
 });  

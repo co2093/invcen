@@ -21,6 +21,8 @@
     </ul>
     <ul class="treeview-menu">
         <li><a href="{{route('plandecompras.historial')}}"><i class="glyphicon glyphicon-chevron-right"></i>Historial</a></li>
+                <li><a href="{{route('plandecompras.historial.general')}}"><i class="glyphicon glyphicon-chevron-right"></i>Historial General</a></li>
+
                 <li><a href="{{route('plandecompras.individual')}}"><i class="glyphicon glyphicon-chevron-right"></i>Plan Individual</a></li>
 
         <li><a href="{{route('plandecompras.resumen')}}"><i class="glyphicon glyphicon-chevron-right"></i>Resumen</a></li>

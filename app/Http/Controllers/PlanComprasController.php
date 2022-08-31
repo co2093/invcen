@@ -302,6 +302,19 @@ class PlanComprasController extends Controller
         
     }
 
+    public function historialGeneral(){
+
+        $historialGeneral = DB::table('plan_compras')
+        ->where('estado', '!=', "Pendiente")
+        ->orderBy('categoria', 'asc')
+        ->get();
+
+
+        //dd($hitorialGeneral);
+
+        return view ('plandecompras.historialgeneral', compact('historialGeneral'));
+    }
+
 
     public function solicitarExistencias($idProduct){
 
@@ -987,6 +1000,64 @@ class PlanComprasController extends Controller
                 }
 
 
+
+            });
+
+        })->export('xlsx');
+
+
+    }
+
+    public function excelHistorialGeneral(){
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+        Excel::create("Plan de Compras General".$fecha, function($excel) use($fecha) {
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->where('estado', '!=', "Pendiente")
+        ->orderBy('categoria', 'asc')
+        ->get();
+
+        $categorias = DB::table('especificos')
+        ->select('titulo_especifico')
+        ->get();
+
+       // dd($categorias);
+
+        $c=7;
+        $i=7;
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha, $categorias, $c, $i) {
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Historial de plan de compras general']);
+                $sheet->row(6, [
+                    'NOMBRE DEL BIEN', 'ESPECIFICACIONES TÉCNICAS', 'CANTIDAD','UNIDAD DE MEDIDA Y PRESENTACIÓN', 'PRECIO UNITARIO', 'TOTAL'
+                ]);
+
+                foreach($categorias as $index =>$s){
+
+                    foreach($planDelUsuario as $index2 => $s2){
+
+                            
+                            if($s->titulo_especifico == $s2->categoria){
+
+                                $sheet->row($i,[$s2->categoria]);
+                                
+                                $sheet->row($c+1, [
+                                $s2->nombre_producto, $s2->especificaciones,$s2->categoria, $s2->unidad,$s2->precio_unitario,$s2->total
+                                ]);
+                                $c++;
+                            }   
+                    }
+
+                $i=$c+1;
+                $c=$c+1;
+
+
+                }
+    
 
             });
 
