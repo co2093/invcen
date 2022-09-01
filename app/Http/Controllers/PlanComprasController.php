@@ -1023,13 +1023,27 @@ class PlanComprasController extends Controller
         ->select('titulo_especifico')
         ->get();
 
-       // dd($categorias);
+        $totalCat = DB::table('plan_compras')
+        ->select('categoria', DB::raw('SUM(total) as total'))
+        ->where('estado', '!=', "Pendiente")
+        ->groupBy('categoria')
+        ->get();
+
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('estado', '!=', "Pendiente")
+        ->first();
+
+
+        //dd($total->final);
+
 
         $c=7;
         $i=7;
+        $a=0;
 
 
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha, $categorias, $c, $i) {
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha, $categorias, $c, $i, $totalCat, $total) {
                 $sheet->row(2, ['', 'Fecha', $fecha]);
                 $sheet->row(3, ['', 'Historial de plan de compras general']);
                 $sheet->row(6, [
@@ -1043,21 +1057,23 @@ class PlanComprasController extends Controller
                             
                             if($s->titulo_especifico == $s2->categoria){
 
-                                $sheet->row($i,[$s2->categoria]);
+                                $sheet->row($i,[$s2->categoria, ' ', ' ', ' ',' ', '0.0']);
                                 
                                 $sheet->row($c+1, [
                                 $s2->nombre_producto, $s2->especificaciones,$s2->categoria, $s2->unidad,$s2->precio_unitario,$s2->total
                                 ]);
                                 $c++;
+                                $a=$c; 
                             }   
                     }
 
                 $i=$c+1;
                 $c=$c+1;
-
+                
 
                 }
-    
+
+                $sheet->row($a+1,[' ', ' ', ' ', ' ',' TOTAL', $total->final]);
 
             });
 
