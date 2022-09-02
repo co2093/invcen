@@ -472,6 +472,8 @@ Route::group(['middleware' => ['auth','depto','equipo']], function (){
     Route::post('plancompras/buscar/', 'PlanComprasController@buscar')->name('plandecompras.filter');
     Route::get('plancompras/pdf/{categoria}', 'PlanComprasController@pdfCategoria')->name('plandecompras.pdf.categoria');
     Route::get('plancompras/excel/{categoria}', 'PlanComprasController@excelCategoria')->name('plandecompras.excel.categoria');
+    Route::get('plancompras/pdf/usuario/{usuario}', 'PlanComprasController@pdfUsuario')->name('plandecompras.pdf.usuario');
+    Route::get('plancompras/excel/usuario/{usuario}', 'PlanComprasController@excelUsuario')->name('plandecompras.excel.usuario');
 
     Route::get('plandecompras/individual', 'PlanComprasController@individual')->name('plandecompras.individual');
     Route::get('plandecompras/pdf/individual', 'PlanComprasController@pdfIndividual')->name('plandecompras.individual.pdf');
@@ -487,6 +489,7 @@ Route::group(['middleware' => ['auth','depto','equipo']], function (){
     Route::get('plandecompras/aprobar/{idProduct}', 'PlanComprasController@aprobar')->name('plandecompras.aprobar');
     Route::get('plandecompras/aprobar/general/{a}/{b}/{c}/{d}/{e}', 'PlanComprasController@aprobarGeneral')->name('plandecompras.aprobar.general');
     Route::get('plandecompras/aprobar/confirmar/{a}/{b}/{c}/{d}/{e}', 'PlanComprasController@aprobarGeneralConfirmar')->name('plandecompras.aprobar.confirmar');
+    Route::get('plandecompras/consultar/general/{a}', 'PlanComprasController@consultarGeneral')->name('plandecompras.consultar.general');
 
 
 

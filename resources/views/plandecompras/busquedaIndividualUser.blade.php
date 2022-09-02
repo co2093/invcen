@@ -13,8 +13,8 @@
 		<div class="panel-body">
 
     <div>
-        <a href="#" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
-        <a href="#" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
+        <a href="{{route('plandecompras.excel.usuario', Auth::user()->id)}}" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
+        <a href="{{route('plandecompras.pdf.usuario', Auth::user()->id)}}" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
     </div>
 
 
@@ -31,7 +31,8 @@
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Cotización</th>
-                <th>Finalizar</th>
+                <th>Añadir al plan</th>
+                <th>Consultar en bodega</th>
             </tr>
             </thead>
             <tbody>
@@ -55,8 +56,11 @@
                            @endif
                         </td>
                         <td>
-                            <a onclick="return confirm('¿Eliminar producto del plan de compras?')" href="{{route('plandecompras.finalizarCompra', $a->id)}}" class="btn btn-danger btn-sm" title="Eliminar">
-                            <span class="glyphicon glyphicon-remove"></span>
+                            <a href="{{ route('plandecompras.aprobar', $a->id) }}" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>
+                        </td>
+
+                       <td>
+                            <a href="{{ route('plandecompras.consultar.general', [$a->nombre_producto]) }}" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span>                            
                         </td>
                     </tr>
 

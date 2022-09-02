@@ -109,6 +109,7 @@
                 <th>Costo Total</th>
                 <th>Cotización</th>
                 <th>Añadir al plan</th>
+                <th>Consultar en bodega</th></th>
             </tr>
             </thead>
             <tbody>
@@ -145,7 +146,7 @@
                         </td>
                         <td>{{$a->nuevoproveedor}}</td>
                         <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
-                        <td>${{ number_format(($articulo->total),2,'.','') }}</td>
+                        <td>${{ number_format(($a->total),2,'.','') }}</td>
                         <td>
                         @if($a->cotizacion)
                             <a class="btn btn-secondary btn-sm"  title="Descargar" href="{{route('pladecompras.descargar', $a->cotizacion) }}"><span class="fa fa-download fa-2x"></span></a>
@@ -155,6 +156,9 @@
                         </td>
                         <td>
                             <a href="{{ route('plandecompras.aprobar', $a->id) }}" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>
+                        </td>
+                        <td>
+                            <a href="{{ route('plandecompras.consultar.general', [$a->nombre_producto]) }}" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span>                            
                         </td>
 
                     </tr>

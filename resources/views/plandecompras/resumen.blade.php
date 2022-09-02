@@ -68,6 +68,7 @@
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
                 <th>Añadir al plan</th>
+                <th>Consultar en bodega</th>
             </tr>
             </thead>
             <tbody>
@@ -81,9 +82,12 @@
                         <td>{{$a->categoria}}</td>
                         <td>{{$a->unidad}}</td>
                         <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
-                        <td>${{ number_format(($articulo->total),2,'.','') }}</td>
+                        <td>${{ number_format(($a->cantidad*$a->precio_unitario),2,'.','') }}</td>
                         <td>
                             <a href="{{ route('plandecompras.aprobar.general', [$a->nombre_producto, $a->especificaciones, $a->categoria, $a->unidad, $a->precio_unitario]) }}" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>
+                        </td>
+                        <td>
+                            <a href="{{ route('plandecompras.consultar.general', [$a->nombre_producto]) }}" class="btn btn-info"><span class="glyphicon glyphicon-info-sign"></span>                            
                         </td>
 
                     </tr>

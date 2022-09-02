@@ -308,7 +308,7 @@ class PlanComprasController extends Controller
     public function historialGeneral(){
 
         $historialGeneral = DB::table('plan_compras')
-        ->where('estado', '!=', "Pendiente")
+        ->where('estado', '=', "Aprobado")
         ->orderBy('categoria', 'asc')
         ->get();
 
@@ -432,44 +432,7 @@ class PlanComprasController extends Controller
         return view('plandecompras.resumen', compact('planDelUsuario', 'categorias'));
     }
 
-    public function resumenExcel(){
 
-
-        $fecha = Carbon::now()->format('d-m-Y');
-
-
-        Excel::create('plan de compras '.$fecha, function($excel) use($fecha) {
-
-        $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'proveedor', 'precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
-        ->where('estado', '=', "Pendiente")
-        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor')
-        ->get();
-
-
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha) {
-
-                $sheet->row(2, ['', 'Fecha', $fecha]);
-                $sheet->row(3, ['', 'Cuadro de plan de compras general'
-                ]);
-                $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Especificaciones', 'Proveedor', 'Precio unitario', 'Costo total'
-                ]);
-
-
-                foreach($planDelUsuario as $index => $s) {
-                       $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_producto, $s->especificaciones,$s->proveedor,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
-                    ]); 
-                }
-
-
-
-            });
-
-        })->export('xlsx');
-
-    }
 
     public function resumenPdf(){
 
@@ -617,6 +580,45 @@ class PlanComprasController extends Controller
                     $pdf->Output($nombre);
     }
 
+    public function pdfUsuario($user_id){
+
+        
+        
+        $planDelUsuario = DB::table('plan_compras')
+        ->where('user_id', $user_id)
+        ->where('estado', '=', "Pendiente")
+        ->get();
+
+        $view = \View::make('plandecompras.planpdf', ['solicitudes' => $planDelUsuario]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Plan de Compras');
+                    $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('L');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                    $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);
+
+
+                    $pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'plandecompras '.$fecha.'.pdf';
+                    $pdf->Output($nombre);
+    }
+
     public function excelCategoria($categoria){
 
 
@@ -662,6 +664,47 @@ class PlanComprasController extends Controller
 
         })->export('xlsx');
     }
+
+    public function excelUsuario($user_id){
+
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+        //dd($categoria);
+
+        Excel::create("Plan de Compras ".$categoria->titulo_especifico.$fecha, function($excel) use($user_id, $fecha) {
+
+        $planDelUsuario = DB::table('plan_compras')
+        ->where('user_id', $user_id)
+        ->where('estado', '=', "Pendiente")
+        ->get();
+
+        //dd($planDelUsuario);
+
+
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha) {
+
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Cuadro de plan de compras']);
+                $sheet->row(4, ['', 'Categoría', $categoria->titulo_especifico]);
+                $sheet->row(6, [
+                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Proveedor', 'Precio unitario', 'Costo total'
+                ]);
+
+
+                foreach($planDelUsuario as $index => $s) {
+                       $sheet->row($index+7, [
+                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones, $s->proveedor,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
+                    ]); 
+                }
+
+
+
+            });
+
+        })->export('xlsx');
+    }
+
 
     public function finalizar(){
 
@@ -744,33 +787,63 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now()->format('d-m-Y');
 
+        $a = 7;
 
+        $users = DB::table('users')
+        ->get();
+
+
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('estado', '=', "Pendiente")
+        ->first();
        
 
-        Excel::create("Plan de Compras Individual".$fecha, function($excel) use($fecha) {
+        Excel::create("Plan de Compras Individual".$fecha, function($excel) use($fecha, $a, $total, $users) {
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'proveedor')
+        ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'proveedor','user_id')
         ->where('estado', '=', "Pendiente")
         ->get();
 
 
 
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha) {
+            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha, $a, $total, $users) {
 
                 $sheet->row(2, ['', 'Fecha', $fecha]);
                 $sheet->row(3, ['', 'Cuadro de plan de compras']);
                
                 $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Proveedor', 'Precio unitario', 'Costo total'
+                    'Usuario','Cantidad','Nombre del producto', 'Categoría','Especificaciones', 'Proveedor', 'Precio unitario', 'Costo total'
                 ]);
 
 
                 foreach($planDelUsuario as $index => $s) {
+
+                    $nombre = " ";
+
+
+                    foreach($users as $u){
+
+                        if ($s->user_id == $u->id) {
+                            
+                            $nombre = $u->name;
+
+                        }
+
+                    }
+
+
+
+
                        $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,$s->proveedor,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
-                    ]); 
+                        $nombre, $s->cantidad, $s->nombre_producto, $s->categoria, $s->especificaciones,$s->proveedor,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
+                    ]);
+
+                    $a++; 
                 }
+
+                $sheet->row($a,[' ',' ', ' ', ' ', ' ',' ',' TOTAL', $total->final]);
 
 
 
@@ -1040,6 +1113,18 @@ class PlanComprasController extends Controller
         return view('plandecompras.aprobargeneral', compact('planDelUsuario', 'users', 'a', 'b', 'c', 'd', 'e'));
     }
 
+    public function consultarGeneral($a){
+
+      $articulo = DB::table('articulo')
+      ->where('nombre_articulo','=',$a)
+      ->first();
+
+
+      //dd($producto);
+
+      return view('plandecompras.consultarGeneral', compact('articulo'));
+    }
+
     public function aprobarGeneralConfirmar($a, $b, $c, $d, $e){
 
         $estado = 'Pendiente'; 
@@ -1105,6 +1190,80 @@ class PlanComprasController extends Controller
 
         })->export('xlsx');
 
+
+    }
+
+    public function resumenExcel(){
+
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+
+        Excel::create('plan de compras '.$fecha, function($excel) use($fecha) {
+
+        $categorias = DB::table('especificos')
+        ->select('titulo_especifico')
+        ->get();
+
+
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('estado', '=', "Pendiente")
+        ->first();
+
+        $estado = 'Pendiente';  
+
+        
+        $plan = DB::select(
+            'SELECT * FROM (
+                SELECT categoria, SUM(total) FROM plan_compras WHERE estado = ? GROUP BY categoria) t1
+            INNER join(SELECT * FROM plan_compras WHERE estado = ?) t2
+            ON t1.categoria = t2.categoria',[$estado, $estado]
+        );
+
+        $c=7;
+        $i=7;
+        $a=0;
+
+
+            $excel->sheet('plandecompras', function($sheet) use($plan, $fecha, $categorias, $c, $i, $total) {
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Resumen de plan de compras general']);
+                $sheet->row(6, [
+                    'NOMBRE DEL BIEN', 'ESPECIFICACIONES TÉCNICAS', 'CANTIDAD','UNIDAD DE MEDIDA Y PRESENTACIÓN', 'PRECIO UNITARIO', 'TOTAL'
+                ]);
+
+                foreach($categorias as $index =>$s){
+
+                    foreach($plan as $index2 => $s2){
+
+                            
+                            if($s->titulo_especifico == $s2->categoria){
+
+                                $sheet->row($i,[$s2->categoria, ' ', ' ', ' ',' ', $s2->sum]);
+                                
+                                $sheet->row($c+1, [
+                                $s2->nombre_producto, $s2->especificaciones,$s2->cantidad_aprobada, $s2->unidad,$s2->precio_unitario,$s2->total
+                                ]);
+                                $c++;
+                                $a=$c; 
+                            }   
+                    }
+
+                $i=$c+1;
+                $c=$c+1;
+                
+
+                }
+
+                $sheet->row($a+1,[' ', ' ', ' ', ' ',' TOTAL', $total->final]);
+
+            });
+
+
+
+
+        })->export('xlsx');
 
     }
 
