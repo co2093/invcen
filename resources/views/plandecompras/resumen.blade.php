@@ -5,7 +5,7 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <h4 class="panel-title"><strong>Buscar por categoría</strong></h4>
+        <h4 class="panel-title"><strong>Resumen del plan de compras</strong></h4>
     </div>
     <div class="panel-body">
 
@@ -59,13 +59,15 @@
         <table class="table table-hover table-striped table-bordered table-condensed" id="TablaRequisicion">
             <thead>
             <tr>
-                <th>Cantidad</th>
+                <th>Cantidad solicitada</th>
                 <th>Nombre del producto</th>
+                
+                <th>Especificaciones Técnicas</th>
                 <th>Categoría</th>
-                <th>Especificaciones</th>
-                <th>Proveedor</th>
+                <th>Unidad de medida</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
+                <th>Añadir al plan</th>
             </tr>
             </thead>
             <tbody>
@@ -75,11 +77,15 @@
                     <tr>
                         <td>{{$a->cantidad}}</td>
                         <td>{{$a->nombre_producto}}</td>
-                        <td>{{$a->categoria}}</td>
                         <td>{{$a->especificaciones}}</td>
-                        <td>{{$a->proveedor}}</td>
-                        <td>${{ round($a->precio_unitario,2) }}</td>
-                        <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
+                        <td>{{$a->categoria}}</td>
+                        <td>{{$a->unidad}}</td>
+                        <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
+                        <td>${{ number_format(($articulo->total),2,'.','') }}</td>
+                        <td>
+                            <a href="{{ route('plandecompras.aprobar.general', [$a->nombre_producto, $a->especificaciones, $a->categoria, $a->unidad, $a->precio_unitario]) }}" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span>
+                        </td>
+
                     </tr>
 
                 @endforeach

@@ -150,6 +150,7 @@ class PlanComprasController extends Controller
             'estado' => 'Pendiente',
             'nuevoproveedor' => $request->input('telefono'),
             'unidad' => $request->input('unidadmedida'),
+            'cantidad_aprobada' =>$request->input('cantidad'),
             'total' => $request->input('total') 
         ]);
 
@@ -269,7 +270,9 @@ class PlanComprasController extends Controller
             'fecha' => $fecha,
             'nuevoproveedor' => $request->input('telefono'),
             'unidad' => $request->input('unidadmedida'),
-            'total' => $request->input('total'), 
+            'total' => $request->input('total'),
+            'cantidad_aprobada' =>$request->input('cantidad'),
+ 
             'cotizacion'=>$nombreOriginal
         ]);
 
@@ -417,9 +420,9 @@ class PlanComprasController extends Controller
     public function resumen(){
 
         $planDelUsuario = DB::table('plan_compras')
-        ->select('nombre_producto', 'categoria','especificaciones', 'proveedor','precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
+        ->select('nombre_producto', 'categoria','especificaciones', 'unidad','precio_unitario', DB::raw('SUM(cantidad) as cantidad'))
         ->where('estado', '=', "Pendiente")
-        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario','proveedor')
+        ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario','unidad')
         ->get();
 
         $categorias = Especifico::all();
@@ -668,12 +671,28 @@ class PlanComprasController extends Controller
 
     public function finalizarconfirmado(){
 
+        $estado = "Aprobado";
+        $estado2 = "Pendiente";
+        $cantidad = 0;
+
 
         DB::table('plan_compras')
-        ->where('estado', "Pendiente")
+        ->where('estado', "=", $estado)
         ->update([
             'estado'=>"Finalizado"
         ]);
+
+        DB::table('plan_compras')
+        ->where('estado', "=", $estado2)
+        ->update([
+            'estado'=>"Finalizado",
+
+            'cantidad_aprobada'=>$cantidad,
+            'total'=>$cantidad
+
+        ]);        
+
+
 
 
 
@@ -928,8 +947,43 @@ class PlanComprasController extends Controller
         DB::table('plan_compras')
         ->where('id', '=', $request->input('idProduct'))
         ->update([
+            'estado'=>"Aprobado",
+            'cantidad_aprobada'=>$request->input('aprobada'),
+            'total'=>$request->input('aprobada')*$request->precio
+        ]);
+
+        $cotizacion = DB::table('plan_compras')
+        ->select('cotizacion')
+        ->where('id', '=', $idProduct)
+        ->value('cotizacion');
+
+        
+        if($cotizacion){
+        $archivo= public_path()."/cotizacion/".$cotizacion;
+
+        if (file_exists($archivo)) {
+            unlink($archivo);  
+            }
+        }
+
+
+
+
+        flash('Producto aprobado exitosamente', 'success');
+
+        return redirect()->route('plandecompras.individual');
+    }
+
+
+    public function finalizarCompraFinal(Request $request){
+
+
+        DB::table('plan_compras')
+        ->where('id', '=', $request->input('idProduct'))
+        ->update([
             'estado'=>"Finalizado",
-            'cantidad_aprobada'=>$request->input('aprobada')
+            'cantidad_aprobada'=>$request->input('aprobada'),
+            'total'=>$request->input('aprobada')*$request->precio
         ]);
 
         $cotizacion = DB::table('plan_compras')
@@ -966,6 +1020,52 @@ class PlanComprasController extends Controller
 
         return view('plandecompras.aprobar', compact('product', 'user'));
     }
+
+    public function aprobarGeneral($a, $b, $c, $d, $e){
+
+        $estado = 'Pendiente';  
+
+        $planDelUsuario =  DB::table('plan_compras')
+        ->where('nombre_producto', '=',$a)
+        ->where('especificaciones', '=', $b)
+        ->where('categoria', '=', $c)
+        ->where('unidad', '=', $d)
+        ->where('precio_unitario', '=', $e)
+        ->where('estado', '=', $estado)
+
+        ->get();
+
+        $users = User::all();
+
+        return view('plandecompras.aprobargeneral', compact('planDelUsuario', 'users', 'a', 'b', 'c', 'd', 'e'));
+    }
+
+    public function aprobarGeneralConfirmar($a, $b, $c, $d, $e){
+
+        $estado = 'Pendiente'; 
+
+
+        DB::table('plan_compras')
+        ->where('nombre_producto', '=',$a)
+        ->where('especificaciones', '=', $b)
+        ->where('categoria', '=', $c)
+        ->where('unidad', '=', $d)
+        ->where('precio_unitario', '=', $e)
+        ->where('estado', '=', $estado)
+        ->update([
+            'estado'=>"Aprobado"
+            
+        ]);
+
+
+
+        
+        flash('Productos aprobados exitosamente', 'success');
+
+        return redirect()->route('plandecompras.resumen');
+
+    }
+
 
     public function excelHistorial(){
 
@@ -1022,16 +1122,16 @@ class PlanComprasController extends Controller
 
         $total = DB::table('plan_compras')
         ->select(DB::raw('SUM(total) as final'))
-        ->where('estado', '!=', "Pendiente")
+        ->where('estado', '=', "Aprobado")
         ->first();
 
-        $estado = 'Pendiente';  
+        $estado = 'Aprobado';  
 
         
         $plan = DB::select(
             'SELECT * FROM (
                 SELECT categoria, SUM(total) FROM plan_compras WHERE estado != ? GROUP BY categoria) t1
-            INNER join(SELECT * FROM plan_compras WHERE estado != ?) t2
+            INNER join(SELECT * FROM plan_compras WHERE estado = ?) t2
             ON t1.categoria = t2.categoria',[$estado, $estado]
         );
 

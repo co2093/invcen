@@ -485,6 +485,9 @@ Route::group(['middleware' => ['auth','depto','equipo']], function (){
 
     Route::post('plandecompras/finalizar/producto', 'PlanComprasController@finalizarCompra')->name('plandecompras.finalizarCompra');
     Route::get('plandecompras/aprobar/{idProduct}', 'PlanComprasController@aprobar')->name('plandecompras.aprobar');
+    Route::get('plandecompras/aprobar/general/{a}/{b}/{c}/{d}/{e}', 'PlanComprasController@aprobarGeneral')->name('plandecompras.aprobar.general');
+    Route::get('plandecompras/aprobar/confirmar/{a}/{b}/{c}/{d}/{e}', 'PlanComprasController@aprobarGeneralConfirmar')->name('plandecompras.aprobar.confirmar');
+
 
 
 

@@ -54,8 +54,8 @@
                             @endforeach                           
                         </td>
                         <td>{{$a->nuevoproveedor}}</td>
-                        <td>${{ round($a->precio_unitario,2) }}</td>
-                        <td>${{ round(($a->total),2) }}</td>
+                        <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
+                        <td>${{ number_format(($a->precio_unitario*$a->cantidad_aprobada),2,'.','') }}</td>
                         <td>{{$a->cantidad_aprobada}}</td>
                         <td>{{$a->estado}}</td>
                     </tr>

@@ -32,6 +32,7 @@
 			<form method="POST" action="{{route('plandecompras.finalizarCompra')}}">
 				{{ csrf_field() }}
 				<input type="hidden" name="idProduct" id="idProduct" value="{{$product->id}}">
+				<input type="hidden" name="precio" id="precio" value="{{$product->precio_unitario}}">
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad aprobada</label>

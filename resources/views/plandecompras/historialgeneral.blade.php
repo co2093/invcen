@@ -42,8 +42,8 @@
                         <td>{{$a->especificaciones}}</td>
                         <td>{{$a->categoria}}</td>
                         <td>{{$a->unidad}}</td>
-                        <td>${{ round($a->precio_unitario,2) }}</td>
-                        <td>${{ round(($a->total),2) }}</td>
+                        <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
+                        <td>${{ number_format(($a->total),2,'.','') }}</td>
                         
                     </tr>
 

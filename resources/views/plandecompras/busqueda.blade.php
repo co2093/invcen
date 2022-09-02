@@ -42,8 +42,8 @@
                         <td>{{$categoria->titulo_especifico}}</td>
                         <td>{{$a->especificaciones}}</td>
                         <td>{{$a->proveedor}}</td>
-                        <td>${{ round($a->precio_unitario,2) }}</td>
-                        <td>${{ round(($a->cantidad*$a->precio_unitario),2) }}</td>
+                        <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
+                        <td>${{ number_format(($a->total),2,'.','') }}</td>
                     </tr>
 
                 @endforeach
