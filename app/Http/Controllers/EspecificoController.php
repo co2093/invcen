@@ -43,8 +43,8 @@ class EspecificoController extends Controller
     {
         $this->validate($request,[
 		    'numero' => 'required |integer|min:1|digits:5 |unique:especificos,id',
-			'titulo' => 'required|regex: /^[a-zA-Z0-9áéíóúñÑ\s]*$/ |unique:especificos,titulo_especifico',
-            'descripcion' => 'regex: /^[a-zA-Z0-9$:,;_áéíóúñÑ\s]*$/',
+			//'titulo' => 'required|regex: /^[a-zA-Z0-9áéíóúñÑ\s]*$/ |unique:especificos,titulo_especifico',
+           // 'descripcion' => 'regex: /^[a-zA-Z0-9$:,;_áéíóúñÑ\s]*$/',
 
         ]);
 		    try{
@@ -84,8 +84,8 @@ class EspecificoController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request,[
-		   'titulo'=>'required |regex: /^[a-zA-Z0-9áéíóúñÑ\s]*$/ | unique:especificos,titulo_especifico,'.$id.',id',
-            'descripcion' => 'regex: /^[a-zA-Z0-9$:,;_áéíóúñÑ\s]*$/'
+		   //'titulo'=>'required |regex: /^[a-zA-Z0-9áéíóúñÑ\s]*$/ | unique:especificos,titulo_especifico,'.$id.',id',
+           // 'descripcion' => 'regex: /^[a-zA-Z0-9$:,;_áéíóúñÑ\s]*$/'
 		]);
         try{
 		$especifico = Especifico::FindOrFail($id);

@@ -1014,28 +1014,29 @@ class PlanComprasController extends Controller
 
         Excel::create("Plan de Compras General".$fecha, function($excel) use($fecha) {
 
-        $planDelUsuario = DB::table('plan_compras')
-        ->where('estado', '!=', "Pendiente")
-        ->orderBy('categoria', 'asc')
-        ->get();
-
+      
         $categorias = DB::table('especificos')
         ->select('titulo_especifico')
         ->get();
 
-        $totalCat = DB::table('plan_compras')
-        ->select('categoria', DB::raw('SUM(total) as total'))
-        ->where('estado', '!=', "Pendiente")
-        ->groupBy('categoria')
-        ->get();
 
         $total = DB::table('plan_compras')
         ->select(DB::raw('SUM(total) as final'))
         ->where('estado', '!=', "Pendiente")
         ->first();
 
+        $estado = 'Pendiente';  
 
-        //dd($total->final);
+        
+        $plan = DB::select(
+            'SELECT * FROM (
+                SELECT categoria, SUM(total) FROM plan_compras WHERE estado != ? GROUP BY categoria) t1
+            INNER join(SELECT * FROM plan_compras WHERE estado != ?) t2
+            ON t1.categoria = t2.categoria',[$estado, $estado]
+        );
+
+
+        //dd($plan);
 
 
         $c=7;
@@ -1043,7 +1044,7 @@ class PlanComprasController extends Controller
         $a=0;
 
 
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $fecha, $categorias, $c, $i, $totalCat, $total) {
+            $excel->sheet('plandecompras', function($sheet) use($plan, $fecha, $categorias, $c, $i, $total) {
                 $sheet->row(2, ['', 'Fecha', $fecha]);
                 $sheet->row(3, ['', 'Historial de plan de compras general']);
                 $sheet->row(6, [
@@ -1052,15 +1053,15 @@ class PlanComprasController extends Controller
 
                 foreach($categorias as $index =>$s){
 
-                    foreach($planDelUsuario as $index2 => $s2){
+                    foreach($plan as $index2 => $s2){
 
                             
                             if($s->titulo_especifico == $s2->categoria){
 
-                                $sheet->row($i,[$s2->categoria, ' ', ' ', ' ',' ', '0.0']);
+                                $sheet->row($i,[$s2->categoria, ' ', ' ', ' ',' ', $s2->sum]);
                                 
                                 $sheet->row($c+1, [
-                                $s2->nombre_producto, $s2->especificaciones,$s2->categoria, $s2->unidad,$s2->precio_unitario,$s2->total
+                                $s2->nombre_producto, $s2->especificaciones,$s2->cantidad_aprobada, $s2->unidad,$s2->precio_unitario,$s2->total
                                 ]);
                                 $c++;
                                 $a=$c; 
