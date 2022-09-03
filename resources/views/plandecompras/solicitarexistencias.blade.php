@@ -81,7 +81,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Nombre de nuevo proveedor</label>
-					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control" required>
+					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control">
 				</div>
 				</div>
 
@@ -89,7 +89,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Teléfono de nuevo proveedor</label>
-					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control" required>
+					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control">
 				</div>
 				</div>
 
