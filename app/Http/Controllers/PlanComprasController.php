@@ -390,6 +390,10 @@ class PlanComprasController extends Controller
  
         ]);
 
+        
+        flash('Producto editado al plan de compras exitosamente', 'success');
+        return redirect()->route('plan.index');
+
         }
 
 
