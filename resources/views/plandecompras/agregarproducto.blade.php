@@ -55,7 +55,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad solicitada</label>
-					<input type="number" name="cantidad" id="cantidad" placeholder="1" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+					<input type="number" name="cantidad" id="cantidad" value="0" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
 
@@ -77,7 +77,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Nombre de nuevo proveedor</label>
-					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control" required>
+					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control">
 				</div>
 				</div>
 
@@ -85,14 +85,14 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Teléfono de nuevo proveedor</label>
-					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control" required>
+					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control">
 				</div>
 				</div>
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
-					<input type="number" step="any" name="precio" id="precio" placeholder="0.00" class="form-control" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+					<input type="number" step="any" name="precio" id="precio" class="form-control" value ="0.00" onchange="multiply()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 
@@ -139,4 +139,23 @@
             }
     });
 </script>
+
+<script type="text/javascript">
+
+	function multiply(){
+
+		var c = document.getElementById("cantidad").value;
+		var p = document.getElementById("precio").value;
+
+		var t = parseFloat(c)*parseFloat(p);
+
+		document.getElementById("total").value = t; 
+
+	}
+
+
+</script>
+
+
+
 @endsection

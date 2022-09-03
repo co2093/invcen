@@ -59,7 +59,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad solicitada</label>
-					<input type="number" name="cantidad" id="cantidad" class="form-control" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+					<input type="number" name="cantidad" id="cantidad" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
 
@@ -99,7 +99,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
-					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control">
+					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control" onchange="multiply()">
 
 				</div>
 				</div>
@@ -108,7 +108,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Total</label>
-					<input type="number" step="any" name="total" id="total" class="form-control">
+					<input type="number" step="any" name="total" id="total" class="form-control" onchange="multiply()">
 
 				</div>
 				</div>
@@ -149,5 +149,22 @@
                 event.preventDefault(); 
             }
     });
+</script>
+
+
+<script type="text/javascript">
+
+	function multiply(){
+
+		var c = document.getElementById("cantidad").value;
+		var p = document.getElementById("precio").value;
+
+		var t = parseFloat(c)*parseFloat(p);
+
+		document.getElementById("total").value = t; 
+
+	}
+
+
 </script>
 @endsection

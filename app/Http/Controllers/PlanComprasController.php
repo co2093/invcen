@@ -125,16 +125,21 @@ class PlanComprasController extends Controller
 
         }
 
-        $t = DB::table('providers')->where('telefono', '=', $request->input('telefono'))->first();
-        $t1 = DB::table('providers')->where('nombre', '=', $request->input('nuevoproveedor'))->first();
 
-        if ($t || $t1) {
+        if ($request->has('nuevoproveedor') && $request->has('telefono')) {
+
+
+            $t = DB::table('providers')->where('telefono', '=', $request->input('telefono'))->first();
+            $t1 = DB::table('providers')->where('nombre', '=', $request->input('nuevoproveedor'))->first();
+
+            if ($t || $t1) {
             // code...
             flash('El proveedor nuevo ya existe, revisar en la lista', 'danger');
             return redirect()->back();
 
 
-        }else{
+        
+            }else{
 
 
         DB::table('plan_compras')->insert([
@@ -168,6 +173,34 @@ class PlanComprasController extends Controller
        }
 
 
+
+
+        }else{
+
+            DB::table('plan_compras')->insert([
+            'cantidad' => $request->input('cantidad'),
+            'nombre_producto' => $request->input('nombre_producto'),
+            'especificaciones' => $request->input('especificaciones'),
+            'precio_unitario' => $p,
+            'cotizacion' => $nombreOriginal,
+            'proveedor'=>$request->input('proveedor'),
+            'user_id' => $request->input('user_id'),
+            'categoria' => $request->input('categoria'),
+            'fecha' => $fecha,
+            'estado' => 'Pendiente',
+            'unidad' => $request->input('unidadmedida'),
+            'cantidad_aprobada' =>$request->input('cantidad'),
+            'total' => $request->input('total') 
+        ]);
+
+        flash('Producto agregado al plan de compras exitosamente', 'success');
+        return redirect()->route('plan.index');
+
+
+
+        }
+
+        
 
     }
 
@@ -232,31 +265,44 @@ class PlanComprasController extends Controller
 
         $fecha = Carbon::now();
 
-        $cotizacion = DB::table('plan_compras')
+        
+
+        if ($request->hasFile('cotizacion')) {
+
+            $cotizacion = DB::table('plan_compras')
         ->select('cotizacion')
         ->where('id', '=', $request->input('idProduct'))
         ->value('cotizacion');
 
+
+            $archivo= public_path()."/cotizacion/".$cotizacion; 
+
+
+            $file = $request->file('cotizacion');              
+            $nombreOriginal =  'cotizacion'.$fecha.Auth::user()->id.$file->getClientOriginalName(); 
+            //$newName = "cotizacion/".$nombreOriginal;
+            $file->move(public_path('cotizacion/'), $nombreOriginal);
+
+
+                DB::table('plan_compras')
+                ->where('id', $request->input('idProduct'))
+                ->update([
+                'cotizacion'=>$nombreOriginal
+                ]);
+
+
+         }
+
         
 
-        $archivo= public_path()."/cotizacion/".$cotizacion;
+        
+        if ($request->has('nuevoproveedor') && $request->has('telefono')) {
 
-        if (file_exists($archivo)) {
-            unlink($archivo);  
-        }
+            $plan = DB::table('plan_compras')
+            ->where('id', $request->input('idProduct'))
+            ->value('nuevoproveedor');
 
-        DB::table('plan_compras')
-        ->where('id', $request->input('idProduct'))
-        ->update([
-            'cotizacion'=>""
-        ]);
-
-
-
-        $file = $request->file('cotizacion');              
-        $nombreOriginal =  'cotizacion'.$fecha.Auth::user()->id.$file->getClientOriginalName(); 
-        //$newName = "cotizacion/".$nombreOriginal;
-        $file->move(public_path('cotizacion/'), $nombreOriginal);
+            if ($plan) {
 
         DB::table('plan_compras')
         ->where('id', $request->input('idProduct'))
@@ -271,9 +317,8 @@ class PlanComprasController extends Controller
             'nuevoproveedor' => $request->input('telefono'),
             'unidad' => $request->input('unidadmedida'),
             'total' => $request->input('total'),
-            'cantidad_aprobada' =>$request->input('cantidad'),
+            'cantidad_aprobada' =>$request->input('cantidad')
  
-            'cotizacion'=>$nombreOriginal
         ]);
 
 
@@ -290,6 +335,68 @@ class PlanComprasController extends Controller
 
         flash('Producto editado exitosamente', 'info');
         return redirect()->route('plan.index');
+                
+            }else{
+
+        DB::table('plan_compras')
+        ->where('id', $request->input('idProduct'))
+        ->update([
+            'cantidad'=>$request->input('cantidad'),
+            'nombre_producto'=>$request->input('nombre_producto'),
+            'especificaciones'=>$request->input('especificaciones'),
+            'precio_unitario'=>$request->input('precio'),
+            'categoria' => $request->input('categoria'),
+            'proveedor' => $request->input('proveedor'),
+            'fecha' => $fecha,
+            'nuevoproveedor' => $request->input('telefono'),
+            'unidad' => $request->input('unidadmedida'),
+            'total' => $request->input('total'),
+            'cantidad_aprobada' =>$request->input('cantidad')
+ 
+        ]);
+
+        DB::table('providers')->insert([
+            'nombre' => $request->input('nuevoproveedor'),
+            'telefono' =>$request->input('telefono'),
+            'direccion' => ' ',
+            'vendedor' => ' '
+
+        ]);
+
+        flash('Producto editado al plan de compras exitosamente', 'success');
+        return redirect()->route('plan.index');
+
+
+
+            }
+
+
+        }else{
+
+        DB::table('plan_compras')
+        ->where('id', $request->input('idProduct'))
+        ->update([
+            'cantidad'=>$request->input('cantidad'),
+            'nombre_producto'=>$request->input('nombre_producto'),
+            'especificaciones'=>$request->input('especificaciones'),
+            'precio_unitario'=>$request->input('precio'),
+            'categoria' => $request->input('categoria'),
+            'proveedor' => $request->input('proveedor'),
+            'fecha' => $fecha,
+            'nuevoproveedor' => $request->input('telefono'),
+            'unidad' => $request->input('unidadmedida'),
+            'total' => $request->input('total'),
+            'cantidad_aprobada' =>$request->input('cantidad')
+ 
+        ]);
+
+        }
+
+
+
+        
+
+
     }
 
     public function historial(){
@@ -913,7 +1020,9 @@ class PlanComprasController extends Controller
     public function buscarIndividualUser(Request $request){
 
         $usuario = DB::table('users')->where('id', $request->input('usuario'))->first();
-        $proveedores = DB::table('providers')->get();   
+        $proveedores = DB::table('providers')->get();
+        $users = User::all();
+   
 
         $planDelUsuario = DB::table('plan_compras')
         ->select('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'cantidad', 'cotizacion', 'id', 'proveedor', 'total', 'nuevoproveedor', 'unidad', 'categoria')
@@ -923,7 +1032,7 @@ class PlanComprasController extends Controller
         
 
 
-        return view ('plandecompras.busquedaIndividualUser', compact('usuario', 'planDelUsuario', 'proveedores'));
+        return view ('plandecompras.busquedaIndividualUser', compact('usuario', 'planDelUsuario', 'proveedores', 'users'));
     }
 
 

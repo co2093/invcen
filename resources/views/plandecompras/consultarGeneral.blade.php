@@ -21,7 +21,7 @@
 	 </dl>
 	<br><br>
 	 <div class="col-md">
-         <a href="{{ route('plandecompras.resumen')}}" class="btn btn-primary">Vover</a>
+         <a href="{{ route('plandecompras.resumen')}}" class="btn btn-primary">Volver</a>
      </div>            
  
  	@else
@@ -39,7 +39,7 @@
 
  	<br><br>
 	 <div class="col-md">
-         <a href="{{ route('plandecompras.resumen')}}" class="btn btn-primary">Vover</a>
+         <a href="{{ route('plandecompras.resumen')}}" class="btn btn-primary">Volver</a>
      </div> 
  	@endif
 

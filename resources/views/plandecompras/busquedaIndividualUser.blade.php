@@ -2,6 +2,42 @@
 
 @section('content')
 
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4 class="panel-title"><strong>Buscar por usuario</strong></h4>
+    </div>
+    <div class="panel-body">
+
+    <form method="POST" action="{{route('plandecompras.filter.individual.user')}}">
+        {{ csrf_field() }}
+
+        <div class="form-group">
+            <div class="col-xs-offset-3">
+                <label>Usuario</label>
+
+                    <select name="usuario" id="usuario" class="form-control">
+
+                        @foreach($users as $c)
+                            <option value="{{$c->id}}">{{$c->name}}</option>
+                        @endforeach
+
+                    </select>
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-xs-offset-3">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+
+     </form>   
+
+    </div>
+</div>
+
 
 
 <div class="panel panel-default">
