@@ -82,10 +82,9 @@
     <thead>
         <tr class="atributos">
             <th style="width: 10%;"><strong>Cantidad</strong></th>
-            <th style="width: 25%;"><strong>Nombre del producto</strong></th>
-            <th style="width: 30%;"><strong>Especificaciones</strong></th>
+            <th style="width: 30%;"><strong>Nombre del producto</strong></th>
+            <th style="width: 35%;"><strong>Especificaciones</strong></th>
             <th style="width: 15%;"><strong>Categoría</strong></th>
-            <th style="width: 10%;"><strong>Proveedor</strong></th>
             <th style="width: 5%;"><strong>Precio unitario ($)</strong></th>
             <th style="width: 5%;"><strong>Costo total ($)</strong></th>
        	</tr>
@@ -95,24 +94,10 @@
         @foreach ($solicitudes as $s)
             <tr>
             	<td style="width: 10%;"><strong>{{$s->cantidad}}</strong></td>
-                <td style="width: 25%;"><strong>{{$s->nombre_producto}}</strong></td>
-                <td style="width: 30%;"><strong>{{$s->especificaciones}}</strong></td>
+                <td style="width: 30%;"><strong>{{$s->nombre_producto}}</strong></td>
+                <td style="width: 35%;"><strong>{{$s->especificaciones}}</strong></td>
                 <td style="width: 15%;"><strong>{{$s->categoria}}</strong></td>
-                <td style="width: 10%;"><strong>
 
-
-                    @if($s->nuevoproveedor)
-                        @foreach ($proveedores as $p)
-                            @if ($p->telefono == $s->nuevoproveedor)
-                                {{$p->nombre}}
-                            @endif
-                        @endforeach                           
-                    @else
-                        {{$s->proveedor}}
-                    @endif
-
-
-                </strong></td>
                 <td style="width: 5%;"><strong>{{round($s->precio_unitario,2)}}</strong></td>
                 <td style="width: 5%;"><strong>{{round($s->precio_unitario,2)*$s->cantidad}}</strong></td>
             </tr>

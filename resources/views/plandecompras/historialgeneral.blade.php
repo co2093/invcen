@@ -30,6 +30,7 @@
                 <th>Unidad de medida y presentacion</th>
                 <th>Precio unitario</th>
                 <th>Total</th>
+                <th>Estado</th>
             </tr>
             </thead>
             <tbody>
@@ -44,7 +45,7 @@
                         <td>{{$a->unidad}}</td>
                         <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
                         <td>${{ number_format(($a->total),2,'.','') }}</td>
-                        
+                        <td>{{$a->estado}}</td>
                     </tr>
 
                 @endforeach

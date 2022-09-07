@@ -81,6 +81,8 @@
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
 				<strong>Plan de compras individual</strong>
+                                <br><br>
+                <strong>Monto total solicitado: ${{number_format(($total->final),2,'.','')}}</strong>
 			</h4>
 		</div>
 		<div class="panel-body">

@@ -51,8 +51,8 @@
 		<div class="panel-body">
 
     <div>
-        <a href="{{route('plandecompras.excel.usuario', Auth::user()->id)}}" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
-        <a href="{{route('plandecompras.pdf.usuario', Auth::user()->id)}}" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
+        <a href="{{route('plandecompras.excel.usuario', $usuario->id)}}" class="btn btn-success" title="DescargarExcel">Descargar en Excel</a>
+        <a href="{{route('plandecompras.pdf.usuario', $usuario->id)}}" class="btn btn-danger" title="DescargarPDF">Descargar en PDF</a>
     </div>
 
 
