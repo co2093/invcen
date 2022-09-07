@@ -575,4 +575,6 @@ class RequisicionController extends Controller
                     $pdf->Output($nombre);
     }
 
+
+
 }

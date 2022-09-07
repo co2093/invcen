@@ -70,8 +70,8 @@
             <td class="ancho-c">
                 <div class="distancia text-center">
                     <strong>
-                        Centro de Investigaciones y Desarrollo en Salud<br>
-                        Universidad de El Salvador<br>
+                        CENTRO DE INVESTIGACIÓN Y DESARROLLO EN SALUD "CENSALUD"<br>
+                    Universidad de El Salvador<br>
                         Consolidado de existencias<br>
                         Del {{$desde}} al {{$hasta}}
                     </strong>

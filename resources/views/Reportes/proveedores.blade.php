@@ -73,7 +73,7 @@
                     <strong>
                        CENTRO DE INVESTIGACIÓN Y DESARROLLO EN SALUD "CENSALUD"<br>
                     Universidad de El Salvador<br>
-                        Existencias al {{$fecha}}
+                        Reporte de proveedores
                     </strong>
                 </div>
             </td>
@@ -90,30 +90,23 @@
         <table class="table">
             <thead>
             <tr class="atributos">
-                <th style="width: 8%;"><strong>Espec&iacute;fico</strong></th>
-                <th style="width: 8%;"><strong>C&oacute;d. prod.</strong></th>
-                <th style="width: 30%;"><strong>Producto</strong></th>
-                <th style="width: 20%;"><strong>Unidad de medida</strong></th>
-                <th style="width: 8%;"><strong>Existencia</strong></th>
-                <th style="width: 12%;"><strong>Precio unitario</strong></th>
-                <th style="width: 14%;"><strong>Monto</strong></th>
+                <th style="width: 25%;"><strong>Nombre</strong></th>
+                <th style="width: 25%;"><strong>Dirección</strong></th>
+                <th style="width: 10%;"><strong>Teléfono</strong></th>
+                <th style="width: 10%;"><strong>Fax</strong></th>
+                <th style="width: 15%;"><strong>Email</strong></th>
+                <th style="width: 15%;"><strong>Vendedor</strong></th>
 
             </tr>
-            </thead>
             <tbody>
-            @foreach ($articulos as $a)
+            @foreach ($proveedores as $a)
                 <tr>
-                    <td style="width: 8%;">{{$a->id_especifico}}</td>
-                    <td style="width: 8%;">{{$a->getCodigoArticuloReporte()}}</td>
-                    <td style="width: 30%;">{{$a->nombre_articulo}}</td>
-                    <td style="width: 20%;">{{$a->unidad->nombre_unidadmedida}}</td>
-                    @if ($a->existencia <= 25 && $color =='veinticinco')
-                        <td style="color: red; width: 8%;">{{$a->existencia}}</td>
-                    @else
-                        <td style="width: 8%;">{{$a->existencia}}</td>
-                    @endif
-                    <td style="width: 12%;">${{number_format($a->precio_unitario,4,'.','')}}</td>
-                    <td style="width: 14%;">${{number_format($a->monto(),4,'.','')}}</td>
+                    <td style="width: 25%;">{{$a->nombre}}</td>
+                    <td style="width: 25%;">{{$a->direccion}}</td>
+                    <td style="width: 10%;">{{$a->telefono}}</td>
+                    <td style="width: 10%;">{{$a->fax}}</td>
+                    <td style="width: 15%;">{{$a->email}}</td>
+                    <td style="width: 15%;">{{$a->vendedor}}</td>
 
                 </tr>
             @endforeach

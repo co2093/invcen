@@ -20,6 +20,10 @@ use Session;
 use DB;
 //use Elibyy\TCPDF\Facades\TCPDF;
 use TCPDF;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 
 
@@ -742,5 +746,92 @@ class ReporteController extends Controller
         }
     }
 
+
+    public function proveedoresPdf(){
+
+        
+        $fecha = Carbon::now()->format('d-m-Y');
+        $proveedores = DB::table('providers')->get();  
+
+        
+
+
+        $view = \View::make('Reportes.proveedores', ['proveedores' => $proveedores]);
+                    $html = $view->render();
+
+                    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, array(355.6, 216), true, 'UTF-8', false);
+                    $pdf->SetTitle('Reporte Proveedores');
+                    $pdf->SetHeaderData('', '', '', 'CENSALUD, Universidad de El Salvador', array(0,0,0), array(0,64,128));
+                    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+
+                    $pdf->AddPage('L');
+                    $pdf->SetFont(PDF_FONT_NAME_MAIN, '', 8);
+                    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+                    $pdf->setFooterMargin(PDF_MARGIN_FOOTER);
+                    $pdf->setPrintFooter(true);
+
+                    $pdf->SetFooterMargin(15);
+                    $pdf->SetX(10);
+                    $pdf->SetLeftMargin(10);
+                    $pdf->SetRightMargin(10);
+                    $pdf->SetTopMargin(17);
+
+
+                    $pdf->setCellPaddings('1','3','1','3');
+                    $pdf->setFooterData($tc = array(0, 0, 0), $lc = array(0, 64, 128));
+
+                    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+                    $pdf->writeHTML($html, true, false, true, false, '');
+                    $nombre = 'proveedores'.$fecha.'.pdf';
+                    $pdf->Output($nombre);
+    }
+
+    public function existenciaExcelForm(){
+        return view ('Reportes.existenciaexcel');
+    }
+
+
+    public function existenciaExcel(Request $request){
+
+        $fecha = Carbon::now()->format('d-m-Y');
+
+
+        if ($request->input('incluir') == "todos") {
+            
+            $articulos = Articulo::orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();
+            $tipo = "Todos los productos";
+
+        } else {
+            
+            $articulos = Articulo::where('existencia','>',0)->orderBy('id_especifico','asc')->orderBy('created_at','asc')->get();
+            $tipo = "Productos con existencia mayor que cero";
+
+        }
+
+        Excel::create("Existencias".$fecha, function($excel) use($fecha, $articulos, $tipo) {
+
+
+            $excel->sheet('existencias', function($sheet) use($fecha, $articulos, $tipo) {
+
+                $sheet->row(3, ['', 'Reporte de', $tipo]);
+                $sheet->row(4, ['', 'Fecha', $fecha]);
+                $sheet->row(6, [
+                    'Nombre del producto', 'Categoría','Unidad de medida', 'Existencias', 'Precio unitario', 'Monto'
+                ]);
+
+
+                foreach($articulos as $index => $s) {
+                       $sheet->row($index+7, [
+                        $s->nombre_articulo, $s->especifico->titulo_especifico, $s->unidad->nombre_unidadmedida, $s->existencia,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->existencia
+                    ]); 
+                }
+
+
+
+            });
+
+        })->export('xlsx');
+
+    }
 
 }

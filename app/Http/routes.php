@@ -109,24 +109,6 @@ Route::group(['middleware' => ['auth','admin_financiero','depto','equipo']], fun
 
 Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], function (){
 
-    //Rutas para la generacion de reportes
-    Route::get('existencias/reporte',['as'=>'existencias.reporte',
-        function(){
-            return view('Existencia.reportes');
-        }]);
-
-    Route::get('reportes/kardex',['as'=>'reportes.kardex','uses'=>'ReporteController@kardex']);
-    Route::get('reportes/kardex/crear','ReporteController@kardexForm')->name('reporte_kardexform');
-
-    Route::get('reportes/existencia',['as'=>'reportes.existencia','uses'=>'ReporteController@existencia']);
-    Route::get('reportes/existencia/crear','ReporteController@existenciaForm')->name('reporte_existenciaform');
-
-
-    Route::get('reportes/consolidadoexistencia',['as'=>'reportes.consolidadoexistencia','uses'=>'ReporteController@consolidadoExistencia']);
-    Route::get('reportes/consolidadoexistencia/crear','ReporteController@consolidadoExistenciaForm')->name('reporte_consolidadoexistenciaform');
-
-    Route::get('reportes/historialproducto/crear','ReporteController@historialProductoForm')->name('reporte_historialproductoform');
-    Route::get('reportes/historialProducto',['as'=>'reportes.historialproducto','uses'=>'ReporteController@historialProducto']);
 
     //Ruta para analizar la oferta y la demanda
     Route::get('existencia/ofertademanda','ExistenciaController@ofertaDemanda')->name('oferta_demanda');
@@ -337,6 +319,33 @@ Route::Group(['middleware'=>['admin','depto','equipo']], function (){
     Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
 
     Route::get('reportes','ReporteController@index')->name('reportes');
+
+        //Rutas para la generacion de reportes
+    Route::get('existencias/reporte',['as'=>'existencias.reporte',
+        function(){
+            return view('Existencia.reportes');
+        }]);
+
+    Route::get('reportes/kardex',['as'=>'reportes.kardex','uses'=>'ReporteController@kardex']);
+    Route::get('reportes/kardex/crear','ReporteController@kardexForm')->name('reporte_kardexform');
+
+    Route::get('reportes/existencia',['as'=>'reportes.existencia','uses'=>'ReporteController@existencia']);
+    Route::get('reportes/existencia/crear','ReporteController@existenciaForm')->name('reporte_existenciaform');
+
+
+    Route::get('reportes/consolidadoexistencia',['as'=>'reportes.consolidadoexistencia','uses'=>'ReporteController@consolidadoExistencia']);
+    Route::get('reportes/consolidadoexistencia/crear','ReporteController@consolidadoExistenciaForm')->name('reporte_consolidadoexistenciaform');
+
+    Route::get('reportes/historialproducto/crear','ReporteController@historialProductoForm')->name('reporte_historialproductoform');
+    Route::get('reportes/historialProducto',['as'=>'reportes.historialproducto','uses'=>'ReporteController@historialProducto']);
+
+    Route::get('reportes/proveedores', 'ReporteController@proveedoresPdf')->name('reporte.proveedores.pdf');
+
+    Route::get('reportes/existencia/excel/crear', 'ReporteController@existenciaExcelForm')->name('reporte.existencia.form.excel');
+    Route::get('reportes/existencia/excel', 'ReporteController@existenciaExcel')->name('reportes.existencia.excel');
+
+
+
 
 
 
