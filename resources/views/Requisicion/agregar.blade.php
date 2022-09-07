@@ -17,7 +17,7 @@
 <table class="table table-hover table-striped table-bordered table-condensed" id="TablaProd">
 <thead>
     <tr>
-        <th>Espec&iacute;fico</th>
+        <th>Existencia</th>
         <th>C&oacute;d. prod.</th>
         <th>Producto</th>
         <th>Unidad de Medida</th>
@@ -30,7 +30,7 @@
 @foreach ($articulos as $a) 
 
     <tr>
-        <td>{{$a->id_especifico}}</td>
+        <td>{{$a->existencia}}</td>
         <td>{{$a->getCodigoArticuloReporte()}}</td>
         <td>{{$a->nombre_articulo}}</td>        
         <td>{{$a->unidad->nombre_unidadmedida}}</td>
@@ -43,7 +43,7 @@
             title="Agregar a requisicion"
             href="#ventana1"
             data-toggle="modal"
-            onClick='agregarArticulo("{{$a->codigo_articulo}}","{{$a->nombre_articulo}}","{{$a->unidad->nombre_unidadmedida}}","{{number_format($a->precio_unitario,2,'.','')}}","{{$a->getCodigoArticuloReporte()}}")'
+            onClick='agregarArticulo("{{$a->codigo_articulo}}","{{$a->nombre_articulo}}","{{$a->unidad->nombre_unidadmedida}}","{{number_format($a->precio_unitario,2,'.','')}}","{{$a->getCodigoArticuloReporte()}}","{{$a->existencia}}")'
           >           
             <span class="glyphicon glyphicon-plus">
             </span>
@@ -76,6 +76,8 @@
                     <dd id="unidad"></dd>
                     <dt>Precio unitario:</dt>
                     <dd id="precio"></dd>
+                    <dt>Existencia:</dt>
+                    <dd id="existencia"></dd>
 
                 </dl>
                 {!! Form::open(array('route' => 'add','class' => 'form-horizontal','method' => 'post','name' =>'addproducto')) !!}
@@ -116,13 +118,14 @@
             });
     });
 
-var agregarArticulo= function(id,articulo,unidad,precio,codp){
+var agregarArticulo= function(id,articulo,unidad,precio,codp,existencia){
     $("#cantidad").val('');
     $("#cod").html(codp) ;
     $("#codigo").val(id);
     $("#articulo").html(articulo);
     $("#unidad").html(unidad);
     $("#precio").html(precio);
+    $("#existencia").html(existencia);
 }
 
 var validar = function () {

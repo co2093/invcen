@@ -22,7 +22,7 @@
         <table class="table table-hover table-striped table-bordered table-condensed" id="TablaRequisicion">
             <thead>
             <tr>
-                <th>Espec&iacute;fico</th>
+                <th>Existencia</th>
                 <th>C&oacute;d. prod.</th>
                 <th>producto</th>
                 <th>Unidad de Medida</th>
@@ -37,7 +37,7 @@
                 @foreach ($articulos as $a)
 
                     <tr>
-                        <td>{{$a->id_especifico}}</td>
+                        <td>{{$a->existencia}}</td>
                         <td>{{$a->getCodigoArticuloReporte()}}</td>
                         <td>{{$a->nombre_articulo}}</td>
                         <td>{{$a->unidad['nombre_unidadmedida']}}</td>

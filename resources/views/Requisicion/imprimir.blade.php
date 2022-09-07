@@ -133,7 +133,7 @@
       <table class="table table-bordered ">
       <thead>
           <tr class="row">
-              <th class="col-xs-1" style="width: 10%;"><strong>ESPEC&Iacute;FICO</strong></th>
+              <th class="col-xs-1" style="width: 10%;"><strong>EXISTENCIA</strong></th>
               <th class="col-xs-1" style="width: 7%;"><strong>C&Oacute;DIGO</strong></th>
               <th class="col-xs-5" style="width: 20%;"><strong>PRODUCTO</strong></th>
               <th class="col-xs-2" style="width: 20%;"><strong>UNIDAD DE MEDIDA</strong></th>
@@ -148,7 +148,7 @@
       @foreach ($detalle as $d) 
 
           <tr>
-              <td style="width: 10%;">{{$d->articulo->id_especifico}}</td>
+              <td style="width: 10%;">{{$d->articulo->existencia}}</td>
               <td style="width: 7%;">{{$d->articulo->getCodigoArticuloReporte()}}</td>
               <td style="width: 20%;">{{$d->articulo['nombre_articulo']}}</td>
               <td style="width: 20%;">{{$d->articulo['unidad']['nombre_unidadmedida']}}</td>

@@ -9,7 +9,7 @@
         <table class="table table-hover table-striped table-bordered table-condensed" id="TablaArticulo" >
             <thead>
             <tr class="success">
-                <th>Espec&iacute;fico</th>
+                <th>Existencia</th>
                 <th>C&oacute;d. prod.</th>
                 <th>Producto</th>
                 <th>Unidad de medida</th>
@@ -19,7 +19,7 @@
 
             @foreach ($articulos as $articulo)
                 <tr>
-                    <td>{{$articulo->id_especifico}}</td>
+                    <td>{{$articulo->existencia}}</td>
                     <td>{{$articulo->getCodigoArticuloReporte()}}</td>
                     <td>{{$articulo->nombre_articulo}}</td>
                     <td>{{$articulo->unidad->nombre_unidadmedida}}</td>

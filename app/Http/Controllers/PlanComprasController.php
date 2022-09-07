@@ -459,45 +459,7 @@ class PlanComprasController extends Controller
     }
 
     
-    public function exportExcel(){
 
-        $fecha = Carbon::now();
-
-
-        Excel::create('plan de compras '.$fecha, function($excel) {
-
-        $planDelUsuario = DB::table('plan_compras')
-        ->where('user_id', '=', Auth::user()->id)
-        ->where('estado', '=', "Pendiente")
-        ->get();
-
-        $nombreUsuario = Auth::user()->name;
-
-
-
-            $excel->sheet('plandecompras', function($sheet) use($planDelUsuario, $nombreUsuario) {
-                $sheet->row(3, ['', 'Cuadro de plan de compras'
-                ]);
-                $sheet->row(4, ['', 'Usuario', $nombreUsuario]);
-
-                $sheet->row(6, [
-                    'Cantidad','Nombre del producto', 'Especificaciones', 'Proveedor', 'Precio unitario', 'Costo total'
-                ]);
-
-
-                foreach($planDelUsuario as $index => $s) {                    
-                       $sheet->row($index+7, [
-                        $s->cantidad, $s->nombre_producto, $s->especificaciones,$s->proveedor,round($s->precio_unitario,2), round($s->precio_unitario,2)*$s->cantidad
-                    ]); 
-                }
-
-
-
-            });
-
-        })->export('xlsx');
-
-    }
 
     public function exportPdf(){
 
@@ -1487,6 +1449,118 @@ class PlanComprasController extends Controller
 
         })->export('xlsx');
 
+
+    }
+
+    public function exportExcel(){
+
+        $fecha = Carbon::now();
+
+
+        Excel::create('plan de compras '.$fecha, function($excel) {
+
+        $categorias = DB::table('especificos')
+        ->select('titulo_especifico')
+        ->get();
+
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('estado', '=', "Pendiente")
+        ->where('user_id', '=', Auth::user()->id)
+        ->first();
+
+        $userId = Auth::user()->id;
+        $estado = 'Pendiente';  
+
+
+        $c=7;
+        $i=7;
+        $a=0;
+
+
+        $plan = DB::select(
+            'SELECT * FROM (
+                SELECT categoria, SUM(total) FROM plan_compras WHERE estado != ? GROUP BY categoria) t1
+            INNER join(SELECT * FROM plan_compras WHERE estado = ? AND user_id = ?) t2
+            ON t1.categoria = t2.categoria',[$estado, $estado, $userId]
+        );
+
+
+        $nombreUsuario = Auth::user()->name;
+
+        $proveedores = DB::table('providers')->get();
+
+            $excel->sheet('plandecompras', function($sheet) use($plan, $fecha, $categorias, $c, $i, $total, $nombreUsuario, $proveedores) {
+                $sheet->row(2, ['', 'Fecha', $fecha]);
+                $sheet->row(3, ['', 'Usuario', $nombreUsuario]);
+                $sheet->row(6, [
+                     'Cantidad','Nombre del producto', 'Especificaciones','Unidad de medida', 'Proveedor', 'Telefono','Precio unitario', 'Costo Total'
+                ]);
+
+                foreach($categorias as $index =>$s){
+
+                    foreach($plan as $index2 => $s2){
+
+
+                            $proveedor = $s2->nuevoproveedor;
+
+                            if($proveedor){
+
+                                $telefono = $s2->nuevoproveedor;
+
+                                foreach($proveedores as $p){
+
+                                    if ($p->telefono == $proveedor) {
+                                        $nombre = $p->nombre;
+
+                                    }
+
+                                }
+
+                            }else{
+
+
+                                $nombre = $s2->proveedor;
+
+                                foreach($proveedores as $p){
+
+                                    if ($p->nombre == $s2->proveedor) {
+                                        $telefono = $p->telefono;
+
+                                    }
+
+                                }
+
+
+
+                            }
+
+
+
+                            
+                            if($s->titulo_especifico == $s2->categoria){
+
+                                $sheet->row($i,[' ',$s2->categoria, ' ', ' ', ' ',' ']);
+                                
+                                $sheet->row($c+1, [
+                                $s2->cantidad,$s2->nombre_producto, $s2->especificaciones, $s2->unidad, $nombre, $telefono,$s2->precio_unitario,$s2->total
+                                ]);
+                                $c++;
+                                $a=$c; 
+                            }   
+                    }
+
+                $i=$c+1;
+                $c=$c+1;
+                
+
+                }
+
+                $sheet->row($a+1,[' ', ' ', ' ', ' ', ' ', ' ',' TOTAL', $total->final]);
+
+            });
+
+        })->export('xlsx');
 
     }
 

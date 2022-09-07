@@ -46,7 +46,7 @@
     <thead>
 
     <tr>
-        <th>Espec&iacute;fico</th>
+        <th>Existencia</th>
         <th>C&oacute;d. prod.</th>
         <th>Producto</th>
         <th>Unidad de Medida</th>
@@ -62,7 +62,7 @@
 @foreach ($detalle as $d) 
 
     <tr>
-        <td>{{$d->articulo->id_especifico}}</td>
+        <td>{{$d->articulo->existencia}}</td>
         <td>{{$d->articulo->getCodigoArticuloReporte()}}</td>
         <td>{{$d->articulo['nombre_articulo']}}</td>
         <td>{{$d->articulo['unidad']['nombre_unidadmedida']}}</td>

@@ -92,7 +92,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th style="width: 15%;"><strong style="color: #000000">Espec&iacute;fico</strong></th>
+            <th style="width: 15%;"><strong style="color: #000000">Existencia</strong></th>
             <th style="width: 15%;"><strong style="color: #000000">C&oacute;d. prod</strong></th>
             <th style="width: 30%;"><strong style="color: #000000">Nombre del producto</strong></th>
             <th style="width: 15%;"><strong style="color: #000000">Unidad de Medida</strong></th>
@@ -104,7 +104,7 @@
  	<tbody>
         @foreach ($detalle as $d) 
         <tr class="atributos">
-            <td style="width: 15%;">{{$d->articulo->id_especifico}}</td>
+            <td style="width: 15%;">{{$d->articulo->existencia}}</td>
             <td style="width: 15%;">{{$d->articulo->getCodigoArticuloReporte()}}</td>
             <td style="width: 30%;">{{$d->articulo['nombre_articulo']}}</td>
             <td style="width: 15%;">{{$d->articulo['unidad']['nombre_unidadmedida']}}</td>
