@@ -18,7 +18,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
-					<input type="text" name="nombre_producto" id="nombre_producto" placeholder="" class="form-control" required>
+					<input type="text" name="nombre_producto" id="nombre_producto" placeholder="" class="form-control">
 				</div>
 				</div>
 
@@ -27,6 +27,8 @@
 					<label>Categoría</label>
 
 					<select name="categoria" id="categoria" class="form-control">
+
+						<option value=" ">  </option>
 
 						@foreach($categorias as $c)
 							<option value="{{$c->titulo_especifico}}">{{$c->titulo_especifico}}</option>
@@ -55,7 +57,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad solicitada</label>
-					<input type="number" name="cantidad" id="cantidad" value="0" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+					<input type="number" name="cantidad" id="cantidad" value="0" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
 				</div>
 				</div>
 
@@ -65,6 +67,8 @@
 
 					<select name="proveedor" id="proveedor" class="form-control">
 
+						<option value=" ">  </option>
+
 						@foreach($proveedores as $c)
 							<option value="{{$c->nombre}}">{{$c->nombre}}</option>
 						@endforeach
@@ -73,19 +77,29 @@
 				</div>
 				</div>
 
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+
+						
+						<button type="button" class="btn btn-success" onclick="toggle();">Agregar proveedor</button>
+
+
+					</div>
+				</div>
+
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Nombre de nuevo proveedor</label>
-					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control">
+					<label id="nuevolbl" hidden="hidden">Nombre de nuevo proveedor</label>
+					<input type="hidden" name="nuevoproveedor" id="nuevoproveedor" class="form-control">
 				</div>
 				</div>
 
 				
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Teléfono de nuevo proveedor</label>
-					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control">
+					<label id="nuevolbl2" hidden="hidden">Teléfono de nuevo proveedor</label>
+					<input type="hidden" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control">
 				</div>
 				</div>
 
@@ -153,6 +167,26 @@
 
 	}
 
+
+</script>
+
+<script type="text/javascript">
+
+	function toggle(){
+
+		var lbl1 = document.getElementById("nuevolbl");
+
+		var lbl2 = document.getElementById("nuevolbl2");
+
+		document.getElementById("nuevoproveedor").type="text";
+
+		lbl1.removeAttribute("hidden");
+
+		lbl2.removeAttribute("hidden");
+
+		document.getElementById("telefono").type="text";       
+
+	}
 
 </script>
 

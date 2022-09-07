@@ -38,7 +38,20 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Categoría</label>
-					<input type="text" name="categoria" id="categoria" value="{{$product->especifico->titulo_especifico}}" class="form-control" readonly="readonly">
+
+					<select name="categoria" id="categoria" class="form-control">
+
+						<option value="{{$product->especifico->titulo_especifico}}">{{$product->especifico->titulo_especifico}}</option>
+
+						@foreach($categorias as $c)
+							@if($product->especifico->titulo_especifico != $c->titulo_especifico)
+								<option value="{{$c->titulo_especifico}}">{{$c->titulo_especifico}}</option>
+							@endif
+						@endforeach
+
+					</select>
+
+
 				</div>
 				</div>
 
@@ -69,6 +82,7 @@
 
 					<select name="proveedor" id="proveedor" class="form-control">
 
+						<option value=" ">  </option>
 						@foreach($proveedores as $c)
 							<option value="{{$c->nombre}}">{{$c->nombre}}</option>
 						@endforeach
@@ -77,19 +91,28 @@
 				</div>
 				</div>
 
-				
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Nombre de nuevo proveedor</label>
-					<input type="text" name="nuevoproveedor" id="nuevoproveedor" class="form-control">
+
+						
+						<button type="button" class="btn btn-success" onclick="toggle();">Agregar proveedor</button>
+
+
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-xs-offset-3">
+					<label id="nuevolbl" hidden="hidden">Nombre de nuevo proveedor</label>
+					<input type="hidden" name="nuevoproveedor" id="nuevoproveedor" class="form-control">
 				</div>
 				</div>
 
 				
 				<div class="form-group">
 					<div class="col-xs-offset-3">
-					<label>Teléfono de nuevo proveedor</label>
-					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control">
+					<label id="nuevolbl2" hidden="hidden">Teléfono de nuevo proveedor</label>
+					<input type="hidden" name="telefono" minlength="8" maxlength="9"  id="telefono" class="form-control">
 				</div>
 				</div>
 
@@ -167,4 +190,25 @@
 
 
 </script>
+
+<script type="text/javascript">
+
+	function toggle(){
+
+		var lbl1 = document.getElementById("nuevolbl");
+
+		var lbl2 = document.getElementById("nuevolbl2");
+
+		document.getElementById("nuevoproveedor").type="text";
+
+		lbl1.removeAttribute("hidden");
+
+		lbl2.removeAttribute("hidden");
+
+		document.getElementById("telefono").type="text";       
+
+	}
+
+</script>
+
 @endsection

@@ -434,6 +434,8 @@ class PlanComprasController extends Controller
 
         $periodo = DB::table('periodo')->first();
         $proveedores = DB::table('providers')->get();
+        $categorias = Especifico::all();
+
 
 
         if($periodo->estado==1){
@@ -441,7 +443,7 @@ class PlanComprasController extends Controller
         $product = Articulo::findOrFail($idProduct);    
 
 
-        return view('plandecompras.solicitarexistencias', compact('product', 'proveedores'));
+        return view('plandecompras.solicitarexistencias', compact('product', 'proveedores', 'categorias'));
 
         }else{
 
