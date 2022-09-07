@@ -48,6 +48,7 @@
                 <th>Categoría</th>
                 <th>Especificaciones</th>
                 <th>Proveedor</th>
+                <th>Teléfono</th>
                 <th>Precio unitario</th>
                 <th>Total</th>
                 
@@ -79,8 +80,29 @@
                         <td>{{$a->nombre_producto}}</td>
                         <td>{{$a->categoria}}</td>
                         <td>{{$a->especificaciones}}</td>
-                        <td>{{$a->proveedor}}</td>
-                        
+                        <td>
+                        @if($a->nuevoproveedor)
+                            @foreach ($proveedores as $p)
+                                @if ($p->telefono == $a->nuevoproveedor)
+                                    {{$p->nombre}}
+                                @endif
+                            @endforeach                           
+                        @else
+                            {{$a->proveedor}}
+                        @endif
+                        </td>
+                        <td>
+                        @if($a->nuevoproveedor)
+                            {{$a->nuevoproveedor}}
+                        @else
+                            @foreach ($proveedores as $p)
+                                @if($a->proveedor == $p->nombre)
+                                    {{$p->telefono}}
+                                @endif
+                            @endforeach
+                        @endif
+
+                        </td>
                         <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
                         <td>${{ number_format(($articulo->total),2,'.','') }}</td>
                   

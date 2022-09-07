@@ -121,7 +121,6 @@ Route::group(['middleware'=>['depto','admin_financiero','admin','equipo']], func
     Route::get('reportes/existencia',['as'=>'reportes.existencia','uses'=>'ReporteController@existencia']);
     Route::get('reportes/existencia/crear','ReporteController@existenciaForm')->name('reporte_existenciaform');
 
-    Route::get('reportes','ReporteController@index')->name('reportes');
 
     Route::get('reportes/consolidadoexistencia',['as'=>'reportes.consolidadoexistencia','uses'=>'ReporteController@consolidadoExistencia']);
     Route::get('reportes/consolidadoexistencia/crear','ReporteController@consolidadoExistenciaForm')->name('reporte_consolidadoexistenciaform');
@@ -336,6 +335,9 @@ Route::Group(['middleware'=>['admin','depto','equipo']], function (){
     Route::get('plandecompras-pdf', 'RequisicionController@exportPdf')->name('plandecompras.pdf');
 
     Route::get('requisicion/resumen', 'RequisicionController@verResumen')->name('requisicion.resumen');
+
+    Route::get('reportes','ReporteController@index')->name('reportes');
+
 
 
 });

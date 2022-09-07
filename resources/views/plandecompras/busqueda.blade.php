@@ -8,6 +8,8 @@
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
 				<strong>Resumen del plan de compras de la categoría: {{$categoria->titulo_especifico}}</strong>
+                 <br><br>
+                <strong>Monto total solicitado: ${{number_format(($total->final),2,'.','')}}</strong>
 			</h4>
 		</div>
 		<div class="panel-body">
@@ -28,6 +30,7 @@
                 <th>Categoría</th>
                 <th>Especificaciones</th>
                 <th>Proveedor</th>
+                
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
             </tr>

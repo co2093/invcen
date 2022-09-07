@@ -8,6 +8,8 @@
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
 				<strong>Plan de compras de la categoría: {{$categoria->titulo_especifico}}</strong>
+                <br><br>
+                <strong>Monto total solicitado: ${{number_format(($total->final),2,'.','')}}</strong>
 			</h4>
 		</div>
 		<div class="panel-body">
@@ -29,7 +31,6 @@
                 <th>Especificaciones</th>
                 <th>Unidad de medida</th>
                 <th>Proveedor</th>
-                <th>Nuevo proveedor</th>
                 <th>Teléfono</th>
                 <th>Precio unitario</th>
                 <th>Costo Total</th>
@@ -48,15 +49,29 @@
                         <td>{{$categoria->titulo_especifico}}</td>
                         <td>{{$a->especificaciones}}</td>
                         <td>{{$a->unidad}}</td>
-                        <td>{{$a->proveedor}}</td>
                         <td>
+                        @if($a->nuevoproveedor)
                             @foreach ($proveedores as $p)
                                 @if ($p->telefono == $a->nuevoproveedor)
                                     {{$p->nombre}}
                                 @endif
                             @endforeach                           
+                        @else
+                            {{$a->proveedor}}
+                        @endif
                         </td>
-                        <td>{{$a->nuevoproveedor}}</td>
+                        <td>
+                        @if($a->nuevoproveedor)
+                            {{$a->nuevoproveedor}}
+                        @else
+                            @foreach ($proveedores as $p)
+                                @if($a->proveedor == $p->nombre)
+                                    {{$p->telefono}}
+                                @endif
+                            @endforeach
+                        @endif
+
+                        </td>
                         <td>${{ number_format(($a->precio_unitario),2,'.','') }}</td>
                         <td>${{ number_format(($a->total),2,'.','') }}</td>                      
                         <td>

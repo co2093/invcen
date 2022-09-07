@@ -32,9 +32,16 @@ class PlanComprasController extends Controller
             ->where('estado', '=', "Pendiente")
             ->get();
 
+
+            $total = DB::table('plan_compras')
+            ->select(DB::raw('SUM(total) as final'))
+            ->where('user_id', '=', Auth::user()->id)
+            ->where('estado', '=', "Pendiente")
+            ->first();
+
             $proveedores = DB::table('providers')->get();            
             
-            return view('plandecompras.index', compact('planDelUsuario', 'proveedores'));
+            return view('plandecompras.index', compact('planDelUsuario', 'proveedores', 'total'));
         }else{
 
             return redirect()->route('plandecompras.error');
@@ -540,9 +547,14 @@ class PlanComprasController extends Controller
 
         $categorias = Especifico::all();
 
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('estado', '=', "Pendiente")
+        ->first();
+
         
         
-        return view('plandecompras.resumen', compact('planDelUsuario', 'categorias'));
+        return view('plandecompras.resumen', compact('planDelUsuario', 'categorias', 'total'));
     }
 
 
@@ -646,8 +658,14 @@ class PlanComprasController extends Controller
         ->groupBy('nombre_producto', 'categoria','especificaciones', 'precio_unitario', 'proveedor')
         ->get();
 
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
+        ->first();
 
-        return view ('plandecompras.busqueda', compact('categoria', 'planDelUsuario'));
+
+        return view ('plandecompras.busqueda', compact('categoria', 'planDelUsuario', 'total'));
     }
 
     public function pdfCategoria($categoria){
@@ -1019,8 +1037,14 @@ class PlanComprasController extends Controller
         ->where('categoria', $categoria->titulo_especifico)
         ->get();
 
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('categoria', $categoria->titulo_especifico)
+        ->where('estado', '=', "Pendiente")
+        ->first();
 
-        return view ('plandecompras.busquedaIndividual', compact('categoria', 'planDelUsuario', 'proveedores'));
+
+        return view ('plandecompras.busquedaIndividual', compact('categoria', 'planDelUsuario', 'proveedores', 'total'));
     }
 
     public function buscarIndividualUser(Request $request){
@@ -1028,6 +1052,12 @@ class PlanComprasController extends Controller
         $usuario = DB::table('users')->where('id', $request->input('usuario'))->first();
         $proveedores = DB::table('providers')->get();
         $users = User::all();
+
+        $total = DB::table('plan_compras')
+        ->select(DB::raw('SUM(total) as final'))
+        ->where('user_id', '=', $usuario->id)
+        ->where('estado', '=', "Pendiente")
+        ->first();
    
 
         $planDelUsuario = DB::table('plan_compras')
@@ -1038,7 +1068,7 @@ class PlanComprasController extends Controller
         
 
 
-        return view ('plandecompras.busquedaIndividualUser', compact('usuario', 'planDelUsuario', 'proveedores', 'users'));
+        return view ('plandecompras.busquedaIndividualUser', compact('usuario', 'planDelUsuario', 'proveedores', 'users', 'total'));
     }
 
 
@@ -1223,9 +1253,12 @@ class PlanComprasController extends Controller
 
         ->get();
 
+        $proveedores = DB::table('providers')->get();            
+
+
         $users = User::all();
 
-        return view('plandecompras.aprobargeneral', compact('planDelUsuario', 'users', 'a', 'b', 'c', 'd', 'e'));
+        return view('plandecompras.aprobargeneral', compact('planDelUsuario', 'users', 'a', 'b', 'c', 'd', 'e', 'proveedores'));
     }
 
     public function consultarGeneral($a){

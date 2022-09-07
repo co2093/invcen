@@ -6,6 +6,7 @@
 <div class="panel panel-info">
     <div class="panel-heading">
         <h4 class="panel-title"><strong>Resumen del plan de compras</strong></h4>
+
     </div>
     <div class="panel-body">
 
@@ -44,6 +45,8 @@
 		<div class="panel-heading" role="tab">
 			<h4 class="panel-title">
 				<strong>Resumen del plan de compras general</strong>
+                 <br><br>
+                <strong>Monto total solicitado: ${{number_format(($total->final),2,'.','')}}</strong>
 			</h4>
 		</div>
 		<div class="panel-body">

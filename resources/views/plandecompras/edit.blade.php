@@ -78,6 +78,7 @@
 				</div>
 				</div>
 
+				@if($nuevo)
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Nombre de nuevo proveedor</label>
@@ -92,6 +93,8 @@
 					<input type="tel" name="telefono" minlength="8" maxlength="9"  id="telefono" value="{{$nuevo->telefono}}" class="form-control">
 				</div>
 				</div>
+
+				@endif
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">

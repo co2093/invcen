@@ -10,6 +10,13 @@
      </ul>
   </li>
 
+  <li class="treeview">
+    <a href="{{route('reportes')}}">
+        <i class="glyphicon glyphicon-file"></i> <span>Reportes</span>
+        
+    </a>
+</li>
+
 
 <li class="treeview">
     <a href="#">
