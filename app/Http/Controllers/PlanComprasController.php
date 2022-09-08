@@ -1591,7 +1591,6 @@ class PlanComprasController extends Controller
 
     public function exportExcel(){
 
-        $fecha = Carbon::now();
 
 
         Excel::create('plan de compras '.$fecha, function($excel) {
@@ -1608,7 +1607,7 @@ class PlanComprasController extends Controller
 
         $userId = Auth::user()->id;
         $estado = 'Pendiente';  
-
+        $fecha = Carbon::now()->format('d-m-Y');
 
         $c=7;
         $i=7;
@@ -1616,10 +1615,7 @@ class PlanComprasController extends Controller
 
 
         $plan = DB::select(
-            'SELECT * FROM (
-                SELECT categoria, SUM(total) FROM plan_compras WHERE estado != ? GROUP BY categoria) t1
-            INNER join(SELECT * FROM plan_compras WHERE estado = ? AND user_id = ?) t2
-            ON t1.categoria = t2.categoria',[$estado, $estado, $userId]
+            'SELECT * FROM plan_compras WHERE estado = ? AND user_id = ?', [$estado, $userId]
         );
 
 

@@ -18,7 +18,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
-					<input type="text" name="nombre_producto" id="nombre_producto" placeholder="" class="form-control">
+					<textarea class="form-control rounded-0" id="nombre_producto" name="nombre_producto" rows="3"></textarea>
 				</div>
 				</div>
 
@@ -57,7 +57,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad solicitada</label>
-					<input type="number" name="cantidad" id="cantidad" value="0" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
+					<input type="number" name="cantidad" id="cantidad" min="0" value="0" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57">
 				</div>
 				</div>
 
@@ -106,14 +106,14 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
-					<input type="number" step="any" name="precio" id="precio" class="form-control" value ="0.00" onchange="multiply()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+					<input type="number" step="any" min="0" name="precio" id="precio" class="form-control" value ="0.00" onchange="multiply()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Total</label>
-					<input type="number" step="any" name="total" id="total" class="form-control">
+					<input type="number" step="any" min="0" name="total" id="total" class="form-control">
 
 				</div>
 				</div>

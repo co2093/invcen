@@ -31,7 +31,8 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
-					<input type="text" name="nombre_producto" id="nombre_producto" value="{{$product->nombre_articulo}}" class="form-control" readonly="readonly">
+					<textarea class="form-control rounded-0"  id="nombre_producto" name="nombre_producto" rows="3">{{$product->nombre_articulo}}</textarea>
+
 				</div>
 				</div>
 
@@ -72,7 +73,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad solicitada</label>
-					<input type="number" name="cantidad" id="cantidad" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+					<input type="number" name="cantidad" id="cantidad" min="0" value="0" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
 
@@ -122,7 +123,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
-					<input type="number" step="any" name="precio" id="precio" value="{{round(($product->precio_unitario),2)}}" class="form-control" onchange="multiply()">
+					<input type="number" step="any" name="precio" id="precio" min="0" value="{{round(($product->precio_unitario),2)}}" class="form-control" onchange="multiply()">
 
 				</div>
 				</div>

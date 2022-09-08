@@ -20,7 +20,7 @@
 				<div class="form-group">
 				<div class="col-xs-offset-3">	
 					<label>Nombre del producto</label>
-					<input type="text" name="nombre_producto" id="nombre_producto" value="{{$product->nombre_producto}}" class="form-control" required>
+					<textarea class="form-control rounded-0"  id="nombre_producto" name="nombre_producto" rows="3">{{$product->nombre_producto}}</textarea>
 				</div>
 				</div>
 
@@ -60,7 +60,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Cantidad solicitada</label>
-					<input type="number" name="cantidad" id="cantidad" value="{{$product->cantidad}}" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
+					<input type="number" name="cantidad" min="0" id="cantidad" value="{{$product->cantidad}}" class="form-control" onchange="multiply()" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" required>
 				</div>
 				</div>
 
@@ -99,7 +99,7 @@
 				<div class="form-group">
 					<div class="col-xs-offset-3">
 					<label>Precio cotizado</label>
-					<input type="number" step="any" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control" onchange="multiply()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+					<input type="number" step="any" min="0" name="precio" id="precio" value="{{$product->precio_unitario}}" class="form-control" onchange="multiply()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 				</div>
 				</div>
 
