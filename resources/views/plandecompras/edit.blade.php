@@ -69,12 +69,15 @@
 					<label>Proveedor</label>
 
 					<select name="proveedor" id="proveedor" class="form-control">
-
+							<option value="{{$product->proveedor}}">{{$product->proveedor}}</option>
 						@foreach($proveedores as $c)
+						@if($c->nombre!=$product->proveedor)
 							<option value="{{$c->nombre}}">{{$c->nombre}}</option>
+						@endif
 						@endforeach
 
 					</select>
+
 				</div>
 				</div>
 
