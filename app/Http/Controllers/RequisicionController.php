@@ -247,9 +247,9 @@ class RequisicionController extends Controller
                         'fecha_solicitud' => Date::now(),
                     ]);
                     //deshabilitamos que el departemento envie requisiciones
-                    $departamento->update([
-                        'enviar' => 'false',
-                    ]);
+                   // $departamento->update([
+                     //   'enviar' => 'false',
+                   // ]);
                     //eliminamos la variable de sesion
                     \Session::forget('articulos');
                     flash('Solicitud enviada exitosamente', 'success');

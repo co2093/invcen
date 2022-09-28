@@ -126,6 +126,7 @@ class DetalleRequisicionController extends Controller
 
     public function update(Request $request, $id)
     {  
+        //dd($request->codasignacion);
          $this->validate($request,[
             'cantidad' => 'required |integer|min:1|max:1000',            
         ]);
@@ -133,7 +134,7 @@ class DetalleRequisicionController extends Controller
         {
             $d = DetalleRequisicion::FindOrFail($id); 
 
-            /*si el articulo es reacitvo*/
+            /*si el articulo es reacitvo
             if($d->articulo['es_reactivo']=='S')
             {
                 $asignacion = 0;

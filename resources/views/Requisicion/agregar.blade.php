@@ -31,20 +31,25 @@
 
     <tr>
         <td>{{$a->existencia}}</td>
-        <td>{{$a->getCodigoArticuloReporte()}}</td>
+        <td>{{$a->codigo_articulo}}</td>
         <td>{{$a->nombre_articulo}}</td>        
         <td>{{$a->unidad->nombre_unidadmedida}}</td>
         <td>{{number_format($a->precio_unitario,2,'.','')}}</td>
 
-               
+    @php
+        $str = "aa s s s ";
+        $nombre = preg_replace('/\r|\n/', '',$a->nombre_articulo);
+
+    @endphp    
+       
+
       <td >
           <a 
             class="btn btn-default btn-sm"
             title="Agregar a requisicion"
             href="#ventana1"
             data-toggle="modal"
-            onClick='agregarArticulo("{{$a->codigo_articulo}}","{{$a->nombre_articulo}}","{{$a->unidad->nombre_unidadmedida}}","{{number_format($a->precio_unitario,2,'.','')}}","{{$a->getCodigoArticuloReporte()}}","{{$a->existencia}}")'
-          >           
+            onClick='agregarArticulo("{{$a->codigo_articulo}}","{{$nombre}}","{{$a->unidad->nombre_unidadmedida}}","{{$a->precio_unitario}}","{{$a->codigo_articulo}}","{{$a->existencia}}")'>           
             <span class="glyphicon glyphicon-plus">
             </span>
           </a>
@@ -119,10 +124,18 @@
     });
 
 var agregarArticulo= function(id,articulo,unidad,precio,codp,existencia){
+    
+
+$aaa = articulo;
+
+    console.log($aaa);
+
+    
+
     $("#cantidad").val('');
     $("#cod").html(codp) ;
     $("#codigo").val(id);
-    $("#articulo").html(articulo);
+    $("#articulo").html($aaa);
     $("#unidad").html(unidad);
     $("#precio").html(precio);
     $("#existencia").html(existencia);

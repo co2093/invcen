@@ -38,7 +38,7 @@
 
                     <tr>
                         <td>{{$a->existencia}}</td>
-                        <td>{{$a->getCodigoArticuloReporte()}}</td>
+                        <td>{{$a->codigo_articulo}}</td>
                         <td>{{$a->nombre_articulo}}</td>
                         <td>{{$a->unidad['nombre_unidadmedida']}}</td>
                         <td>{{$a->cantidad}}</td>
