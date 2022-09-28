@@ -37,7 +37,6 @@
         <td>{{number_format($a->precio_unitario,2,'.','')}}</td>
 
     @php
-        $str = "aa s s s ";
         $nombre = preg_replace('/\r|\n/', '',$a->nombre_articulo);
 
     @endphp    
@@ -126,16 +125,10 @@
 var agregarArticulo= function(id,articulo,unidad,precio,codp,existencia){
     
 
-$aaa = articulo;
-
-    console.log($aaa);
-
-    
-
     $("#cantidad").val('');
     $("#cod").html(codp) ;
     $("#codigo").val(id);
-    $("#articulo").html($aaa);
+    $("#articulo").html(articulo);
     $("#unidad").html(unidad);
     $("#precio").html(precio);
     $("#existencia").html(existencia);
