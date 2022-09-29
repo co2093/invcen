@@ -169,8 +169,8 @@ class DetalleRequisicionController extends Controller
                         }
                     }    
                  } 
-                $quedan =  $d->articulo['existencia'] - $cantidad_aprobada;    
-                $cantidad_aprobada = $cantidad_aprobada + $request->cantidad;        
+                $quedan =  $d->articulo['existencia'];    
+                $cantidad_aprobada = $request->cantidad;        
                 
                     if($d->articulo['existencia'] < $cantidad_aprobada)
                     {
