@@ -38,7 +38,7 @@
 
     @php
         $nombre = preg_replace('/\r|\n/', '',$a->nombre_articulo);
-
+        $nombre = addslashes($nombre);
     @endphp    
        
 
