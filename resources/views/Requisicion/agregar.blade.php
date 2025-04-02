@@ -43,15 +43,23 @@
        
 
       <td >
-          <a 
+        <a 
             class="btn btn-default btn-sm"
             title="Agregar a requisicion"
             href="#ventana1"
             data-toggle="modal"
-            onClick='agregarArticulo("{{$a->codigo_articulo}}","{{$nombre}}","{{$a->unidad->nombre_unidadmedida}}","{{$a->precio_unitario}}","{{$a->codigo_articulo}}","{{$a->existencia}}")'>           
-            <span class="glyphicon glyphicon-plus">
-            </span>
-          </a>
+            onclick='agregarArticulo({{ json_encode([
+                "id" => $a->codigo_articulo,
+                "nombre" => $a->nombre_articulo,
+                "unidad" => $a->unidad->nombre_unidadmedida,
+                "precio" => number_format($a->precio_unitario,2,'.',''),
+                "codigo" => $a->codigo_articulo,
+                "existencia" => $a->existencia
+            ]) }})'
+        >           
+            <span class="glyphicon glyphicon-plus"></span>
+        </a>
+
           
       </td>   
     </tr>
@@ -122,17 +130,16 @@
             });
     });
 
-var agregarArticulo= function(id,articulo,unidad,precio,codp,existencia){
-    
+    var agregarArticulo = function(articulo) {
+        $("#cantidad").val('');
+        $("#cod").html(articulo.codigo);
+        $("#codigo").val(articulo.id);
+        $("#articulo").html(articulo.nombre);
+        $("#unidad").html(articulo.unidad);
+        $("#precio").html(articulo.precio);
+        $("#existencia").html(articulo.existencia);
+    };
 
-    $("#cantidad").val('');
-    $("#cod").html(codp) ;
-    $("#codigo").val(id);
-    $("#articulo").html(articulo);
-    $("#unidad").html(unidad);
-    $("#precio").html(precio);
-    $("#existencia").html(existencia);
-}
 
 var validar = function () {
     var cantidad = parseInt($("#cantidad").val());
